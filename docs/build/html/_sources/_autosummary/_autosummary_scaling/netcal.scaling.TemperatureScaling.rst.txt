@@ -1,0 +1,25 @@
+netcal.scaling.TemperatureScaling
+=================================
+
+.. currentmodule:: netcal.scaling
+
+.. autoclass:: TemperatureScaling
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~TemperatureScaling.__init__
+      ~TemperatureScaling.clear
+      ~TemperatureScaling.fit
+      ~TemperatureScaling.fit_transform
+      ~TemperatureScaling.get_params
+      ~TemperatureScaling.load_model
+      ~TemperatureScaling.save_model
+      ~TemperatureScaling.set_params
+      ~TemperatureScaling.transform
+   
+   

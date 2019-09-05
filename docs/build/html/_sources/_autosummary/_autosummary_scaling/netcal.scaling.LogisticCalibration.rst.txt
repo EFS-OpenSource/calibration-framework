@@ -1,0 +1,25 @@
+netcal.scaling.LogisticCalibration
+==================================
+
+.. currentmodule:: netcal.scaling
+
+.. autoclass:: LogisticCalibration
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LogisticCalibration.__init__
+      ~LogisticCalibration.clear
+      ~LogisticCalibration.fit
+      ~LogisticCalibration.fit_transform
+      ~LogisticCalibration.get_params
+      ~LogisticCalibration.load_model
+      ~LogisticCalibration.save_model
+      ~LogisticCalibration.set_params
+      ~LogisticCalibration.transform
+   
+   

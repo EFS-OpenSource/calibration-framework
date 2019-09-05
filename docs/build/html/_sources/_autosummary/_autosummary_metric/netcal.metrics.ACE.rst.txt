@@ -1,0 +1,18 @@
+netcal.metrics.ACE
+==================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: ACE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ACE.__init__
+      ~ACE.measure
+   
+   

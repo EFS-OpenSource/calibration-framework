@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>API Reference &#8212; calibration-framework 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="netcal.binning" href="_autosummary/netcal.binning.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="_autosummary/netcal.binning.html" title="netcal.binning"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">calibration-framework 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-netcal"></span><div class="section" id="api-reference">
+<h1><a class="toc-backref" href="#id25">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<p>This is the detailled API reference for the confidence calibration framework. This framework can be used to
+obtain well-calibrated confidence estimates from biased estimators like Neural Networks.
+The API reference contains a detailled description of all available methods and their parameters. For
+miscellaneous examples on how to use these methods, see readme below.</p>
+<p>Available packages</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/netcal.binning.html#module-netcal.binning" title="netcal.binning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code></a></p></td>
+<td><p>Binning methods for confidence calibration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/netcal.scaling.html#module-netcal.scaling" title="netcal.scaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaling</span></code></a></p></td>
+<td><p>Scaling methods for confidence calibration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/netcal.regularization.html#module-netcal.regularization" title="netcal.regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regularization</span></code></a></p></td>
+<td><p>Regularization methods which are applied during model training.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/netcal.metrics.html#module-netcal.metrics" title="netcal.metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metrics</span></code></a></p></td>
+<td><p>Methods for measuring miscalibration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/netcal.presentation.html#module-netcal.presentation" title="netcal.presentation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">presentation</span></code></a></p></td>
+<td><p>Methods for the visualization of miscalibration.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Each calibration method must inherit the base class <a class="reference internal" href="_autosummary_abstract_calibration/netcal.AbstractCalibration.html#netcal.AbstractCalibration" title="netcal.AbstractCalibration"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCalibration</span></code></a>. If you want to write your own method and
+include into the framework, include this class as the base class.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_abstract_calibration/netcal.AbstractCalibration.html#netcal.AbstractCalibration" title="netcal.AbstractCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractCalibration</span></code></a>([independent_probabilities])</p></td>
+<td><p>Abstract base class for all calibration methods.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="calibration-framework">
+<h1><a class="toc-backref" href="#id26">Calibration Framework</a><a class="headerlink" href="#calibration-framework" title="Permalink to this headline">¶</a></h1>
+<p>Calibration framework in Python 3 for Neural Networks.</p>
+<p>Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+AND Visteon Electronics Germany GmbH, Kerpen, Germany</p>
+<p>This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#api-reference" id="id25">API Reference</a></p></li>
+<li><p><a class="reference internal" href="#calibration-framework" id="id26">Calibration Framework</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id27">Overview</a></p></li>
+<li><p><a class="reference internal" href="#installation" id="id28">Installation</a></p></li>
+<li><p><a class="reference internal" href="#calibration-metrics" id="id29">Calibration Metrics</a></p></li>
+<li><p><a class="reference internal" href="#methods" id="id30">Methods</a></p>
+<ul>
+<li><p><a class="reference internal" href="#binning" id="id31">Binning</a></p></li>
+<li><p><a class="reference internal" href="#scaling" id="id32">Scaling</a></p></li>
+<li><p><a class="reference internal" href="#regularization" id="id33">Regularization</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#visualization" id="id34">Visualization</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id35">Examples</a></p></li>
+<li><p><a class="reference internal" href="#references" id="id36">References</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="overview">
+<h1><a class="toc-backref" href="#id27">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>This framework is designed to calibrate the confidence estimates of classifiers like Neural Networks. Modern Neural Networks are likely to be overconfident with their predictions. However, reliable confidence estimates of such classifiers are crucial especially in safety-critical applications.</p>
+<p>For example: given 100 predictions with a confidence of 80% of each prediction, the observed accuracy should also match 80% (neither more nor less). This behaviour is achievable with several calibration methods.</p>
+<p>The framework is structured as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">netcal</span>
+  <span class="o">.</span><span class="n">binning</span>         <span class="c1"># binning methods</span>
+  <span class="o">.</span><span class="n">scaling</span>         <span class="c1"># scaling methods</span>
+  <span class="o">.</span><span class="n">regularization</span>  <span class="c1"># regularization methods</span>
+  <span class="o">.</span><span class="n">presentation</span>    <span class="c1"># presentation methods</span>
+  <span class="o">.</span><span class="n">metrics</span>         <span class="c1"># metrics for measuring miscalibration</span>
+
+<span class="n">examples</span>           <span class="c1"># example code snippets</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation">
+<h1><a class="toc-backref" href="#id28">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The installation of the calibration suite is quite easy with setuptools. You can either install this framework using PIP:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">netcal</span>
+</pre></div>
+</div>
+<p>Or simply invoke the following command to install the calibration suite:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="calibration-metrics">
+<h1><a class="toc-backref" href="#id29">Calibration Metrics</a><a class="headerlink" href="#calibration-metrics" title="Permalink to this headline">¶</a></h1>
+<p>The most common metric to determine miscalibration is the <em>Expected Calibration Error</em> (ECE) <a class="footnote-reference brackets" href="#id14" id="id1">1</a>. This metric divides the confidence space into several bins and measures the observed accuracy in each bin. The bin gaps between observed accuracy and bin confidence are summed up and weighted by the amount of samples in each bin. The <em>Maximum Calibration Error</em> (MCE) denotes the highest gap over all bins. The <em>Average Calibration Error</em> (ACE) <a class="footnote-reference brackets" href="#id24" id="id2">11</a> denotes the average miscalibration where each bin gets weighted equally.</p>
+<p>Another group are the regularization tools which are added to the loss during the training of a Neural Network.</p>
+</div>
+<div class="section" id="methods">
+<h1><a class="toc-backref" href="#id30">Methods</a><a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h1>
+<p>The calibration methods are separated into binning and scaling methods. The binning methods divide the confidence space into several bins (like ECE) and perform calibration on each bin. The scaling methods scale the confidence estimates or logits directly to calibrated confidence estimates.</p>
+<p>Most of the calibration methods are designed for binary classification tasks. Multi-class calibration is performed in “one vs. all” by default.</p>
+<p>Some methods like “Isotonic Regression” utilize methods from the scikit-learn API <a class="footnote-reference brackets" href="#id22" id="id3">9</a>.</p>
+<div class="section" id="binning">
+<h2><a class="toc-backref" href="#id31">Binning</a><a class="headerlink" href="#binning" title="Permalink to this headline">¶</a></h2>
+<p>Implemented binning methods are:</p>
+<ul class="simple">
+<li><p>Histogram Binning <a class="footnote-reference brackets" href="#id16" id="id4">3</a>, <a class="footnote-reference brackets" href="#id17" id="id5">4</a></p></li>
+<li><p>Isotonic Regression <a class="footnote-reference brackets" href="#id17" id="id6">4</a>, <a class="footnote-reference brackets" href="#id18" id="id7">5</a></p></li>
+<li><p>Bayesian Binning into Quantiles (BBQ) <a class="footnote-reference brackets" href="#id14" id="id8">1</a></p></li>
+<li><p>Ensemble of Near Isotonic Regression (ENIR) <a class="footnote-reference brackets" href="#id19" id="id9">6</a></p></li>
+</ul>
+</div>
+<div class="section" id="scaling">
+<h2><a class="toc-backref" href="#id32">Scaling</a><a class="headerlink" href="#scaling" title="Permalink to this headline">¶</a></h2>
+<p>Implemented scaling methods are:</p>
+<ul class="simple">
+<li><p>Logistic Calibration/Platt Scaling <a class="footnote-reference brackets" href="#id23" id="id10">10</a></p></li>
+<li><p>Temperature Scaling <a class="footnote-reference brackets" href="#id20" id="id11">7</a></p></li>
+<li><p>Beta Calibration <a class="footnote-reference brackets" href="#id15" id="id12">2</a></p></li>
+</ul>
+</div>
+<div class="section" id="regularization">
+<h2><a class="toc-backref" href="#id33">Regularization</a><a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h2>
+<p>Implemented regularization methods are:</p>
+<ul class="simple">
+<li><p>Confidence Penalty <a class="footnote-reference brackets" href="#id21" id="id13">8</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="visualization">
+<h1><a class="toc-backref" href="#id34">Visualization</a><a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h1>
+<p>For visualization of miscalibration, one can use a Confidence Histograms &amp; Reliability Diagrams. These diagrams are similar to ECE, the output space is divided into equally spaced bins. The calibration gap between bin accuracy and bin confidence is visualized as a histogram.</p>
+</div>
+<div class="section" id="examples">
+<h1><a class="toc-backref" href="#id35">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>The calibration methods work with the predicted confidence estimates of a Neural Network. This is a basic example which uses softmax predictions of a classification task with 10 classes and the given NumPy arrays:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ground_truth</span>  <span class="c1"># this is a NumPy 1-D array with ground truth digits between 0-9 - shape: (n_samples,)</span>
+<span class="n">confidences</span>   <span class="c1"># this is a NumPy 2-D array with confidence estimates between 0-1 - shape: (n_samples, n_classes)</span>
+</pre></div>
+</div>
+<p>This is an example for Temperature Scaling but also works for every calibration method (remind different constructor parameters):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">netcal.scaling</span> <span class="k">import</span> <span class="n">TemperatureScaling</span>
+
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">TemperatureScaling</span><span class="p">()</span>
+<span class="n">temperature</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">confidences</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>
+<span class="n">calibrated</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">confidences</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The miscalibration can be determined with the ECE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="k">import</span> <span class="n">ECE</span>
+
+<span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">ece</span> <span class="o">=</span> <span class="n">ECE</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+<span class="n">uncalibrated_score</span> <span class="o">=</span> <span class="n">ece</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">confidences</span><span class="p">)</span>
+<span class="n">calibrated_score</span> <span class="o">=</span> <span class="n">ece</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">calibrated</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The miscalibration can be visualized with a Reliability Diagram:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.presentation</span> <span class="k">import</span> <span class="n">ReliabilityDiagram</span>
+
+<span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">ReliabilityDiagram</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">confidences</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>  <span class="c1"># visualize miscalibration of uncalibrated</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">calibrated</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>   <span class="c1"># visualize miscalibration of calibrated</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h1><a class="toc-backref" href="#id36">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<dl class="footnote brackets">
+<dt class="label" id="id14"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id8">2</a>)</span></dt>
+<dd><p>Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht: “Obtaining well calibrated probabilities using bayesian binning.” Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id12">2</a></span></dt>
+<dd><p>Kull, Meelis, Telmo Silva Filho, and Peter Flach: “Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers.” Artificial Intelligence and Statistics, PMLR 54:623-631, 2017.</p>
+</dd>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id4">3</a></span></dt>
+<dd><p>Zadrozny, Bianca and Elkan, Charles: “Obtaining calibrated probability estimates from decision trees and naive bayesian classifiers.” In ICML, pp. 609–616, 2001.</p>
+</dd>
+<dt class="label" id="id17"><span class="brackets">4</span><span class="fn-backref">(<a href="#id5">1</a>,<a href="#id6">2</a>)</span></dt>
+<dd><p>Zadrozny, Bianca and Elkan, Charles: “Transforming classifier scores into accurate multiclass probability estimates.” In KDD, pp. 694–699, 2002.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id7">5</a></span></dt>
+<dd><p>Ryan J Tibshirani, Holger Hoefling, and Robert Tibshirani: “Nearly-isotonic regression.” Technometrics, 53(1):54–61, 2011.</p>
+</dd>
+<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id9">6</a></span></dt>
+<dd><p>Naeini, Mahdi Pakdaman, and Gregory F. Cooper: “Binary classifier calibration using an ensemble of near isotonic regression models.” 2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets"><a class="fn-backref" href="#id11">7</a></span></dt>
+<dd><p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger: “On Calibration of Modern Neural Networks.” Proceedings of the 34th International Conference on Machine Learning, 2017.</p>
+</dd>
+<dt class="label" id="id21"><span class="brackets"><a class="fn-backref" href="#id13">8</a></span></dt>
+<dd><p>Pereyra, G., Tucker, G., Chorowski, J., Kaiser, L. and Hinton, G.: “Regularizing neural networks by penalizing confident output distributions.” CoRR, 2017.</p>
+</dd>
+<dt class="label" id="id22"><span class="brackets"><a class="fn-backref" href="#id3">9</a></span></dt>
+<dd><p>Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M. and Duchesnay, E.: “Scikit-learn: Machine Learning in Python.” In Journal of Machine Learning Research, volume 12 pp 2825-2830, 2011.</p>
+</dd>
+<dt class="label" id="id23"><span class="brackets"><a class="fn-backref" href="#id10">10</a></span></dt>
+<dd><p>Platt, John: “Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods.” Advances in large margin classifiers, 10(3): 61–74, 1999.</p>
+</dd>
+<dt class="label" id="id24"><span class="brackets"><a class="fn-backref" href="#id2">11</a></span></dt>
+<dd><p>Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi: “Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection.” Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.</p>
+</dd>
+</dl>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API Reference</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#calibration-framework">Calibration Framework</a></li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#calibration-metrics">Calibration Metrics</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#binning">Binning</a></li>
+<li><a class="reference internal" href="#scaling">Scaling</a></li>
+<li><a class="reference internal" href="#regularization">Regularization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#visualization">Visualization</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="_autosummary/netcal.binning.html"
+                        title="next chapter">netcal.binning</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="_autosummary/netcal.binning.html" title="netcal.binning"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">calibration-framework 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

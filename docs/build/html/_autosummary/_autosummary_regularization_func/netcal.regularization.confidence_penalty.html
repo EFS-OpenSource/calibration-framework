@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>netcal.regularization.confidence_penalty &#8212; calibration-framework 1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="netcal.metrics" href="../netcal.metrics.html" />
+    <link rel="prev" title="netcal.regularization" href="../netcal.regularization.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../netcal.metrics.html" title="netcal.metrics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../netcal.regularization.html" title="netcal.regularization"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../netcal.regularization.html" accesskey="U">netcal.regularization</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="netcal-regularization-confidence-penalty">
+<h1>netcal.regularization.confidence_penalty<a class="headerlink" href="#netcal-regularization-confidence-penalty" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="netcal.regularization.confidence_penalty">
+<code class="sig-prename descclassname">netcal.regularization.</code><code class="sig-name descname">confidence_penalty</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">weight: float</em>, <em class="sig-param">threshold: float = None</em>, <em class="sig-param">base: float = 2.718281828459045</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#netcal.regularization.confidence_penalty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confidence Penalty Regularization. This penalty term can be applied to any loss function as a regularizer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
+1-D for binary classification, 2-D for multi class (softmax).</p></li>
+<li><p><strong>weight</strong> (<em>float</em>) – Weight of entropy.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Entropy threshold (no penalty is assigned above threshold).</p></li>
+<li><p><strong>base</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default: np.e</em>) – Base of logarithm (typically the number of classes to norm entropy).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Confidence penalty of posterior distribution.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>G. Pereyra, G. Tucker, J. Chorowski, Lukasz Kaiser, and G. Hinton:
+“Regularizing neural networks by penalizing confident output distributions.”
+CoRR, 2017.
+<a class="reference external" href="https://arxiv.org/pdf/1701.06548">Get source online</a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../netcal.regularization.html"
+                        title="previous chapter">netcal.regularization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../netcal.metrics.html"
+                        title="next chapter">netcal.metrics</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_autosummary/_autosummary_regularization_func/netcal.regularization.confidence_penalty.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../netcal.metrics.html" title="netcal.metrics"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../netcal.regularization.html" title="netcal.regularization"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../netcal.regularization.html" >netcal.regularization</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

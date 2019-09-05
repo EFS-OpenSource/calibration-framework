@@ -1,0 +1,25 @@
+netcal.AbstractCalibration
+==========================
+
+.. currentmodule:: netcal
+
+.. autoclass:: AbstractCalibration
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AbstractCalibration.__init__
+      ~AbstractCalibration.clear
+      ~AbstractCalibration.fit
+      ~AbstractCalibration.fit_transform
+      ~AbstractCalibration.get_params
+      ~AbstractCalibration.load_model
+      ~AbstractCalibration.save_model
+      ~AbstractCalibration.set_params
+      ~AbstractCalibration.transform
+   
+   

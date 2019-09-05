@@ -1,0 +1,25 @@
+netcal.binning.BBQ
+==================
+
+.. currentmodule:: netcal.binning
+
+.. autoclass:: BBQ
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BBQ.__init__
+      ~BBQ.clear
+      ~BBQ.fit
+      ~BBQ.fit_transform
+      ~BBQ.get_params
+      ~BBQ.load_model
+      ~BBQ.save_model
+      ~BBQ.set_params
+      ~BBQ.transform
+   
+   

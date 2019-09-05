@@ -1,0 +1,26 @@
+netcal.binning.HistogramBinning
+===============================
+
+.. currentmodule:: netcal.binning
+
+.. autoclass:: HistogramBinning
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HistogramBinning.__init__
+      ~HistogramBinning.clear
+      ~HistogramBinning.fit
+      ~HistogramBinning.fit_transform
+      ~HistogramBinning.get_degrees_of_freedom
+      ~HistogramBinning.get_params
+      ~HistogramBinning.load_model
+      ~HistogramBinning.save_model
+      ~HistogramBinning.set_params
+      ~HistogramBinning.transform
+   
+   

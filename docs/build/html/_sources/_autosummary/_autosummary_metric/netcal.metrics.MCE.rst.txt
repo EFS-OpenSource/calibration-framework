@@ -1,0 +1,18 @@
+netcal.metrics.MCE
+==================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: MCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MCE.__init__
+      ~MCE.measure
+   
+   

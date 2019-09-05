@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>netcal.metrics.ECE &#8212; calibration-framework 1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="netcal.metrics.MCE" href="netcal.metrics.MCE.html" />
+    <link rel="prev" title="netcal.metrics.ACE" href="netcal.metrics.ACE.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="netcal.metrics.MCE.html" title="netcal.metrics.MCE"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="netcal.metrics.ACE.html" title="netcal.metrics.ACE"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../netcal.metrics.html" accesskey="U">netcal.metrics</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="netcal-metrics-ece">
+<h1>netcal.metrics.ECE<a class="headerlink" href="#netcal-metrics-ece" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="netcal.metrics.ECE">
+<em class="property">class </em><code class="sig-prename descclassname">netcal.metrics.</code><code class="sig-name descname">ECE</code><span class="sig-paren">(</span><em class="sig-param">bins: int</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ECE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Metric for Expected Calibration Error (ECE). This metrics measures the
+expected difference between accuracy and confidence by grouping all samples (size <span class="math notranslate nohighlight">\(N\)</span>) into <span class="math notranslate nohighlight">\(K\)</span> bins
+and calculating</p>
+<div class="math notranslate nohighlight">
+\[ECE = \sum_{i=1}^K \frac{|B_i|}{N} |\text{acc}_i - \text{conf}_i| ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{acc}_i\)</span> and <span class="math notranslate nohighlight">\(\text{conf}_i\)</span> denote the accuracy and average confidence in the i-th bin
+and <span class="math notranslate nohighlight">\(|B_i|\)</span> denote the number of samples in bin <span class="math notranslate nohighlight">\(B_i\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bins</strong> (<em>int</em>) – Number of bins. The output space is partitioned into M equally sized bins.</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
+“Obtaining well calibrated probabilities using bayesian binning.”
+Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
+<a class="reference external" href="https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958">Get source online</a></p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(bins)</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y)</p></td>
+<td><p>Measure calibration by given predictions with confidence and the according ground truth.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="netcal.metrics.ECE.measure">
+<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#netcal.metrics.ECE.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure calibration by given predictions with confidence and the according ground truth.
+Assume binary predictions with y=1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
+1-D for binary classification, 2-D for multi class (softmax).</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>,</em><em>)</em>) – NumPy 1-D array with ground truth labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Expected Calibration Error (ECE).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="netcal.metrics.ACE.html"
+                        title="previous chapter">netcal.metrics.ACE</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="netcal.metrics.MCE.html"
+                        title="next chapter">netcal.metrics.MCE</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_autosummary/_autosummary_metric/netcal.metrics.ECE.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="netcal.metrics.MCE.html" title="netcal.metrics.MCE"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="netcal.metrics.ACE.html" title="netcal.metrics.ACE"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../netcal.metrics.html" >netcal.metrics</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

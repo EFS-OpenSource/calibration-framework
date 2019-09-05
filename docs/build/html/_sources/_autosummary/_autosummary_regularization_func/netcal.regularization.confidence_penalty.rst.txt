@@ -1,0 +1,6 @@
+netcal.regularization.confidence\_penalty
+=========================================
+
+.. currentmodule:: netcal.regularization
+
+.. autofunction:: confidence_penalty
