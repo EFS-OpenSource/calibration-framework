@@ -6,21 +6,20 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
-from calibration import accepts, dimensions
+from netcal import accepts, dimensions
 
 
-class ACE(object):
+class MCE(object):
     """
-    Metric for Average Calibration Error (ACE). This metrics measures the
-    average difference between accuracy and confidence by grouping all samples into :math:`K` bins
-    and calculating
+    Metric for Maximum Calibration Error (MCE). This metrics measures the
+    maximum difference between accuracy and confidence over all bins
+    by grouping all samples into :math:`K` bins and calculating
 
     .. math::
 
-       ACE = \\frac{1}{K} \\sum_{i=1}^K |\\text{acc}_i - \\text{conf}_i| ,
+       MCE = \max_{i \\in \\{1, ..., K\\}} |\\text{acc}_i - \\text{conf}_i| ,
 
     where :math:`\\text{acc}_i` and :math:`\\text{conf}_i` denote the accuracy and average confidence in the i-th bin.
-    The main difference to :class:`ECE` is that each bin is weighted equally.
 
     Parameters
     ----------
@@ -29,10 +28,10 @@ class ACE(object):
 
     References
     ----------
-    Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
-    "Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection."
-    Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
-    `Get source online <https://openreview.net/pdf?id=S1lG7aTnqQ>`_
+    Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
+    "Obtaining well calibrated probabilities using bayesian binning."
+    Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
+    `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
     """
 
     @accepts(int)
@@ -58,14 +57,13 @@ class ACE(object):
         X : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with confidence values for each prediction.
             1-D for binary classification, 2-D for multi class (softmax).
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+        y : np.ndarray, shape=(n_samples,)
+            NumPy 1-D array with ground truth labels.
 
         Returns
         -------
         float
-            Average Calibration Error (ACE).
+            Maximum Calibration Error (MCE).
         """
 
         # remove single-dimensional entries if present
@@ -103,8 +101,7 @@ class ACE(object):
         current_indices[current_indices == -1] = 0
         current_indices[current_indices == self.bins] = self.bins - 1
 
-        ace = 0.0
-        num_bins_not_empty = 0
+        mce = 0.0
 
         # mean accuracy is new confidence in each bin
         for bin in range(self.bins):
@@ -112,8 +109,6 @@ class ACE(object):
             bin_matched = matched[current_indices == bin]
 
             if bin_confidence.size > 0:
-                ace += np.abs(np.mean(bin_matched) - np.mean(bin_confidence))
-                num_bins_not_empty += 1
+                mce = max(np.abs(np.mean(bin_matched) - np.mean(bin_confidence)), mce)
 
-        ace /= float(num_bins_not_empty)
-        return ace
+        return mce

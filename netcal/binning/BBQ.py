@@ -6,16 +6,16 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
-from calibration import AbstractCalibration, dimensions, accepts
-from .NearIsotonicRegression import NearIsotonicRegression
+from netcal import AbstractCalibration, dimensions, accepts
+from .HistogramBinning import HistogramBinning
 
 
-class ENIR(AbstractCalibration):
+class BBQ(AbstractCalibration):
     """
-    Ensemble of Near Isotonic Regression (ENIR) models. These models allow - in contrast to standard
-    :class:`IsotonicRegression` method - a violation of the monotony restrictions. Using the *modified
-    Pool-Adjacent-Violators Algorithm (mPAVA)*, this method build multiple Near Isotonic Regression models
-    and weights them by a certain score function.
+    Bayesian Binning into Quantiles (BBQ). This method utilizes multiple :class:`HistogramBinning`
+    instances with different amounts of bins and computes a weighted sum of all methods to obtain a
+    well-calibrated confidence estimate. The scoring function "BDeu", which is proposed in the original paper,
+    is currently not supported.
 
     Let :math:`\\mathcal{D} = \\{(x_0, y_0), (x_1, y_1), ... \\}` denote
     a data set with input data :math:`x` and ground truth labels :math:`y \\in \\{0, 1\\}` of length :math:`N`.
@@ -57,8 +57,6 @@ class ENIR(AbstractCalibration):
         define score functions:
         - 'BIC': Bayesian-Information-Criterion
         - 'AIC': Akaike-Information-Criterion
-    quick_init : bool, default=True
-        Allow quick initialization of NIR (equal consecutive values are grouped directly).
     independent_probabilities : bool, optional, default: False
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
@@ -66,14 +64,15 @@ class ENIR(AbstractCalibration):
 
     References
     ----------
-    Naeini, Mahdi Pakdaman, and Gregory F. Cooper:
-    "Binary classifier calibration using an ensemble of near isotonic regression models."
-    2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.
-    `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`_
+    Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
+    "Obtaining well calibrated probabilities using bayesian binning."
+    Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
+    `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+
     """
 
-    @accepts(str, bool, bool)
-    def __init__(self, score_function: str = 'BIC', quick_init: bool = True, independent_probabilities: bool = False):
+    @accepts(str, bool)
+    def __init__(self, score_function: str = 'BIC', independent_probabilities: bool = False):
         """
         Constructor.
 
@@ -83,8 +82,6 @@ class ENIR(AbstractCalibration):
             define score functions:
             - 'BIC': Bayesian-Information-Criterion
             - 'AIC': Akaike-Information-Criterion
-        quick_init : bool, default=True
-            Allow quick initialization of NIR (equal consecutive values are grouped directly).
         independent_probabilities : bool, optional, default: False
             Boolean for multi class probabilities.
             If set to True, the probability estimates for each
@@ -96,7 +93,7 @@ class ENIR(AbstractCalibration):
         # for multi class calibration with K classes, K binary calibration models are needed
         self._multiclass_instances = []
 
-        # list of all binning models with [<NearIsotonicRegression>, ...]
+        # list of all binning models with [<HistogramBinning>, ...]
         self._binning_models = []
         self._model_scores = []
 
@@ -106,12 +103,12 @@ class ENIR(AbstractCalibration):
             raise AttributeError("Unknown score function \'%s\'" % score_function)
 
         self.score_function = score_function.lower()
-        self.quick_init = quick_init
 
     def clear(self):
         """
         Clear model parameters.
         """
+
         super().clear()
 
         # for multi class calibration with K classes, K binary calibration models are needed
@@ -120,7 +117,7 @@ class ENIR(AbstractCalibration):
 
         self._multiclass_instances.clear()
 
-        # list of all binning models with [<NearIsotonicRegression>, ...]
+        # list of all binning models with [<HistogramBinning>, ...]
         for model in self._binning_models:
             del model
 
@@ -128,9 +125,9 @@ class ENIR(AbstractCalibration):
         self._model_scores = None
 
     @dimensions((1, 2), (1, 2))
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'ENIR':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> 'BBQ':
         """
-        Build ENIR calibration model.
+        Build BBQ calibration model.
 
         Parameters
         ----------
@@ -143,8 +140,8 @@ class ENIR(AbstractCalibration):
 
         Returns
         -------
-        ENIR
-            Instance of class :class:`ENIR`.
+        BBQ
+            Instance of class :class:`BBQ`.
         """
 
         X, y = super().fit(X, y)
@@ -153,33 +150,27 @@ class ENIR(AbstractCalibration):
         if not self._is_binary_classification():
 
             # create multiple one vs all models
-            self._multiclass_instances = self._create_one_vs_all_models(X, y, ENIR, self.score_function,
-                                                                        self.quick_init)
+            self._multiclass_instances = self._create_one_vs_all_models(X, y, BBQ, self.score_function)
             return self
 
-        # binary classification problem but got two entries? (probability for 0 and 1 separately)?
-        # we only need probability p for Y=1 (probability for 0 is (1-p) )
-        if len(X.shape) == 2:
-            X = np.array(X[:, 1])
-        else:
-            X = np.array(X)
+        num_samples = y.size
+        sqrt3_num_samples = np.power(num_samples, 1. / 3.)
 
-        X, y = self._sort_arrays(X, y)
+        # bin range as proposed in the paper of the authors
+        # guarantee, that at least one bin model is present and least a 5 bin model
+        min_bins = int(max(1, np.floor(sqrt3_num_samples / 10.)))
+        max_bins = int(min(np.ceil(num_samples / 5), np.ceil(sqrt3_num_samples * 10.)))
 
-        # log action
-        self.logger.info("Get path of all Near Isotonic Regression models with mPAVA ...")
+        num_binning_models = max_bins - min_bins + 1
 
-        iso = NearIsotonicRegression(quick_init=self.quick_init,
-                                     independent_probabilities=self.independent_probabilities)
-        iso.fit(X, y)
-        model_list = [iso]
+        # iterate over all different binnings and fit Histogram Binning methods
+        model_list = []
+        for num_model in range(num_binning_models):
 
-        while iso is not None:
-            iso = iso.get_next_model()
-            model_list.append(iso)
+            histogram = HistogramBinning(bins=min_bins+num_model)
+            histogram.fit(X, y)
 
-        # last element is always None - indicator of mPAVA termination
-        model_list.pop()
+            model_list.append(histogram)
 
         # get model scores and binning models by elbow method
         self._model_scores, self._binning_models = self._elbow(X, y, model_list, self.score_function, alpha=0.001)

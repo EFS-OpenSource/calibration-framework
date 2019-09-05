@@ -5,8 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from calibration import accepts
-from calibration.scaling import LogisticCalibration
+from netcal import accepts
+from netcal.scaling import LogisticCalibration
 
 
 class TemperatureScaling(LogisticCalibration):

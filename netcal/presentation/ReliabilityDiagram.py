@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import logging
 
-from calibration import dimensions, accepts
+from netcal import dimensions, accepts
 
 
 class ReliabilityDiagram(object):

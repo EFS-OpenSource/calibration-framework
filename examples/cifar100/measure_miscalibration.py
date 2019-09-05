@@ -5,8 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from calibration.binning import HistogramBinning, IsotonicRegression, ENIR, BBQ
-from calibration.scaling import LogisticCalibration, TemperatureScaling, BetaCalibration
+from netcal.binning import HistogramBinning, IsotonicRegression, ENIR, BBQ
+from netcal.scaling import LogisticCalibration, TemperatureScaling, BetaCalibration
 
 from examples.utils import single_example, cross_validation_5_2
 

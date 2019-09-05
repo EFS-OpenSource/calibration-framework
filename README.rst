@@ -21,7 +21,7 @@ For example: given 100 predictions with a confidence of 80% of each prediction, 
 
 The framework is structured as follows::
 
-    calibration
+    netcal
       .binning         # binning methods
       .scaling         # scaling methods
       .regularization  # regularization methods
@@ -34,7 +34,7 @@ Installation
 ===============
 The installation of the calibration suite is quite easy with setuptools. You can either install this framework using PIP::
 
-    pip3 install calibration
+    pip3 install netcal
 
 Or simply invoke the following command to install the calibration suite::
 
@@ -91,7 +91,7 @@ The calibration methods work with the predicted confidence estimates of a Neural
 This is an example for Temperature Scaling but also works for every calibration method (remind different constructor parameters)::
 
     import numpy as np
-    from calibration.scaling import TemperatureScaling
+    from netcal.scaling import TemperatureScaling
 
     temperature = TemperatureScaling()
     temperature.fit(confidences, ground_truth)
@@ -99,7 +99,7 @@ This is an example for Temperature Scaling but also works for every calibration 
 
 The miscalibration can be determined with the ECE::
 
-    from calibration.metrics import ECE
+    from netcal.metrics import ECE
 
     n_bins = 10
 
@@ -109,7 +109,7 @@ The miscalibration can be determined with the ECE::
 
 The miscalibration can be visualized with a Reliability Diagram::
 
-    from calibration.presentation import ReliabilityDiagram
+    from netcal.presentation import ReliabilityDiagram
 
     n_bins = 10
 

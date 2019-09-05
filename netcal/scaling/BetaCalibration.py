@@ -29,7 +29,7 @@
 
 import numpy as np
 from scipy.optimize import minimize
-from calibration import AbstractCalibration, dimensions, accepts
+from netcal import AbstractCalibration, dimensions, accepts
 
 
 class BetaCalibration(AbstractCalibration):

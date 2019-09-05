@@ -7,7 +7,7 @@
 
 import numpy as np
 
-from calibration import global_dimensions
+from netcal import global_dimensions
 
 
 @global_dimensions((1, 2), None, None, None)

@@ -6,7 +6,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
-from calibration import AbstractCalibration, dimensions, accepts
+from netcal import AbstractCalibration, dimensions, accepts
 
 
 class HistogramBinning(AbstractCalibration):

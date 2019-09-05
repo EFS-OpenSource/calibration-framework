@@ -6,21 +6,21 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
-from calibration import accepts, dimensions
+from netcal import accepts, dimensions
 
 
-class ECE(object):
+class ACE(object):
     """
-    Metric for Expected Calibration Error (ECE). This metrics measures the
-    expected difference between accuracy and confidence by grouping all samples (size :math:`N`) into :math:`K` bins
+    Metric for Average Calibration Error (ACE). This metrics measures the
+    average difference between accuracy and confidence by grouping all samples into :math:`K` bins
     and calculating
 
     .. math::
 
-       ECE = \\sum_{i=1}^K \\frac{|B_i|}{N} |\\text{acc}_i - \\text{conf}_i| ,
+       ACE = \\frac{1}{K} \\sum_{i=1}^K |\\text{acc}_i - \\text{conf}_i| ,
 
-    where :math:`\\text{acc}_i` and :math:`\\text{conf}_i` denote the accuracy and average confidence in the i-th bin
-    and :math:`|B_i|` denote the number of samples in bin :math:`B_i`.
+    where :math:`\\text{acc}_i` and :math:`\\text{conf}_i` denote the accuracy and average confidence in the i-th bin.
+    The main difference to :class:`ECE` is that each bin is weighted equally.
 
     Parameters
     ----------
@@ -29,10 +29,10 @@ class ECE(object):
 
     References
     ----------
-    Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
-    "Obtaining well calibrated probabilities using bayesian binning."
-    Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-    `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+    Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
+    "Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection."
+    Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
+    `Get source online <https://openreview.net/pdf?id=S1lG7aTnqQ>`_
     """
 
     @accepts(int)
@@ -58,13 +58,14 @@ class ECE(object):
         X : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with confidence values for each prediction.
             1-D for binary classification, 2-D for multi class (softmax).
-        y : np.ndarray, shape=(n_samples,)
-            NumPy 1-D array with ground truth labels.
+        y : np.ndarray, shape=(n_samples, [n_classes])
+            NumPy array with ground truth labels.
+            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
 
         Returns
         -------
         float
-            Expected Calibration Error (ECE).
+            Average Calibration Error (ACE).
         """
 
         # remove single-dimensional entries if present
@@ -76,9 +77,6 @@ class ECE(object):
         elif len(y.shape) == 2:
             if y.shape[1] <= 2:
                 y = y[:, -1]
-
-        # get total number of samples
-        num_samples = y.size
 
         if len(X.shape) == 2:
             if X.shape[1] <= 2:
@@ -105,7 +103,8 @@ class ECE(object):
         current_indices[current_indices == -1] = 0
         current_indices[current_indices == self.bins] = self.bins - 1
 
-        ece = 0.0
+        ace = 0.0
+        num_bins_not_empty = 0
 
         # mean accuracy is new confidence in each bin
         for bin in range(self.bins):
@@ -113,7 +112,8 @@ class ECE(object):
             bin_matched = matched[current_indices == bin]
 
             if bin_confidence.size > 0:
-                bin_weight = float(bin_confidence.size) / float(num_samples)
-                ece += bin_weight * np.abs(np.mean(bin_matched) - np.mean(bin_confidence))
+                ace += np.abs(np.mean(bin_matched) - np.mean(bin_confidence))
+                num_bins_not_empty += 1
 
-        return ece
+        ace /= float(num_bins_not_empty)
+        return ace

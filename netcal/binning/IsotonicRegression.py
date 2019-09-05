@@ -6,7 +6,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
-from calibration import AbstractCalibration, dimensions, accepts
+from netcal import AbstractCalibration, dimensions, accepts
 from sklearn.isotonic import IsotonicRegression as sklearn_iso
 
 
@@ -92,6 +92,9 @@ class IsotonicRegression(AbstractCalibration):
 
         # important: sort arrays by confidence
         X, y = self._sort_arrays(X, y)
+
+        # due to some reasons, this is necessary for IsotonicRegression function by sklearn
+        X = X.astype(np.float)
 
         # use isotonic regression routine from sklearn
         # and store as member variable

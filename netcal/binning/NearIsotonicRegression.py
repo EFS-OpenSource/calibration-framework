@@ -7,7 +7,7 @@
 
 import numpy as np
 from typing import Union
-from calibration import AbstractCalibration, dimensions, accepts
+from netcal import AbstractCalibration, dimensions, accepts
 
 
 class NearIsotonicRegression(AbstractCalibration):

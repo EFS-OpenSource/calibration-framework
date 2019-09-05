@@ -45,7 +45,7 @@ autosummary_generate = True  # Make _autosummary files and include them
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.napoleon',
-              'sphinx.ext.autosummary', 'm2r'
+              'sphinx.ext.autosummary'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

@@ -1,4 +1,4 @@
-.. automodule:: calibration
+.. automodule:: netcal
 .. include:: ../../README.rst
 
 

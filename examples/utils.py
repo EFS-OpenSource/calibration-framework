@@ -9,9 +9,9 @@ import os
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from calibration import global_accepts
-from calibration.metrics import ACE, ECE, MCE
-from calibration.presentation import ReliabilityDiagram
+from netcal import global_accepts
+from netcal.metrics import ACE, ECE, MCE
+from netcal.presentation import ReliabilityDiagram
 
 
 @global_accepts(list, str, int, (None, str), float, bool)

@@ -7,7 +7,7 @@
 
 import numpy as np
 from scipy import optimize
-from calibration import AbstractCalibration, dimensions, accepts
+from netcal import AbstractCalibration, dimensions, accepts
 
 
 class LogisticCalibration(AbstractCalibration):
