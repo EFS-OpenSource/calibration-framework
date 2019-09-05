@@ -1,6 +1,7 @@
 Calibration Framework
 =====================
 Calibration framework in Python 3 for Neural Networks.
+For full API reference documentation, visit https://fabiankueppers.github.io/calibration-framework.
 
 Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
 AND Visteon Electronics Germany GmbH, Kerpen, Germany
