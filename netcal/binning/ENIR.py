@@ -178,6 +178,9 @@ class ENIR(AbstractCalibration):
             iso = iso.get_next_model()
             model_list.append(iso)
 
+        # first element is perfect fit to training data - discard due to overfitting
+        model_list.pop(0)
+
         # last element is always None - indicator of mPAVA termination
         model_list.pop()
 
