@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -57,13 +57,13 @@ confidence estimates to the measured accuracy.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.HistogramBinning.html#netcal.binning.HistogramBinning" title="netcal.binning.HistogramBinning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HistogramBinning</span></code></a>(bins[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.HistogramBinning.html#netcal.binning.HistogramBinning" title="netcal.binning.HistogramBinning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HistogramBinning</span></code></a>([bins, equal_intervals, …])</p></td>
 <td><p>Simple Histogram Binning calibration method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.IsotonicRegression.html#netcal.binning.IsotonicRegression" title="netcal.binning.IsotonicRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a>([independent_probabilities])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.IsotonicRegression.html#netcal.binning.IsotonicRegression" title="netcal.binning.IsotonicRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a>([detection, …])</p></td>
 <td><p>Isotonic Regression method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.BBQ.html#netcal.binning.BBQ" title="netcal.binning.BBQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BBQ</span></code></a>([score_function, independent_probabilities])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.BBQ.html#netcal.binning.BBQ" title="netcal.binning.BBQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BBQ</span></code></a>([score_function, detection, …])</p></td>
 <td><p>Bayesian Binning into Quantiles (BBQ).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary_binning/netcal.binning.ENIR.html#netcal.binning.ENIR" title="netcal.binning.ENIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENIR</span></code></a>([score_function, quick_init, …])</p></td>
@@ -110,7 +110,7 @@ confidence estimates to the measured accuracy.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -135,7 +135,7 @@ confidence estimates to the measured accuracy.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

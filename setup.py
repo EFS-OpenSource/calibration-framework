@@ -15,7 +15,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="netcal",
-    version="1.0",
+    version="1.1",
     author="Fabian Kueppers",
     author_email="fabian.kueppers@hs-ruhrwest.de",
     description="Python Framework to calibrate confidence estimates of classifiers like Neural Networks",
@@ -23,7 +23,7 @@ setuptools.setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/fabiankueppers/calibration-framework",
     packages=setuptools.find_packages(),
-    install_requires = ['numpy>=1.15', 'scipy>=1.2', 'matplotlib>=3.1', 'scikit-learn>=0.20.0'],
+    install_requires = ['numpy>=1.15', 'scipy>=1.3', 'matplotlib>=3.1', 'scikit-learn>=0.20.0', 'torch>=1.1', 'tqdm'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",

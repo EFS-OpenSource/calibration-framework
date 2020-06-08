@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -37,7 +37,8 @@ include into the framework, include this class as the base class.
 """
 
 name = 'calibration'
-__version__ = '1.0'
+__version__ = '1.1'
 
 from .AbstractCalibration import AbstractCalibration
 from .Decorator import accepts, dimensions, global_accepts, global_dimensions
+from .Logging import TqdmHandler

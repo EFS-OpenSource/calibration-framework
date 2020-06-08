@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,11 +18,15 @@ Available classes
    :template: custom_class.rst
 
    LogisticCalibration
+   LogisticCalibrationDependent
    TemperatureScaling
    BetaCalibration
+   BetaCalibrationDependent
 """
 
 
 from .LogisticCalibration import LogisticCalibration
+from .LogisticCalibrationDependent import LogisticCalibrationDependent
 from .TemperatureScaling import TemperatureScaling
 from .BetaCalibration import BetaCalibration
+from .BetaCalibrationDependent import BetaCalibrationDependent

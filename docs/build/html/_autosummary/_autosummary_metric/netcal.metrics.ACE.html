@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -49,25 +49,43 @@
 <h1>netcal.metrics.ACE<a class="headerlink" href="#netcal-metrics-ace" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="netcal.metrics.ACE">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.metrics.</code><code class="sig-name descname">ACE</code><span class="sig-paren">(</span><em class="sig-param">bins: int</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ACE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Metric for Average Calibration Error (ACE). This metrics measures the
-average difference between accuracy and confidence by grouping all samples into <span class="math notranslate nohighlight">\(K\)</span> bins
-and calculating</p>
+<em class="property">class </em><code class="sig-prename descclassname">netcal.metrics.</code><code class="sig-name descname">ACE</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">tuple</em>, <em class="sig-param">list] = 10</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">sample_threshold: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.Miscalibration._Miscalibration</span></code></p>
+<p>Average Calibration Error (ACE).
+This metric is used on classification <a class="footnote-reference brackets" href="#id3" id="id1">1</a> or as Detection Average Calibration Error (D-ACE)
+<a class="footnote-reference brackets" href="#id4" id="id2">2</a> on object detection tasks. This metrics measures the average difference between accuracy and confidence by
+grouping all samples into <span class="math notranslate nohighlight">\(K\)</span> bins and calculating</p>
 <div class="math notranslate nohighlight">
 \[ACE = \frac{1}{K} \sum_{i=1}^K |\text{acc}_i - \text{conf}_i| ,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\text{acc}_i\)</span> and <span class="math notranslate nohighlight">\(\text{conf}_i\)</span> denote the accuracy and average confidence in the i-th bin.
 The main difference to <a class="reference internal" href="netcal.metrics.ECE.html#netcal.metrics.ECE" title="netcal.metrics.ECE"><code class="xref py py-class docutils literal notranslate"><span class="pre">ECE</span></code></a> is that each bin is weighted equally.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bins</strong> (<em>int</em>) – Number of bins. The output space is partitioned into M equally sized bins.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the Histogram Binning.
+On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
 “Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection.”
 Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
 <a class="reference external" href="https://openreview.net/pdf?id=S1lG7aTnqQ">Get source online</a></p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+“Multivariate Confidence Calibration for Object Detection.”
+The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.</p>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -75,33 +93,61 @@ Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(bins)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, detection, sample_threshold])</p></td>
 <td><p>Constructor.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y[, return_map, return_num_samples])</p></td>
 <td><p>Measure calibration by given predictions with confidence and the according ground truth.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="netcal.metrics.ACE.measure">
-<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#netcal.metrics.ACE.measure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em>, <em class="sig-param">return_map: bool = False</em>, <em class="sig-param">return_num_samples: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[numpy.ndarray, tuple]<a class="headerlink" href="#netcal.metrics.ACE.measure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Measure calibration by given predictions with confidence and the according ground truth.
 Assume binary predictions with y=1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
-1-D for binary classification, 2-D for multi class (softmax).</p></li>
+<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
 <li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
 Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
+<li><p><strong>return_map</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, return map with miscalibration metric separated into all remaining dimension bins.</p></li>
+<li><p><strong>return_num_samples</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, also return the number of samples in each bin.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Average Calibration Error (ACE).</p>
+<dd class="field-even"><p>Always returns miscalibration metric.
+If ‘return_map’ is False, return ACE only (or num_samples map).
+If ‘return_map’ is True, return tuple with ACE and map over all bins.
+If ‘return_num_samples’ is False, ACE only (or ACE map).
+If ‘return_num_samples’ is True, return tuple with ACE and number of samples in each bin.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p>float or tuple of (float, np.ndarray) or tuple of (float, np.ndarray, np.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.ACE.squeeze_generic">
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, list, tuple]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.metrics.ACE.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
+of size 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
+<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Squeezed array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -138,7 +184,7 @@ Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -164,7 +210,7 @@ Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

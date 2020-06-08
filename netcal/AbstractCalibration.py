@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -7,11 +7,14 @@
 
 import abc, os, logging
 import numpy as np
+from typing import Union
 from scipy.special import expit as safe_sigmoid
 from scipy.special import logit as safe_logit
 from scipy.special import softmax as safe_softmax
 from sklearn.base import BaseEstimator, TransformerMixin
+
 from .Decorator import accepts, dimensions
+
 
 try:
     import cPickle as pickle
@@ -26,6 +29,11 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
     Parameters
     ----------
+    detection : bool, default: False
+        If False, the input array 'X' is treated as multi-class confidence input (softmax)
+        with shape (n_samples, [n_classes]).
+        If True, the input array 'X' is treated as a box predictions with several box features (at least
+        box confidence must be present) with shape (n_samples, [n_box_features]).
     independent_probabilities : bool, optional, default: False
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
@@ -45,13 +53,22 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
     # epsilon to prevent division by zero
     epsilon = np.finfo(np.float).eps
 
-    @accepts(bool)
-    def __init__(self, independent_probabilities: bool = False):
+    # number of iterations used for validation
+    # this is for auto-select models in detection mode
+    num_validation_iterations = 5
+
+    @accepts(bool, bool)
+    def __init__(self, detection: bool = False, independent_probabilities: bool = False):
         """
         Create an instance of `AbstractCalibration`.
 
         Parameters
         ----------
+        detection : bool, default: False
+            If False, the input array 'X' is treated as multi-class confidence input (softmax)
+            with shape (n_samples, [n_classes]).
+            If True, the input array 'X' is treated as a box predictions with several box features (at least
+            box confidence must be present) with shape (n_samples, [n_box_features]).
         independent_probabilities : bool, optional, default: False
             Boolean for multi class probabilities.
             If set to True, the probability estimates for each
@@ -60,11 +77,13 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         super().__init__()
         self.logger = logging.getLogger('calibration')
+
+        self.detection = detection
         self.num_classes = None
         self.independent_probabilities = independent_probabilities
 
         # this one is for 'clear' method to restore default
-        self.__default_independent_probabilities = independent_probabilities
+        self._default_independent_probabilities = independent_probabilities
 
     @abc.abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> tuple:
@@ -74,9 +93,10 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         Parameters
         ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
+        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
+            NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
+            On detection, this array must have 2 dimensions with number of additional box features in last dim.
         y : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with ground truth labels.
             Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
@@ -97,39 +117,67 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # invoke clear method on each fit
         self.clear()
 
+        # check number of given samples
+        if X.size <= 0:
+            raise ValueError("No X samples provided.")
+
+        # check number of given samples
+        if y.size <= 0:
+            raise ValueError("No y samples provided.")
+
+        if y.shape[0] != X.shape[0]:
+            raise AttributeError('Number of samples given by \'X\' and \'y\' is not equal.')
+
         # -----------------------------------------------------------------
         # preprocessing of confidence values given with X
 
         # remove single-dimensional entries if present
-        X = np.squeeze(X)
+        X = self.squeeze_generic(X, axes_to_keep=0)
 
         # check shape of input array X and determine number of classes
         # first case: confidence array is 1-D: binary classification problem
+        # this is either detection or classification mode (not important)
         if len(X.shape) == 1:
             self.num_classes = 2
             self.independent_probabilities = False
 
+            # on detection mode, two dimensions are mandatory
+            if self.detection:
+                X = np.reshape(X, (-1, 1))
+
         # second case: confidence array is 2-D: binary or multi class classification problem
         elif len(X.shape) == 2:
 
-            # number of classes is length of second dimension (softmax) but at least 2 classes (binary case)
-            self.num_classes = max(2, X.shape[1])
+            # on detection, we face a binary classification problem
+            if self.detection:
+                self.num_classes = 2
 
-            # if second dimensions is less or equal than 2 and inputs are independent (multiple sigmoid outputs)
-            # treat as binary classification and extract confidence estimates for y=1
-            if X.shape[1] <= 2 and not self.independent_probabilities:
-                X = X[:, -1]
+            # classification
+            else:
+
+                # number of classes is length of second dimension (softmax) but at least 2 classes (binary case)
+                self.num_classes = max(2, X.shape[1])
+
+                # if second dimensions is less or equal than 2 and inputs are independent (multiple sigmoid outputs)
+                # treat as binary classification and extract confidence estimates for y=1
+                if X.shape[1] <= 2 and not self.independent_probabilities:
+                    X = X[:, -1]
         else:
 
             # unknown shape
             raise AttributeError("Unknown array dimension for parameter \'X\' with num dimensions of %d."
                                  % len(X.shape))
 
+        # check if array's values are in interval [0, 1]. This is not allowed for classification
+        # and detection as well
+        if not ((X >= 0).all() and (X <= 1).all()):
+            raise ValueError("Some values of \'X\' are not in range [0, 1].")
+
         # -----------------------------------------------------------------
         # preprocessing of ground truth values given with y
 
         # remove single-dimensional entries if present
-        y = np.squeeze(y)
+        y = self.squeeze_generic(y, axes_to_keep=0)
 
         # check shape of ground truth array y
         # array is 2-D: assume one-hot encoded
@@ -171,9 +219,10 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         Parameters
         ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with uncalibrated confidence estimates.
+        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
+            NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
+            On detection, this array must have 2 dimensions with number of additional box features in last dim.
 
         Returns
         -------
@@ -198,26 +247,26 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # preprocessing of confidence values given with X
 
         # remove single-dimensional entries if present
-        X = np.squeeze(X)
+        X = self.squeeze_generic(X, axes_to_keep=0)
 
         # got only 1-D array but model was fit for more than 2 classes?
         if len(X.shape) == 1:
 
-            if self.num_classes > 2:
+            if self.num_classes > 2 and not self.detection:
                 raise AttributeError("Model was build for %d classes but 1-D confidence array was provided."
                                      % self.num_classes)
 
         # second case: confidence array is 2-D: binary or multi class classification problem
         elif len(X.shape) == 2:
 
-            if X.shape[1] != self.num_classes:
+            if X.shape[1] != self.num_classes and not self.detection:
                 raise AttributeError("Model was build for %d classes but 2-D confidence  array  with %d classes"
                                      " was provided."
                                      % (self.num_classes, X.shape[1]))
 
             # if second dimensions is less or equal than 2 and inputs are independent (multiple sigmoid outputs)
             # treat as binary classification and extract confidence estimates for y=1
-            if X.shape[1] == self.num_classes == 2 and not self.independent_probabilities:
+            if X.shape[1] == self.num_classes == 2 and not self.independent_probabilities and not self.detection:
                 X = X[:, -1]
 
         else:
@@ -234,8 +283,72 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         Clear model parameters.
         """
 
-        self.num_classes = None
-        self.independent_probabilities = self.__default_independent_probabilities
+        self.num_classes = 2 if self.detection else None
+        self.independent_probabilities = self._default_independent_probabilities
+
+    def get_params(self, deep=True):
+        """
+        Get parameters for this estimator.
+
+        Parameters
+        ----------
+        deep : boolean, optional
+            If True, will return the parameters for this estimator and
+            contained subobjects that are estimators.
+
+        Returns
+        -------
+        params : mapping of string to any
+            Parameter names mapped to their values.
+        """
+
+        # get all params of current instance and save as dict
+        params = dict(vars(self))
+
+        # remove logger variable from dict - this is not compatible to pickle
+        del params['logger']
+
+        if deep:
+
+            # needed for all binary methods that are distributed to multi class by one-vs-all
+            if hasattr(self, '_multiclass_instances'):
+                params['_multiclass_instances'] = []
+
+                for i, instance in self._multiclass_instances:
+                    params['_multiclass_instances'].append((i, instance.get_params(deep=True)))
+
+        return params
+
+    def set_params(self, **params) -> 'AbstractCalibration':
+        """
+        Set the parameters of this estimator.
+
+        The method works on simple estimators as well as on nested objects
+        (such as pipelines). The latter have parameters of the form
+        ``<component>__<parameter>`` so that it's possible to update each
+        component of a nested object.
+
+        Returns
+        -------
+        self
+        """
+
+        if '_multiclass_instances' in params:
+            self._multiclass_instances = []
+
+            for label, subparams in params['_multiclass_instances']:
+                instance = self.__class__()
+                instance.set_params(**subparams)
+
+                self._multiclass_instances.append((label, instance))
+
+            # remove key and value from dict to prevent override in super method
+            del params['_multiclass_instances']
+
+        for key, value in params.items():
+            setattr(self, key, value)
+
+        return self
 
     @accepts(str)
     def save_model(self, filename: str):
@@ -253,10 +366,9 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             os.makedirs(dir_path, exist_ok=True)
 
         with open(filename, 'wb') as write_object:
-            pickle.dump(self, write_object, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.get_params(deep=True), write_object, pickle.HIGHEST_PROTOCOL)
 
-    @classmethod
-    def load_model(cls, filename):
+    def load_model(self, filename):
         """
         Load model from saved Pickle instance.
 
@@ -272,9 +384,38 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         """
 
         with open(filename, 'rb') as read_object:
-            new_instance = pickle.load(read_object)
+            params = pickle.load(read_object)
 
-        return new_instance
+        self.set_params(**params)
+        return self
+
+    @classmethod
+    def squeeze_generic(cls, a: np.ndarray, axes_to_keep: Union[int, list, tuple]) -> np.ndarray:
+        """
+        Squeeze input array a but keep axes defined by parameter 'axes_to_keep' even if the dimension is
+        of size 1.
+
+        Parameters
+        ----------
+        a : np.ndarray
+            NumPy array that should be squeezed.
+        axes_to_keep : int or iterable
+            Axes that should be kept even if they have a size of 1.
+
+        Returns
+        -------
+        np.ndarray
+            Squeezed array.
+
+        """
+
+        # if type is int, convert to iterable
+        if type(axes_to_keep) == int:
+            axes_to_keep = (axes_to_keep, )
+
+        # iterate over all axes in a and check if dimension is in 'axes_to_keep' or of size 1
+        out_s = [s for i, s in enumerate(a.shape) if i in axes_to_keep or s != 1]
+        return a.reshape(out_s)
 
     @accepts(np.ndarray, np.ndarray, list, str)
     def _calc_model_scores(self, confidences: np.ndarray, ground_truth: np.ndarray, model_list: list,
@@ -586,7 +727,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         # scale logits by optional parameter 'scale_logits' (cf. Temperature Scaling)
         # afterwards, compute softmax or sigmoid (depends on binary/multi class)
-        if self.num_classes <= 2 or self.independent_probabilities:
+        if self.num_classes <= 2 or self.independent_probabilities or self.detection:
 
             # if array is two dimensional, 2 cases can occur:
             # - 2nd dimension is length 1 - thus, the dimension can be squeezed
@@ -654,7 +795,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             # binary classification problem but got two entries? (probability for 0 and 1 separately)?
             # we only need probability p for Y=1 (probability for 0 is (1-p) )
             if len(confidences.shape) == 2:
-                confidences = np.array(confidences[:, 1])
+                confidences = np.array(confidences[:, -1])
 
             # clip confidences for log - extra clip for negative values necessary due to
             # numerical stability

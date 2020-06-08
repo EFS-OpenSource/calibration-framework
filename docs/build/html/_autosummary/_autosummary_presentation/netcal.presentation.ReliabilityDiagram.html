@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -49,23 +49,49 @@
 <h1>netcal.presentation.ReliabilityDiagram<a class="headerlink" href="#netcal-presentation-reliabilitydiagram" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="netcal.presentation.ReliabilityDiagram">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.presentation.</code><code class="sig-name descname">ReliabilityDiagram</code><span class="sig-paren">(</span><em class="sig-param">bins: int</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.presentation.ReliabilityDiagram" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">netcal.presentation.</code><code class="sig-name descname">ReliabilityDiagram</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">tuple</em>, <em class="sig-param">list] = 10</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">sample_threshold: int = 1</em>, <em class="sig-param">feature_names: list = None</em>, <em class="sig-param">fmin: float = None</em>, <em class="sig-param">fmax: float = None</em>, <em class="sig-param">metric: str = 'ECE'</em>, <em class="sig-param">title_suffix: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.presentation.ReliabilityDiagram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Plot Confidence Histogram and Reliability Diagram to visualize miscalibration.</p>
+<p>Plot Confidence Histogram and Reliability Diagram to visualize miscalibration.
+On classification, plot the gaps between average confidence and observed accuracy bin-wise over the confidence
+space <a class="footnote-reference brackets" href="#id4" id="id1">1</a>, <a class="footnote-reference brackets" href="#id5" id="id2">2</a>.
+On detection, plot the miscalibration w.r.t. the additional regression information provided (1-D or 2-D) <a class="footnote-reference brackets" href="#id7" id="id3">3</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bins</strong> (<em>int</em>) – Number of bins. The output space is partitioned into M equally sized bins.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the ACE/ECE/MCE.
+On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
+<li><p><strong>fmin</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Minimum value for scale color.</p></li>
+<li><p><strong>fmax</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Maximum value for scale color.</p></li>
+<li><p><strong>metric</strong> (<em>str</em><em>, </em><em>default: 'ECE'</em>) – Metric to measure miscalibration. Might be either ‘ECE’, ‘ACE’ or ‘MCE’.</p></li>
+<li><p><strong>title_suffix</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Suffix for plot title.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
 “On Calibration of Modern Neural Networks.”
-arXiv (abs/1706.04599), 2017.
+Proceedings of the 34th International Conference on Machine Learning-Volume 70. JMLR. org, 2017.
 <a class="reference external" href="https://arxiv.org/abs/1706.04599">Get source online</a></p>
-<p>A. Niculescu-Mizil and R. Caruana:
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>A. Niculescu-Mizil and R. Caruana:
 “Predicting good probabilities with supervised learning.”
 Proceedings of the 22nd International Conference on Machine Learning, 2005, pp. 625–632.
 <a class="reference external" href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf">Get source online</a></p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+“Multivariate Confidence Calibration for Object Detection.”
+The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.</p>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -73,26 +99,55 @@ Proceedings of the 22nd International Conference on Machine Learning, 2005, pp. 
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(bins)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, detection, …])</p></td>
 <td><p>Constructor.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>(X, y[, title_suffix])</p></td>
-<td><p>Plot confidence histogram and reliability diagram to visualize miscalibration.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>(X, y[, batched, filename])</p></td>
+<td><p>Reliability diagram to visualize miscalibration.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="netcal.presentation.ReliabilityDiagram.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em>, <em class="sig-param">title_suffix: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.presentation.ReliabilityDiagram.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot confidence histogram and reliability diagram to visualize miscalibration.</p>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">X: Union[tuple, list, numpy.ndarray], y: Union[tuple, list, numpy.ndarray], batched: bool = False, filename: str = None, **save_args</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.presentation.ReliabilityDiagram.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reliability diagram to visualize miscalibration. This could be either in classical way for confidences only
+or w.r.t. additional properties (like x/y-coordinates of detection boxes, width, height, etc.). The additional
+properties get binned. Afterwards, the ECE will be calculated for each bin. This is visualized as (multiple)
+2-D plots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
-1-D for binary classification, 2-D for multi class (softmax).</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>,</em><em>)</em>) – NumPy 1-D array with ground truth labels.</p></li>
-<li><p><strong>title_suffix</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Suffix for plot title.</p></li>
+<li><p><strong>X</strong> (<em>iterable of np.ndarray</em><em>, or </em><em>np.ndarray of shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+If this is an iterable over multiple instances of np.ndarray and parameter batched=True,
+interpret this parameter as multiple predictions that should be averaged.
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
+<li><p><strong>y</strong> (<em>iterable of np.ndarray with same length as X</em><em> or </em><em>np.ndarray of shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
+Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+If iterable over multiple instances of np.ndarray and parameter batched=True,
+interpret this parameter as multiple predictions that should be averaged.</p></li>
+<li><p><strong>batched</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Multiple predictions can be evaluated at once (e.g. cross-validation examinations) using batched-mode.
+All predictions given by X and y are separately evaluated and their results are averaged afterwards
+for visualization.</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Optional filename to save the plotted figure.</p></li>
+<li><p><strong>**save_args</strong> (<em>args</em>) – Additional arguments passed to ‘matplotlib.pyplot.Figure.savefig’ function.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.pyplot.Figure</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – <ul class="simple">
+<li><p>If parameter metric is not string or string is not ‘ACE’, ‘ECE’ or ‘MCE’
+    - If parameter ‘feature_names’ is set but length does not fit to second dim of X
+    - If no ground truth samples are provided
+    - If length of bins parameter does not match the number of features given by X
+    - If more than 3 feature dimensions (including confidence) are provided</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -129,7 +184,7 @@ Proceedings of the 22nd International Conference on Machine Learning, 2005, pp. 
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -155,7 +210,7 @@ Proceedings of the 22nd International Conference on Machine Learning, 2005, pp. 
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

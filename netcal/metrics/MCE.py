@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,13 +6,16 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
-from netcal import accepts, dimensions
+from typing import Union
+from .Miscalibration import _Miscalibration
+from netcal import dimensions
 
 
-class MCE(object):
+class MCE(_Miscalibration):
     """
-    Metric for Maximum Calibration Error (MCE). This metrics measures the
-    maximum difference between accuracy and confidence over all bins
+    Maximum Calibration Error (MCE).
+    This metric is used on classification [1]_ or as Detection Maximum calibration error (D-MCE) on
+    object detection [2]_. This metrics measures the maximum difference between accuracy and confidence over all bins
     by grouping all samples into :math:`K` bins and calculating
 
     .. math::
@@ -23,92 +26,53 @@ class MCE(object):
 
     Parameters
     ----------
-    bins : int
-        Number of bins. The output space is partitioned into M equally sized bins.
+    bins : int or iterable, default: 10
+        Number of bins used by the Histogram Binning.
+        On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = ... = bins).
+        If iterable, use different amount of bins for each dimension (nx1, nx2, ... = bins).
+    detection : bool, default: False
+        If False, the input array 'X' is treated as multi-class confidence input (softmax)
+        with shape (n_samples, [n_classes]).
+        If True, the input array 'X' is treated as a box predictions with several box features (at least
+        box confidence must be present) with shape (n_samples, [n_box_features]).
 
     References
     ----------
-    Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
-    "Obtaining well calibrated probabilities using bayesian binning."
-    Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-    `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+    .. [1] Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
+       "Obtaining well calibrated probabilities using bayesian binning."
+       Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
+       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+    .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+       "Multivariate Confidence Calibration for Object Detection."
+       The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.
     """
 
-    @accepts(int)
-    def __init__(self, bins: int):
+    @dimensions((1, 2), (1, 2), None, None)
+    def measure(self, X: np.ndarray, y: np.ndarray,
+                return_map: bool = False, return_num_samples: bool = False) -> Union[np.ndarray, tuple]:
         """
-        Constructor.
-
         Parameters
         ----------
-        bins : int
-            Number of bins. The output space is partitioned into M equally sized bins.
-        """
-        self.bins = bins
-
-    @dimensions((1, 2), (1, 2))
-    def measure(self, X: np.ndarray, y: np.ndarray) -> float:
-        """
-        Measure calibration by given predictions with confidence and the according ground truth.
-        Assume binary predictions with y=1.
-
-        Parameters
-        ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
+        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
+            NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
-        y : np.ndarray, shape=(n_samples,)
-            NumPy 1-D array with ground truth labels.
+            On detection, this array must have 2 dimensions with number of additional box features in last dim.
+        y : np.ndarray, shape=(n_samples, [n_classes])
+            NumPy array with ground truth labels.
+            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+        return_map: bool, optional, default: False
+            If True, return map with miscalibration metric separated into all remaining dimension bins.
+        return_num_samples : bool, optional, default: False
+            If True, also return the number of samples in each bin.
 
         Returns
         -------
-        float
-            Maximum Calibration Error (MCE).
+        float or tuple of (float, np.ndarray) or tuple of (float, np.ndarray, np.ndarray)
+            Always returns miscalibration metric.
+            If 'return_map' is False, return MCE only (or num_samples map).
+            If 'return_map' is True, return tuple with MCE and map over all bins.
+            If 'return_num_samples' is False, MCE only (or MCE map).
+            If 'return_num_samples' is True, return tuple with MCE and number of samples in each bin.
         """
 
-        # remove single-dimensional entries if present
-        X = np.squeeze(X)
-        y = np.squeeze(y)
-
-        if y.size <= 0:
-            raise ValueError("No samples provided.")
-        elif len(y.shape) == 2:
-            if y.shape[1] <= 2:
-                y = y[:, -1]
-
-        if len(X.shape) == 2:
-            if X.shape[1] <= 2:
-                prediction = np.ones(X.shape[0])
-                X = X[:, -1]
-            else:
-                prediction = np.argmax(X, axis=1)
-                X = np.max(X, axis=1)
-        else:
-            prediction = np.ones_like(X)
-
-        # compute where prediction matches ground truth
-        matched = np.array(prediction == y)
-
-        # create bin bounds
-        bin_boundaries = np.linspace(0.0, 1.0, self.bins + 1)
-
-        # now calculate bin indices
-        # this function gives the index for the upper bound of the according bin
-        # for each sample. Thus, decrease by 1 to get the bin index
-        current_indices = np.digitize(x=X, bins=bin_boundaries, right=True) - 1
-
-        # if an index is out of bounds (e.g. 0), sort into first bin
-        current_indices[current_indices == -1] = 0
-        current_indices[current_indices == self.bins] = self.bins - 1
-
-        mce = 0.0
-
-        # mean accuracy is new confidence in each bin
-        for bin in range(self.bins):
-            bin_confidence = X[current_indices == bin]
-            bin_matched = matched[current_indices == bin]
-
-            if bin_confidence.size > 0:
-                mce = max(np.abs(np.mean(bin_matched) - np.mean(bin_confidence)), mce)
-
-        return mce
+        return self._measure(X=X, y=y, metric='mce', return_map=return_map, return_num_samples=return_num_samples)

@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="netcal.scaling.TemperatureScaling" href="netcal.scaling.TemperatureScaling.html" />
+    <link rel="next" title="netcal.scaling.LogisticCalibrationDependent" href="netcal.scaling.LogisticCalibrationDependent.html" />
     <link rel="prev" title="netcal.scaling" href="../netcal.scaling.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="netcal.scaling.TemperatureScaling.html" title="netcal.scaling.TemperatureScaling"
+          <a href="netcal.scaling.LogisticCalibrationDependent.html" title="netcal.scaling.LogisticCalibrationDependent"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../netcal.scaling.html" title="netcal.scaling"
@@ -49,20 +49,54 @@
 <h1>netcal.scaling.LogisticCalibration<a class="headerlink" href="#netcal-scaling-logisticcalibration" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="netcal.scaling.LogisticCalibration">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.scaling.</code><code class="sig-name descname">LogisticCalibration</code><span class="sig-paren">(</span><em class="sig-param">temperature_only: bool = False</em>, <em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">netcal.scaling.</code><code class="sig-name descname">LogisticCalibration</code><span class="sig-paren">(</span><em class="sig-param">temperature_only: bool = False</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.AbstractCalibration.AbstractCalibration</span></code></p>
-<p>Perform Logistic Calibration scaling/Platt scaling to logits of NN.
-The calibrated probability <span class="math notranslate nohighlight">\(\hat{q}\)</span> is computed by</p>
+<p>On classification, apply the logistic calibration method aka Platt scaling to obtain a
+calibration mapping. This method is originally proposed by <a class="footnote-reference brackets" href="#id7" id="id1">1</a>.
+For the multiclass case, we use the Vector scaling proposed in <a class="footnote-reference brackets" href="#id8" id="id2">2</a>.
+On detection mode, this calibration method uses multiple independent normal distributions to obtain a
+calibration mapping by means of the confidence as well as additional features <a class="footnote-reference brackets" href="#id10" id="id3">3</a>. This calibration scheme
+assumes independence between all variables.</p>
+<p>On detection, it is necessary to provide all data in input parameter <code class="docutils literal notranslate"><span class="pre">X</span></code> as an NumPy array
+of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_features)</span></code>,
+whereas the confidence must be the first feature given in the input array. The ground-truth samples <code class="docutils literal notranslate"><span class="pre">y</span></code>
+must be an array of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,)</span></code> consisting of binary labels <span class="math notranslate nohighlight">\(y \in \{0, 1\}\)</span>. Those
+labels indicate if the according sample has matched a ground truth box <span class="math notranslate nohighlight">\(\text{m}=1\)</span> or is a false
+prediction <span class="math notranslate nohighlight">\(\text{m}=0\)</span>.</p>
+<p><strong>Mathematical background:</strong> For confidence calibration in classification tasks, a
+confidence mapping <span class="math notranslate nohighlight">\(g\)</span> is applied on top of a miscalibrated scoring classifier <span class="math notranslate nohighlight">\(\hat{p} = h(x)\)</span> to
+deliver a calibrated confidence score <span class="math notranslate nohighlight">\(\hat{q} = g(h(x))\)</span>.</p>
+<p>For detection calibration, we can also use the additional box regression output which we denote as
+<span class="math notranslate nohighlight">\(\hat{r} \in [0, 1]^J\)</span> with <span class="math notranslate nohighlight">\(J\)</span> as the number of dimensions used for the box encoding (e.g.
+<span class="math notranslate nohighlight">\(J=4\)</span> for x position, y position, width and height).
+Therefore, the calibration map is not only a function of the confidence score, but also of <span class="math notranslate nohighlight">\(\hat{r}\)</span>.
+To define a general calibration map for binary problems, we use the logistic function and the combined
+input <span class="math notranslate nohighlight">\(s = (\hat{p}, \hat{r})\)</span> of size K by</p>
 <div class="math notranslate nohighlight">
-\[\hat{q} = \sigma_{\text{SM}} (Wz +b)\]</div>
-<p>with <span class="math notranslate nohighlight">\(\sigma_{\text{SM}}\)</span> as the softmax operator (or the sigmoid alternatively),
-<span class="math notranslate nohighlight">\(z\)</span> as the logits, <span class="math notranslate nohighlight">\(W\)</span> as the weight matrix and <span class="math notranslate nohighlight">\(b\)</span> as the bias estimated by logistic regression.
-This leds to calibrated confidence estimates. If ‘temperature_only’ is true, recover temperature scaling
-(no bias and one single parameter instead of a weight matrix used for all classes).</p>
+\[g(s) = \frac{1}{1 + \exp(-z(s))} ,\]</div>
+<p>According to <a class="footnote-reference brackets" href="#id7" id="id4">1</a>, we can interpret the logit <span class="math notranslate nohighlight">\(z\)</span> as the logarithm of the posterior odds</p>
+<div class="math notranslate nohighlight">
+\[z(s) = \log \frac{f(\text{m}=1 | s)}{f(\text{m}=0 | s)} \approx
+\log \frac{f(s | \text{m}=1)}{f(s | \text{m}=1)} = \ell r(s)\]</div>
+<p>If we assume independence of all variables given in <span class="math notranslate nohighlight">\(s\)</span>, we can use multiple univariate probability
+density distributions with the same variance to obtain a calibration mapping. Using this formulation, we can
+simply extend the scaling factor (from classification logistic calibration) to a scaling
+vector <span class="math notranslate nohighlight">\(w \in \mathbb{R}^K\)</span>.
+However, instead of using the uncalibrated confidence estimate <span class="math notranslate nohighlight">\(\hat{p}\)</span>, we use the logit of the
+network as part of <span class="math notranslate nohighlight">\(s\)</span> to be conform with the original formulation in <a class="footnote-reference brackets" href="#id7" id="id5">1</a> and <a class="footnote-reference brackets" href="#id8" id="id6">2</a>. Thus,
+the log-likelihood ratio can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\ell r(s) = s^T w + c,\]</div>
+<p>with bias <span class="math notranslate nohighlight">\(c \in \mathbb{R}\)</span>.
+We utilize standard optimization methods to determine the calibration mapping <span class="math notranslate nohighlight">\(g(s)\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>temperature_only</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If True, use Temperature Scaling. If False, use standard Logistic Calibration/Platt Scaling.</p></li>
+<li><p><strong>temperature_only</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If True, use Temperature Scaling instead of Platt/Vector Scaling.</p></li>
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
 <li><p><strong>independent_probabilities</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Boolean for multi class probabilities.
 If set to True, the probability estimates for each
 class are treated as independent of each other (sigmoid).</p></li>
@@ -70,14 +104,25 @@ class are treated as independent of each other (sigmoid).</p></li>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>Platt, John:
+<dl class="footnote brackets">
+<dt class="label" id="id7"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id4">2</a>,<a href="#id5">3</a>)</span></dt>
+<dd><p>Platt, John:
 “Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods.”
-Advances in large margin classifiers, 10(3): 61–74, 1999.
+Advances in large margin classifiers 10.3: 61-74, 1999
 <a class="reference external" href="https://www.researchgate.net/profile/John_Platt/publication/2594015_Probabilistic_Outputs_for_Support_Vector_Machines_and_Comparisons_to_Regularized_Likelihood_Methods/links/004635154cff5262d6000000.pdf">Get source online</a></p>
-<p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
+</dd>
+<dt class="label" id="id8"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id6">2</a>)</span></dt>
+<dd><p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
 “On Calibration of Modern Neural Networks.”
-arXiv (abs/1706.04599), 2017.
+Proceedings of the 34th International Conference on Machine Learning-Volume 70. JMLR. org, 2017.
 <a class="reference external" href="https://arxiv.org/abs/1706.04599">Get source online</a></p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+“Multivariate Confidence Calibration for Object Detection.”
+The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.</p>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -85,14 +130,14 @@ arXiv (abs/1706.04599), 2017.
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([temperature_only, …])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([temperature_only, detection, …])</p></td>
 <td><p>Constructor</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
 <td><p>Clear model parameters.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y)</p></td>
-<td><p>Build Logistic Calibration model.</p></td>
+<td><p>Build logitic calibration model.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[, y])</p></td>
 <td><p>Fit to data, then transform it.</p></td>
@@ -123,12 +168,13 @@ arXiv (abs/1706.04599), 2017.
 <dl class="method">
 <dt id="netcal.scaling.LogisticCalibration.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; LogisticCalibration<a class="headerlink" href="#netcal.scaling.LogisticCalibration.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build Logistic Calibration model.</p>
+<dd><p>Build logitic calibration model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
-1-D for binary classification, 2-D for multi class (softmax).</p></li>
+<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
 <li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
 Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
 </ul>
@@ -153,6 +199,7 @@ and returns a transformed version of X.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>, </em><em>n_features</em><em>]</em>) – Training set.</p></li>
 <li><p><strong>y</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>]</em>) – Target values.</p></li>
+<li><p><strong>**fit_params</strong> (<em>dict</em>) – Additional fit parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -184,7 +231,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="netcal.scaling.LogisticCalibration.load_model">
-<em class="property">classmethod </em><code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibration.load_model" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibration.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load model from saved Pickle instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -212,7 +259,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="netcal.scaling.LogisticCalibration.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibration.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; netcal.AbstractCalibration.AbstractCalibration<a class="headerlink" href="#netcal.scaling.LogisticCalibration.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -229,14 +276,36 @@ component of a nested object.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="netcal.scaling.LogisticCalibration.squeeze_generic">
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, list, tuple]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.scaling.LogisticCalibration.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
+of size 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
+<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Squeezed array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="netcal.scaling.LogisticCalibration.transform">
 <code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.scaling.LogisticCalibration.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>After model calibration, this function is used to get calibrated outputs of uncalibrated
 confidence estimates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with uncalibrated confidence estimates.
-1-D for binary classification, 2-D for multi class (softmax).</p>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>NumPy array with calibrated confidence estimates.
@@ -262,8 +331,8 @@ confidence estimates.</p>
   <p class="topless"><a href="../netcal.scaling.html"
                         title="previous chapter">netcal.scaling</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="netcal.scaling.TemperatureScaling.html"
-                        title="next chapter">netcal.scaling.TemperatureScaling</a></p>
+  <p class="topless"><a href="netcal.scaling.LogisticCalibrationDependent.html"
+                        title="next chapter">netcal.scaling.LogisticCalibrationDependent</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -280,7 +349,7 @@ confidence estimates.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -295,7 +364,7 @@ confidence estimates.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="netcal.scaling.TemperatureScaling.html" title="netcal.scaling.TemperatureScaling"
+          <a href="netcal.scaling.LogisticCalibrationDependent.html" title="netcal.scaling.LogisticCalibrationDependent"
              >next</a> |</li>
         <li class="right" >
           <a href="../netcal.scaling.html" title="netcal.scaling"
@@ -306,7 +375,7 @@ confidence estimates.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

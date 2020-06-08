@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -12,12 +12,17 @@ from sklearn.isotonic import IsotonicRegression as sklearn_iso
 
 class IsotonicRegression(AbstractCalibration):
     """
-    Isotonic Regression method. This method is similar to :class:`HistogramBinning` but with dynamic bin sizes
+    Isotonic Regression method. This method is originally proposed by [1]_. This method is similar to :class:`HistogramBinning` but with dynamic bin sizes
     and boundaries. A piecewise constant function gets fit to ground truth labels sorted by
     given confidence estimates.
 
     Parameters
     ----------
+    detection : bool, default: False
+        If False, the input array 'X' is treated as multi-class confidence input (softmax)
+        with shape (n_samples, [n_classes]).
+        If True, the input array 'X' is treated as a box predictions with several box features (at least
+        box confidence must be present) with shape (n_samples, [n_box_features]).
     independent_probabilities : bool, optional, default: False
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
@@ -25,26 +30,32 @@ class IsotonicRegression(AbstractCalibration):
 
     References
     ----------
-    Zadrozny, Bianca and Elkan, Charles:
-    "Transforming classifier scores into accurate multiclass probability estimates."
-    In KDD, pp. 694–699, 2002.
-    `Get source online <https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf>`_
+    .. [1] Zadrozny, Bianca and Elkan, Charles:
+       "Transforming classifier scores into accurate multiclass probability estimates."
+       In KDD, pp. 694–699, 2002.
+       `Get source online <https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf>`_
     """
 
-    @accepts(bool)
-    def __init__(self, independent_probabilities: bool = False):
+    @accepts(bool, bool)
+    def __init__(self, detection: bool = False, independent_probabilities: bool = False):
         """
         Create an instance of `IsotonicRegression`.
 
         Parameters
         ----------
+        detection : bool, default: False
+            If False, the input array 'X' is treated as multi-class confidence input (softmax)
+            with shape (n_samples, [n_classes]).
+            If True, the input array 'X' is treated as a box predictions with several box features (at least
+            box confidence must be present) with shape (n_samples, [n_box_features]).
+
         independent_probabilities : bool, optional, default: False
             boolean for multi class probabilities.
             If set to True, the probability estimates for each
             class are treated as independent of each other (sigmoid).
         """
 
-        super().__init__(independent_probabilities)
+        super().__init__(detection=detection, independent_probabilities=independent_probabilities)
         self._multiclass_instances = []
         self._iso = None
 
@@ -68,9 +79,10 @@ class IsotonicRegression(AbstractCalibration):
 
         Parameters
         ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
+        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
+            NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
+            On detection, this array must have 2 dimensions with number of additional box features in last dim.
         y : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with ground truth labels.
             Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
@@ -80,6 +92,15 @@ class IsotonicRegression(AbstractCalibration):
         IsotonicRegression
             Instance of class :class:`IsotonicRegression`.
         """
+
+        # detection mode is not supported natively
+        if self.detection:
+            self.logger.warning("Detection mode is not supported natively by IsotonicRegression method. "
+                                "This will discard all additional box information and only keep confidence scores.")
+
+            # if 2d, keep only confidence scores and preserve 2d structure
+            if len(X.shape) == 2:
+                X = np.expand_dims(X[:, 0], axis=1)
 
         X, y = super().fit(X, y)
 
@@ -121,6 +142,12 @@ class IsotonicRegression(AbstractCalibration):
             NumPy array with calibrated confidence estimates.
             1-D for binary classification, 2-D for multi class (softmax).
         """
+        # detection mode is not supported natively
+        if self.detection:
+
+            # if 2d, keep only confidence scores and preserve 2d structure
+            if len(X.shape) == 2:
+                X = np.expand_dims(X[:, 0], axis=1)
 
         X = super().transform(X)
 

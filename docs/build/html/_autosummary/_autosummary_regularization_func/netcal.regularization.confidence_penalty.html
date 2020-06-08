@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +50,7 @@
 <dl class="function">
 <dt id="netcal.regularization.confidence_penalty">
 <code class="sig-prename descclassname">netcal.regularization.</code><code class="sig-name descname">confidence_penalty</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">weight: float</em>, <em class="sig-param">threshold: float = None</em>, <em class="sig-param">base: float = 2.718281828459045</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#netcal.regularization.confidence_penalty" title="Permalink to this definition">¶</a></dt>
-<dd><p>Confidence Penalty Regularization. This penalty term can be applied to any loss function as a regularizer.</p>
+<dd><p>Confidence Penalty Regularization. This penalty term can be applied to any loss function as a regularizer <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -69,10 +69,14 @@
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>G. Pereyra, G. Tucker, J. Chorowski, Lukasz Kaiser, and G. Hinton:
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>G. Pereyra, G. Tucker, J. Chorowski, Lukasz Kaiser, and G. Hinton:
 “Regularizing neural networks by penalizing confident output distributions.”
 CoRR, 2017.
 <a class="reference external" href="https://arxiv.org/pdf/1701.06548">Get source online</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -105,7 +109,7 @@ CoRR, 2017.
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -131,7 +135,7 @@ CoRR, 2017.
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
