@@ -20,6 +20,7 @@ netcal.scaling.LogisticCalibration
       ~LogisticCalibration.load_model
       ~LogisticCalibration.save_model
       ~LogisticCalibration.set_params
+      ~LogisticCalibration.squeeze_generic
       ~LogisticCalibration.transform
    
    

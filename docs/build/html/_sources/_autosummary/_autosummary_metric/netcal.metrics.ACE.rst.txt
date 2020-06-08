@@ -14,5 +14,6 @@ netcal.metrics.ACE
    
       ~ACE.__init__
       ~ACE.measure
+      ~ACE.squeeze_generic
    
    

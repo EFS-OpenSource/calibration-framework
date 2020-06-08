@@ -20,6 +20,7 @@ netcal.binning.ENIR
       ~ENIR.load_model
       ~ENIR.save_model
       ~ENIR.set_params
+      ~ENIR.squeeze_generic
       ~ENIR.transform
    
    

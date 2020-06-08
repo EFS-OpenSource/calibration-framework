@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,16 +18,16 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'calibration-framework'
-copyright = '2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany'
+copyright = '2019-2020, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany'
 author = 'Fabian Kueppers'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = '1.1'
 
 
 # -- General configuration ---------------------------------------------------

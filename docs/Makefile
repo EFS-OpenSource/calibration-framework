@@ -20,5 +20,9 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 github:
+	unset PYTHONPATH
+	#export PYTHONPATH="$( pwd )/../"
+	export PYTHONPATH="$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/../"
+	@echo ${PYTHONPATH}
 	@make html
 	@cp -ra build/html .

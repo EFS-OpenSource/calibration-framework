@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.scaling.TemperatureScaling &#8212; calibration-framework 1.0 documentation</title>
+    <title>netcal.scaling.TemperatureScaling &#8212; calibration-framework 1.1 documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="netcal.scaling.LogisticCalibrationDependent.html" title="netcal.scaling.LogisticCalibrationDependent"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../netcal.scaling.html" accesskey="U">netcal.scaling</a> &#187;</li> 
       </ul>
     </div>  
@@ -117,7 +117,10 @@ The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops,
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
+<td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
 <td><p>After model calibration, this function is used to get calibrated outputs of uncalibrated confidence estimates.</p></td>
 </tr>
 </tbody>
@@ -338,12 +341,12 @@ On detection, this array must have 2 dimensions with number of additional box fe
         <li class="right" >
           <a href="netcal.scaling.LogisticCalibrationDependent.html" title="netcal.scaling.LogisticCalibrationDependent"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../netcal.scaling.html" >netcal.scaling</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
+        &#169; Copyright 2019-2020, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
