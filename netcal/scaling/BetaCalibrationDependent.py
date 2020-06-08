@@ -1,5 +1,5 @@
 """
-Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
