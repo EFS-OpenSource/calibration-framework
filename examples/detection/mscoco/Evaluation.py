@@ -5,55 +5,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-"""
-This file can be used to calibrate predictions made on the MS COCO dataset.
-
-IMPORTANT: to use this example, you need to install the Detectron2 framework:
-https://github.com/facebookresearch/detectron2
-"""
 
 import multiprocessing
 import numpy as np
 from sklearn.model_selection import train_test_split
-from detectron2.data import DatasetCatalog
-from detectron2.data.datasets import register_coco_instances
-from pycocotools.coco import COCO
 
 from netcal.scaling import BetaCalibration, LogisticCalibration, BetaCalibrationDependent, LogisticCalibrationDependent
 from netcal.binning import HistogramBinning
 
 
-def register_coco_dataset():
-    """
-    Register COCO dataset in detectron2 framework.
-    """
-
-    # root where images are stored
-    root = "/data/Datenbanken/COCO/val2017"
-
-    # annotations file
-    annFile = "/data/Datenbanken/COCO/annotations/instances_val2017.json"
-
-    register_coco_instances("coco_val", {}, annFile, root)
-
-
-def read_predictions(filename: str, commercial: bool = False) -> tuple:
-    """
-    Read npz-files with predictions inferred by a detection model.
-
-    Parameters
-    ----------
-    filename : str
-        Filename of the predictions (file in NumPy format).
-    commercial : bool, default: False
-        If True, omit all images that are under non-commercial license.
-        If False, use all images given in the COCO dataset
-
-    Returns
-    -------
-    tuple of length 7
-        Tuple of lists with content of prediction file.
-    """
+def read_predictions(filename: str) -> tuple:
+    """ Read npz-files with predictions inferred by a detection model. """
 
     with open(filename, "rb") as open_file:
         npz = np.load(open_file, allow_pickle=True)
@@ -68,58 +30,8 @@ def read_predictions(filename: str, commercial: bool = False) -> tuple:
         all_scores = npz['scores']
         all_matched = npz['matched']
 
-    # return as it is if not commercial
-    if not commercial:
-        return all_filenames, all_classes, all_gt_classes, all_boxes, all_gt_boxes, all_scores, all_matched
+    return all_filenames, all_classes, all_gt_classes, all_boxes, all_gt_boxes, all_scores, all_matched
 
-    # filter out all images with non-commercial license
-    else:
-
-        # register dataset in detectron2 framework
-        register_coco_dataset()
-        dataset_dicts = DatasetCatalog.get("coco_val")
-
-        # it is also necessary to use the COCO API from pycocotools
-        # because the license information is not available in detectron2 framework
-        coco_api = COCO("/data/Datenbanken/COCO/annotations/instances_val2017.json")
-
-        # new lists with return values
-        filenames = []
-        classes = []
-        gt_classes = []
-        boxes = []
-        gt_boxes = []
-        scores = []
-        matched = []
-
-        # iterate over all images
-        for i, filename in enumerate(all_filenames):
-
-            # get according dictionray entry for current image and extract license by image ID
-            # using the COCO API of pycocotools
-            d = next(d for d in dataset_dicts if d['file_name'][d['file_name'].rfind("/")+1:] == filename)
-            license = coco_api.loadImgs(d['image_id'])[0]['license']
-
-            # filter out all license that are for non-commercial use only
-            if license not in [4, 5, 6, 7, 8]:
-                continue
-
-            filenames.append(filename)
-            classes.append(all_classes[i])
-            gt_classes.append(all_gt_classes[i])
-            boxes.append(boxes[i])
-            gt_boxes.append(all_gt_boxes[i])
-            scores.append(scores[i])
-            matched.append(matched[i])
-
-        classes = np.array(classes)
-        gt_classes = np.array(gt_classes)
-        boxes = np.array(boxes)
-        gt_boxes = np.array(gt_boxes)
-        scores = np.array(scores)
-        matched = np.array(matched)
-
-        return filenames, classes, gt_classes, boxes, gt_boxes, scores, matched
 
 
 def merge_box_data(box_data):
@@ -205,9 +117,7 @@ def eval_method(iteration: int, method_short: str, num_combinations: int,
 
 
 def examine_calibration_combinations(all_matched: np.ndarray, all_boxes: np.ndarray, all_scores: np.ndarray):
-    """
-    Core examination routine for our calibration methods for object detection.
-    """
+    """ Core examination routine for our calibration methods for object detection. """
 
     # fixed seeds to reproduce the results
     seeds = [63091863, 61530583, 213073, 3588059, 38316496, 34393458,
@@ -303,10 +213,10 @@ def examine_calibration_combinations(all_matched: np.ndarray, all_boxes: np.ndar
 
 if __name__ == '__main__':
 
-    network = "ssd-resnet-50-v1-iou-0.60"
+    network = "faster-rcnn-resnet-50-iou-0.60"
     filename = "records/%s.npz" % network
+    
     box_data = read_predictions(filename)
-
     all_boxes, all_scores, all_matched = merge_box_data(box_data)
 
     examine_calibration_combinations(all_matched, all_boxes, all_scores)
