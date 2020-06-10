@@ -37,7 +37,7 @@ include into the framework, include this class as the base class.
 """
 
 name = 'calibration'
-__version__ = '1.1'
+__version__ = '1.1.1'
 
 from .AbstractCalibration import AbstractCalibration
 from .Decorator import accepts, dimensions, global_accepts, global_dimensions
