@@ -20,6 +20,7 @@ netcal.scaling.TemperatureScaling
       ~TemperatureScaling.load_model
       ~TemperatureScaling.save_model
       ~TemperatureScaling.set_params
+      ~TemperatureScaling.squeeze_generic
       ~TemperatureScaling.transform
    
    

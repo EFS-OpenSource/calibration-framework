@@ -20,6 +20,7 @@ netcal.binning.IsotonicRegression
       ~IsotonicRegression.load_model
       ~IsotonicRegression.save_model
       ~IsotonicRegression.set_params
+      ~IsotonicRegression.squeeze_generic
       ~IsotonicRegression.transform
    
    

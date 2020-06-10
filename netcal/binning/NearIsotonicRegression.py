@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -12,7 +12,7 @@ from netcal import AbstractCalibration, dimensions, accepts
 
 class NearIsotonicRegression(AbstractCalibration):
     """
-    Near Isotonic Regression Calibration method (commonly used by :class:`ENIR`).
+    Near Isotonic Regression Calibration method. This method is originally proposed by [1]_ (commonly used by :class:`ENIR`).
 
     Parameters
     ----------
@@ -25,15 +25,15 @@ class NearIsotonicRegression(AbstractCalibration):
 
     References
     ----------
-    Ryan J Tibshirani, Holger Hoefling, and Robert Tibshirani:
-    "Nearly-isotonic regression."
-    Technometrics, 53(1):54–61, 2011.
-    `Get source online <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.365.7054&rep=rep1&type=pdf>`
+    .. [1] Ryan J Tibshirani, Holger Hoefling, and Robert Tibshirani:
+       "Nearly-isotonic regression."
+       Technometrics, 53(1):54–61, 2011.
+       `Get source online <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.365.7054&rep=rep1&type=pdf>`
 
-    Naeini, Mahdi Pakdaman, and Gregory F. Cooper:
-    "Binary classifier calibration using an ensemble of near isotonic regression models."
-    2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.
-    `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`
+    .. [2] Naeini, Mahdi Pakdaman, and Gregory F. Cooper:
+       "Binary classifier calibration using an ensemble of near isotonic regression models."
+       2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.
+       `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`
     """
 
     @accepts(bool, bool)
@@ -50,7 +50,7 @@ class NearIsotonicRegression(AbstractCalibration):
             If set to True, the probability estimates for each
             class are treated as independent of each other (sigmoid).
         """
-        super().__init__(independent_probabilities)
+        super().__init__(detection=False, independent_probabilities=independent_probabilities)
 
         self._lambda = 0.0
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -8,7 +8,8 @@
 from netcal.binning import HistogramBinning, IsotonicRegression, ENIR, BBQ
 from netcal.scaling import LogisticCalibration, TemperatureScaling, BetaCalibration
 
-from examples.utils import single_example, cross_validation_5_2
+from utils import single_example, cross_validation_5_2
+from matplotlib import pyplot as plt
 
 
 def example_calibration(datafile: str) -> int:
@@ -107,11 +108,27 @@ def cross_validation(datafile: str) -> int:
 if __name__ == '__main__':
 
     # example on CIFAR-10 with LeNet-5 and WideResnet-16-4
-    lenet = "lenet-5-cifar-10.npz"
-    wideresnet = "wideresnet-16-4-cifar-10.npz"
+    lenet = "records/cifar10/lenet-5-cifar-10.npz"
+    wideresnet = "records/cifar10/wideresnet-16-4-cifar-10.npz"
 
-    example_calibration(lenet)
-    cross_validation(lenet)
+    cifar10 = [lenet, wideresnet]
 
-    example_calibration(wideresnet)
-    cross_validation(wideresnet)
+    # for each model, perform a single example and a 5x2 cross validation
+    for model in cifar10:
+        example_calibration(model)
+        cross_validation(model)
+
+
+    # example on CIFAR-100 with LeNet-5, DenseNet-BC-100 and WideResnet-16-4
+    lenet = "records/cifar100/lenet-5-cifar-100.npz"
+    densenet = "records/cifar100/densenet-bc-100-cifar-100.npz"
+    wideresnet = "records/cifar100/wideresnet-16-4-cifar-100.npz"
+
+    cifar100 = [lenet, densenet, wideresnet]
+
+    # for each model, perform a single example and a 5x2 cross validation
+    for model in cifar100:
+        example_calibration(model)
+        cross_validation(model)
+
+    plt.show()

@@ -20,6 +20,7 @@ netcal.binning.BBQ
       ~BBQ.load_model
       ~BBQ.save_model
       ~BBQ.set_params
+      ~BBQ.squeeze_generic
       ~BBQ.transform
    
    

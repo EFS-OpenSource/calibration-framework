@@ -14,5 +14,6 @@ netcal.metrics.MCE
    
       ~MCE.__init__
       ~MCE.measure
+      ~MCE.squeeze_generic
    
    

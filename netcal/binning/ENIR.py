@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -12,7 +12,7 @@ from .NearIsotonicRegression import NearIsotonicRegression
 
 class ENIR(AbstractCalibration):
     """
-    Ensemble of Near Isotonic Regression (ENIR) models. These models allow - in contrast to standard
+    Ensemble of Near Isotonic Regression (ENIR) models. This method is originally proposed by [1]_. These models allow - in contrast to standard
     :class:`IsotonicRegression` method - a violation of the monotony restrictions. Using the *modified
     Pool-Adjacent-Violators Algorithm (mPAVA)*, this method build multiple Near Isotonic Regression models
     and weights them by a certain score function.
@@ -46,7 +46,7 @@ class ENIR(AbstractCalibration):
 
     .. math::
 
-       p(M | \\mathcal{D}) \\propto p( \\mathcal{D} | M )p(M) \\approx \exp( -BIC/2 )p(M) .
+       p(M | \\mathcal{D}) \\propto p( \\mathcal{D} | M )p(M) \\approx \\exp( -BIC/2 )p(M) .
 
     Using the elbow method to sort out models with a low relative score, the weights for each model can be obtained
     by normalizing over all model posterior scores.
@@ -59,6 +59,11 @@ class ENIR(AbstractCalibration):
         - 'AIC': Akaike-Information-Criterion
     quick_init : bool, default=True
         Allow quick initialization of NIR (equal consecutive values are grouped directly).
+    detection : bool, default: False
+        If False, the input array 'X' is treated as multi-class confidence input (softmax)
+        with shape (n_samples, [n_classes]).
+        If True, the input array 'X' is treated as a box predictions with several box features (at least
+        box confidence must be present) with shape (n_samples, [n_box_features]).
     independent_probabilities : bool, optional, default: False
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
@@ -66,14 +71,15 @@ class ENIR(AbstractCalibration):
 
     References
     ----------
-    Naeini, Mahdi Pakdaman, and Gregory F. Cooper:
-    "Binary classifier calibration using an ensemble of near isotonic regression models."
-    2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.
-    `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`_
+    .. [1] Naeini, Mahdi Pakdaman, and Gregory F. Cooper:
+       "Binary classifier calibration using an ensemble of near isotonic regression models."
+       2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.
+       `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`_
     """
 
-    @accepts(str, bool, bool)
-    def __init__(self, score_function: str = 'BIC', quick_init: bool = True, independent_probabilities: bool = False):
+    @accepts(str, bool, bool, bool)
+    def __init__(self, score_function: str = 'BIC', quick_init: bool = True,
+                 detection: bool = False, independent_probabilities: bool = False):
         """
         Constructor.
 
@@ -85,13 +91,18 @@ class ENIR(AbstractCalibration):
             - 'AIC': Akaike-Information-Criterion
         quick_init : bool, default=True
             Allow quick initialization of NIR (equal consecutive values are grouped directly).
+        detection : bool, default: False
+            If False, the input array 'X' is treated as multi-class confidence input (softmax)
+            with shape (n_samples, [n_classes]).
+            If True, the input array 'X' is treated as a box predictions with several box features (at least
+            box confidence must be present) with shape (n_samples, [n_box_features]).
         independent_probabilities : bool, optional, default: False
             Boolean for multi class probabilities.
             If set to True, the probability estimates for each
             class are treated as independent of each other (sigmoid).
         """
 
-        super().__init__(independent_probabilities)
+        super().__init__(detection=detection, independent_probabilities=independent_probabilities)
 
         # for multi class calibration with K classes, K binary calibration models are needed
         self._multiclass_instances = []
@@ -127,6 +138,66 @@ class ENIR(AbstractCalibration):
         self._binning_models.clear()
         self._model_scores = None
 
+    @accepts(bool)
+    def get_params(self, deep=True):
+        """
+        Get parameters for this estimator.
+
+        Parameters
+        ----------
+        deep : boolean, optional
+            If True, will return the parameters for this estimator and
+            contained subobjects that are estimators.
+
+        Returns
+        -------
+        params : mapping of string to any
+            Parameter names mapped to their values.
+        """
+
+        # get all params of current instance and save as dict
+        params = super().get_params(deep=deep)
+
+        if deep:
+
+            # save binning models as well - this is not captured by super class method
+            params['_binning_models'] = []
+
+            for model in self._binning_models:
+                params['_binning_models'].append(model.get_params(deep=deep))
+
+        return params
+
+    def set_params(self, **params) -> 'ENIR':
+        """
+        Set the parameters of this estimator.
+
+        The method works on simple estimators as well as on nested objects
+        (such as pipelines). The latter have parameters of the form
+        ``<component>__<parameter>`` so that it's possible to update each
+        component of a nested object.
+
+        Returns
+        -------
+        self
+        """
+
+        if '_binning_models' in params:
+            self._binning_models = []
+
+            for model in params['_binning_models']:
+                instance = NearIsotonicRegression()
+                instance.set_params(**model)
+                self._binning_models.append(instance)
+
+            # remove key and value from dict to prevent override in super method
+            del params['_binning_models']
+
+        # invoke super method
+        super().set_params(**params)
+
+        return self
+
     @dimensions((1, 2), (1, 2))
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'ENIR':
         """
@@ -134,9 +205,10 @@ class ENIR(AbstractCalibration):
 
         Parameters
         ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
+        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
+            NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
+            On detection, this array must have 2 dimensions with number of additional box features in last dim.
         y : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with ground truth labels.
             Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
@@ -146,6 +218,15 @@ class ENIR(AbstractCalibration):
         ENIR
             Instance of class :class:`ENIR`.
         """
+
+        # detection mode is not supported natively
+        if self.detection:
+            self.logger.warning("Detection mode is not supported natively by ENIR method. This will discard all "
+                                "additional box information and only keep confidence scores.")
+
+            # if 2d, keep only confidence scores and preserve 2d structure
+            if len(X.shape) == 2:
+                X = np.expand_dims(X[:, 0], axis=1)
 
         X, y = super().fit(X, y)
 
@@ -207,6 +288,13 @@ class ENIR(AbstractCalibration):
             1-D for binary classification, 2-D for multi class (softmax).
         """
 
+        # detection mode is not supported natively
+        if self.detection:
+
+            # if 2d, keep only confidence scores and preserve 2d structure
+            if len(X.shape) == 2:
+                X = np.expand_dims(X[:, 0], axis=1)
+
         X = super().transform(X)
 
         # prepare return value vector
@@ -225,7 +313,7 @@ class ENIR(AbstractCalibration):
 
             if not self.independent_probabilities:
                 # normalize to keep probability sum of 1
-                normalizer = np.sum(calibrated, axis=1, keepdims=True)
+                normalizer = np.clip(np.sum(calibrated, axis=1, keepdims=True), self.epsilon, None)
                 calibrated = np.divide(calibrated, normalizer)
 
         # on binary classification, it's much easier

@@ -4,16 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.AbstractCalibration &#8212; calibration-framework 1.0 documentation</title>
+    <title>netcal.AbstractCalibration &#8212; calibration-framework 1.1 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="../_autosummary/_autosummary_presentation/netcal.presentation.ReliabilityDiagram.html" title="netcal.presentation.ReliabilityDiagram"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -44,15 +44,21 @@
 <h1>netcal.AbstractCalibration<a class="headerlink" href="#netcal-abstractcalibration" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="netcal.AbstractCalibration">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.</code><code class="sig-name descname">AbstractCalibration</code><span class="sig-paren">(</span><em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">netcal.</code><code class="sig-name descname">AbstractCalibration</code><span class="sig-paren">(</span><em class="sig-param">detection: bool = False</em>, <em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
 <p>Abstract base class for all calibration methods.
 Inherits functions from sklearn’s BaseEstimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>independent_probabilities</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Boolean for multi class probabilities.
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
+<li><p><strong>independent_probabilities</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Boolean for multi class probabilities.
 If set to True, the probability estimates for each
-class are treated as independent of each other (sigmoid).</p>
+class are treated as independent of each other (sigmoid).</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="attribute">
@@ -85,7 +91,7 @@ values inequal to 0 or 1.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([independent_probabilities])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([detection, independent_probabilities])</p></td>
 <td><p>Create an instance of <cite>AbstractCalibration</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
@@ -109,7 +115,10 @@ values inequal to 0 or 1.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
+<td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
 <td><p>Abstract function.</p></td>
 </tr>
 </tbody>
@@ -128,8 +137,9 @@ This function performs several checks and returns the improved X and y.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
-1-D for binary classification, 2-D for multi class (softmax).</p></li>
+<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
 <li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
 Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
 </ul>
@@ -162,6 +172,7 @@ and returns a transformed version of X.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>, </em><em>n_features</em><em>]</em>) – Training set.</p></li>
 <li><p><strong>y</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>]</em>) – Target values.</p></li>
+<li><p><strong>**fit_params</strong> (<em>dict</em>) – Additional fit parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -193,7 +204,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="netcal.AbstractCalibration.load_model">
-<em class="property">classmethod </em><code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration.load_model" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load model from saved Pickle instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -221,7 +232,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="netcal.AbstractCalibration.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; netcal.AbstractCalibration.AbstractCalibration<a class="headerlink" href="#netcal.AbstractCalibration.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -238,6 +249,27 @@ component of a nested object.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="netcal.AbstractCalibration.squeeze_generic">
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, list, tuple]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.AbstractCalibration.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
+of size 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
+<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Squeezed array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="netcal.AbstractCalibration.transform">
 <em class="property">abstract </em><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.AbstractCalibration.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract function. After model calibration, this function is used to get calibrated outputs of uncalibrated
@@ -245,8 +277,9 @@ confidence estimates.
 This function performs several checks and returns the improved X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with uncalibrated confidence estimates.
-1-D for binary classification, 2-D for multi class (softmax).</p>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>NumPy array with uncalibrated but checked confidence estimates.
@@ -297,7 +330,7 @@ This function performs several checks and returns the improved X.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -314,12 +347,12 @@ This function performs several checks and returns the improved X.</p>
         <li class="right" >
           <a href="../_autosummary/_autosummary_presentation/netcal.presentation.ReliabilityDiagram.html" title="netcal.presentation.ReliabilityDiagram"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+        &#169; Copyright 2019-2020, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

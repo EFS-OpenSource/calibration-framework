@@ -4,16 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.binning.HistogramBinning &#8212; calibration-framework 1.0 documentation</title>
+    <title>netcal.binning.HistogramBinning &#8212; calibration-framework 1.1 documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="../netcal.binning.html" title="netcal.binning"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../netcal.binning.html" accesskey="U">netcal.binning</a> &#187;</li> 
       </ul>
     </div>  
@@ -49,17 +49,27 @@
 <h1>netcal.binning.HistogramBinning<a class="headerlink" href="#netcal-binning-histogrambinning" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="netcal.binning.HistogramBinning">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.binning.</code><code class="sig-name descname">HistogramBinning</code><span class="sig-paren">(</span><em class="sig-param">bins: int</em>, <em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.HistogramBinning" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">netcal.binning.</code><code class="sig-name descname">HistogramBinning</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">tuple</em>, <em class="sig-param">list] = 10</em>, <em class="sig-param">equal_intervals: bool = True</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.HistogramBinning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.AbstractCalibration.AbstractCalibration</span></code></p>
-<p>Simple Histogram Binning calibration method. Each prediction is sorted into a bin
+<p>Simple Histogram Binning calibration method. This method is originally proposed by <a class="footnote-reference brackets" href="#id4" id="id1">1</a>. Each prediction is sorted into a bin
 and assigned its calibrated confidence estimate. This method normally works for binary
-classification. For multiclass classification, this method is applied into a 1-vs-all manner.</p>
+classification. For multiclass classification, this method is applied into a 1-vs-all manner <a class="footnote-reference brackets" href="#id5" id="id2">2</a>.</p>
 <p>The bin boundaries are either chosen to be
 equal length intervals or to equalize the number of samples in each bin.</p>
+<p>On object detection, use a multidimensional binning to include additional information of the box
+regression branch <a class="footnote-reference brackets" href="#id7" id="id3">3</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bins</strong> (<em>int</em>) – Number of bins used by the Histogram Binning.</p></li>
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the Histogram Binning.
+On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>equal_intervals</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: True</em>) – If True, the bins have the same width. If False, the bins are splitted to equalize
+the number of samples in each bin.</p></li>
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
 <li><p><strong>independent_probabilities</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Boolean for multi class probabilities.
 If set to True, the probability estimates for each
 class are treated as independent of each other (sigmoid).</p></li>
@@ -67,14 +77,25 @@ class are treated as independent of each other (sigmoid).</p></li>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>Zadrozny, Bianca and Elkan, Charles:
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Zadrozny, Bianca and Elkan, Charles:
 “Obtaining calibrated probability estimates from decision trees and naive bayesian classifiers.”
 In ICML, pp. 609–616, 2001.
 <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.3039&amp;rep=rep1&amp;type=pdf">Get source online</a></p>
-<p>Zadrozny, Bianca and Elkan, Charles:
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Zadrozny, Bianca and Elkan, Charles:
 “Transforming classifier scores into accurate multiclass probability estimates.”
 In KDD, pp. 694–699, 2002.
 <a class="reference external" href="https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf">Get source online</a></p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+“Multivariate Confidence Calibration for Object Detection.”
+The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.</p>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -82,7 +103,7 @@ In KDD, pp. 694–699, 2002.
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(bins[, independent_probabilities])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, equal_intervals, detection, …])</p></td>
 <td><p>Create an instance of <cite>HistogramBinning</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
@@ -109,7 +130,10 @@ In KDD, pp. 694–699, 2002.
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
+<td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
 <td><p>After model calibration, this function is used to get calibrated outputs of uncalibrated confidence estimates.</p></td>
 </tr>
 </tbody>
@@ -127,8 +151,9 @@ In KDD, pp. 694–699, 2002.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction.
-1-D for binary classification, 2-D for multi class (softmax).</p></li>
+<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
 <li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
 Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
 </ul>
@@ -153,6 +178,7 @@ and returns a transformed version of X.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>, </em><em>n_features</em><em>]</em>) – Training set.</p></li>
 <li><p><strong>y</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>]</em>) – Target values.</p></li>
+<li><p><strong>**fit_params</strong> (<em>dict</em>) – Additional fit parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -199,7 +225,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="netcal.binning.HistogramBinning.load_model">
-<em class="property">classmethod </em><code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.HistogramBinning.load_model" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.HistogramBinning.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load model from saved Pickle instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -227,7 +253,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="netcal.binning.HistogramBinning.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.HistogramBinning.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; netcal.AbstractCalibration.AbstractCalibration<a class="headerlink" href="#netcal.binning.HistogramBinning.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -239,6 +265,27 @@ component of a nested object.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.binning.HistogramBinning.squeeze_generic">
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, list, tuple]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.binning.HistogramBinning.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
+of size 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
+<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Squeezed array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -295,7 +342,7 @@ confidence estimates.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -315,13 +362,13 @@ confidence estimates.</p>
         <li class="right" >
           <a href="../netcal.binning.html" title="netcal.binning"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../netcal.binning.html" >netcal.binning</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+        &#169; Copyright 2019-2020, Ruhr West University of Applied Sciences, Bottrop, Germany AND Visteon Electronics Germany GmbH, Kerpen, Germany.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

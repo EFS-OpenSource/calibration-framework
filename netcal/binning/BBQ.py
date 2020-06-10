@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,13 +6,15 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import numpy as np
+import itertools
+from tqdm import tqdm
 from netcal import AbstractCalibration, dimensions, accepts
 from .HistogramBinning import HistogramBinning
 
 
 class BBQ(AbstractCalibration):
     """
-    Bayesian Binning into Quantiles (BBQ). This method utilizes multiple :class:`HistogramBinning`
+    Bayesian Binning into Quantiles (BBQ). This method is originally proposed by [1]_. This method utilizes multiple :class:`HistogramBinning`
     instances with different amounts of bins and computes a weighted sum of all methods to obtain a
     well-calibrated confidence estimate. The scoring function "BDeu", which is proposed in the original paper,
     is currently not supported.
@@ -46,7 +48,7 @@ class BBQ(AbstractCalibration):
 
     .. math::
 
-       p(M | \\mathcal{D}) \\propto p( \\mathcal{D} | M )p(M) \\approx \exp( -BIC/2 )p(M) .
+       p(M | \\mathcal{D}) \\propto p( \\mathcal{D} | M )p(M) \\approx \\exp( -BIC/2 )p(M) .
 
     Using the elbow method to sort out models with a low relative score, the weights for each model can be obtained
     by normalizing over all model posterior scores.
@@ -57,6 +59,11 @@ class BBQ(AbstractCalibration):
         define score functions:
         - 'BIC': Bayesian-Information-Criterion
         - 'AIC': Akaike-Information-Criterion
+    detection : bool, default: False
+        If False, the input array 'X' is treated as multi-class confidence input (softmax)
+        with shape (n_samples, [n_classes]).
+        If True, the input array 'X' is treated as a box predictions with several box features (at least
+        box confidence must be present) with shape (n_samples, [n_box_features]).
     independent_probabilities : bool, optional, default: False
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
@@ -64,15 +71,15 @@ class BBQ(AbstractCalibration):
 
     References
     ----------
-    Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
-    "Obtaining well calibrated probabilities using bayesian binning."
-    Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-    `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+    .. [1] Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
+       "Obtaining well calibrated probabilities using bayesian binning."
+       Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
+       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
 
     """
 
-    @accepts(str, bool)
-    def __init__(self, score_function: str = 'BIC', independent_probabilities: bool = False):
+    @accepts(str, bool, bool)
+    def __init__(self, score_function: str = 'BIC', detection: bool = False, independent_probabilities: bool = False):
         """
         Constructor.
 
@@ -82,13 +89,18 @@ class BBQ(AbstractCalibration):
             define score functions:
             - 'BIC': Bayesian-Information-Criterion
             - 'AIC': Akaike-Information-Criterion
+        detection : bool, default: False
+            If False, the input array 'X' is treated as multi-class confidence input (softmax)
+            with shape (n_samples, [n_classes]).
+            If True, the input array 'X' is treated as a box predictions with several box features (at least
+            box confidence must be present) with shape (n_samples, [n_box_features]).
         independent_probabilities : bool, optional, default: False
             Boolean for multi class probabilities.
             If set to True, the probability estimates for each
             class are treated as independent of each other (sigmoid).
         """
 
-        super().__init__(independent_probabilities)
+        super().__init__(detection=detection, independent_probabilities=independent_probabilities)
 
         # for multi class calibration with K classes, K binary calibration models are needed
         self._multiclass_instances = []
@@ -124,6 +136,67 @@ class BBQ(AbstractCalibration):
         self._binning_models.clear()
         self._model_scores = None
 
+    @accepts(bool)
+    def get_params(self, deep=True):
+        """
+        Get parameters for this estimator.
+
+        Parameters
+        ----------
+        deep : boolean, optional
+            If True, will return the parameters for this estimator and
+            contained subobjects that are estimators.
+
+        Returns
+        -------
+        params : mapping of string to any
+            Parameter names mapped to their values.
+        """
+
+        # get all params of current instance and save as dict
+        params = super().get_params(deep=deep)
+
+        if deep:
+
+            # save binning models as well - this is not captured by super class method
+            params['_binning_models'] = []
+
+            for model in self._binning_models:
+                params['_binning_models'].append(model.get_params(deep=deep))
+
+        return params
+
+    def set_params(self, **params) -> 'BBQ':
+        """
+        Set the parameters of this estimator.
+
+        The method works on simple estimators as well as on nested objects
+        (such as pipelines). The latter have parameters of the form
+        ``<component>__<parameter>`` so that it's possible to update each
+        component of a nested object.
+
+        Returns
+        -------
+        self
+        """
+
+        if '_binning_models' in params:
+            self._binning_models = []
+
+            for model in params['_binning_models']:
+
+                instance = HistogramBinning()
+                instance.set_params(**model)
+                self._binning_models.append(instance)
+
+            # remove key and value from dict to prevent override in super method
+            del params['_binning_models']
+
+        # invoke super method
+        super().set_params(**params)
+
+        return self
+
     @dimensions((1, 2), (1, 2))
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'BBQ':
         """
@@ -131,9 +204,10 @@ class BBQ(AbstractCalibration):
 
         Parameters
         ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
+        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
+            NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
+            On detection, this array must have 2 dimensions with number of additional box features in last dim.
         y : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with ground truth labels.
             Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
@@ -147,27 +221,35 @@ class BBQ(AbstractCalibration):
         X, y = super().fit(X, y)
 
         # multiclass case: create K sub models for each label occurrence
-        if not self._is_binary_classification():
+        if not self._is_binary_classification() and not self.detection:
 
             # create multiple one vs all models
             self._multiclass_instances = self._create_one_vs_all_models(X, y, BBQ, self.score_function)
             return self
 
+        num_features = 1
+        if self.detection and len(X.shape) == 2:
+            num_features = X.shape[1]
+        
         num_samples = y.size
-        sqrt3_num_samples = np.power(num_samples, 1. / 3.)
+
+        constant = 10. / num_features
+        sqrt_num_samples = np.power(num_samples, 1. / (num_features + 2))
 
         # bin range as proposed in the paper of the authors
         # guarantee, that at least one bin model is present and least a 5 bin model
-        min_bins = int(max(1, np.floor(sqrt3_num_samples / 10.)))
-        max_bins = int(min(np.ceil(num_samples / 5), np.ceil(sqrt3_num_samples * 10.)))
+        min_bins = int(max(1, np.floor(sqrt_num_samples / constant)))
+        max_bins = int(min(np.ceil(num_samples / 5), np.ceil(sqrt_num_samples * constant)))
 
-        num_binning_models = max_bins - min_bins + 1
+        bin_range = range(min_bins, max_bins+1)
+        all_ranges = [bin_range,] * num_features
 
         # iterate over all different binnings and fit Histogram Binning methods
         model_list = []
-        for num_model in range(num_binning_models):
+        for bins in tqdm(itertools.product(*all_ranges), total=np.power(len(bin_range), num_features)):
 
-            histogram = HistogramBinning(bins=min_bins+num_model)
+            bins = bins[0] if not self.detection else bins
+            histogram = HistogramBinning(bins=bins, detection=self.detection)
             histogram.fit(X, y)
 
             model_list.append(histogram)
@@ -201,7 +283,7 @@ class BBQ(AbstractCalibration):
         calibrated = np.zeros(X.shape)
 
         # if multiclass classification problem, use binning models for each label separately
-        if not self._is_binary_classification():
+        if not self._is_binary_classification() and not self.detection:
 
             # get all available labels and iterate over each one
             for (label, binning_model) in self._multiclass_instances:

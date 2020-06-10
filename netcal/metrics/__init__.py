@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -27,3 +27,4 @@ Available classes
 from .ACE import ACE
 from .ECE import ECE
 from .MCE import MCE
+from .Miscalibration import _Miscalibration

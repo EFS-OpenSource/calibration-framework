@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Visteon Electronics Germany GmbH, Kerpen, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -58,21 +58,13 @@ def single_example(models: list, datafile: str, bins: int, diagram: str = None,
     # split data set into build set and validation set
     build_set_gt, validation_set_gt, build_set_sm, validation_set_sm = train_test_split(ground_truth, predictions,
                                                                                         test_size=validation_split,
-                                                                                        stratify=ground_truth)
+                                                                                        stratify=ground_truth,
+                                                                                        random_state=None)
 
     # initialize error metrics
     ace = ACE(bins)
     ece = ECE(bins)
     mce = MCE(bins)
-
-    # get diagram type
-    if diagram == 'diagram':
-        diagram = ReliabilityDiagram(bins)
-    elif diagram is None:
-        diagram = None
-    else:
-        print("Unknown diagram type \'%s\'" % diagram)
-        return -1
 
     predictions = []
     all_ace = [ace.measure(validation_set_sm, validation_set_gt)]
@@ -117,11 +109,19 @@ def single_example(models: list, datafile: str, bins: int, diagram: str = None,
 
     # ------------------------------------------
 
-    if diagram is not None:
+    if diagram == 'diagram':
 
-        diagram.plot(validation_set_sm, validation_set_gt, title_suffix="Raw data")
+        diagram = ReliabilityDiagram(bins=bins, title_suffix="default")
+        diagram.plot(validation_set_sm, validation_set_gt, filename="test.png")
         for i, prediction in enumerate(predictions):
-            diagram.plot(prediction, validation_set_gt, title_suffix=models[i][0])
+            diagram = ReliabilityDiagram(bins=bins, title_suffix=models[i][0])
+            diagram.plot(prediction, validation_set_gt)
+
+    elif diagram is None:
+        pass
+    else:
+        print("Unknown diagram type \'%s\'" % diagram)
+        return -1
 
     return 0
 
