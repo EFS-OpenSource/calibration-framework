@@ -32,7 +32,7 @@ For example: given 100 predictions with a confidence of 80% of each prediction, 
 
 This framework can also be used to calibrate object detection models. It has recently been shown that calibration on object detection also depends on the position and/or scale of a predicted object [12]_. We provide calibration methods to perform confidence calibration w.r.t. the additional box regression branch.
 For this purpose, we extended the commonly used Histogram Binning [3]_, Logistic Calibration alias Platt scaling [10]_ and the Beta Calibration method [2]_ to also include the bounding box information into a calibration mapping.
-Furthermore, we provide two new methods called the *Dependent Logistic Calibration* (:class:`netcal.scaling.LogisticCalibrationDependent`) and the *Dependent Beta Calibration* (:class:`netcal.scaling.BetaCalibrationDependent`) that are not only able to perform a calibration mapping
+Furthermore, we provide two new methods called the *Dependent Logistic Calibration* and the *Dependent Beta Calibration* that are not only able to perform a calibration mapping
 w.r.t. additional bounding box information but also to model correlations and dependencies between all given quantities [12]_. Those methods should be preffered over their counterparts in object detection mode.
 
 The framework is structured as follows::
@@ -71,15 +71,15 @@ Calibration Metrics
 The most common metric to determine miscalibration in the scope of classification is the *Expected Calibration Error* (ECE) [1]_. This metric divides the confidence space into several bins and measures the observed accuracy in each bin. The bin gaps between observed accuracy and bin confidence are summed up and weighted by the amount of samples in each bin. The *Maximum Calibration Error* (MCE) denotes the highest gap over all bins. The *Average Calibration Error* (ACE) [11]_ denotes the average miscalibration where each bin gets weighted equally.
 For object detection, we implemented the *Detection Calibration Error* (D-ECE) [12]_ that is the natural extension of the ECE to object detection tasks. The miscalibration is determined w.r.t. the bounding box information provided (e.g. box location and/or scale). For this purpose, all available information gets binned in a multidimensional histogram. The accuracy is then calculated in each bin separately to determine the mean deviation between confidence and accuracy.
 
-- (Detection) Expected Calibration Error [1]_, [12]_ (:class:`netcal.metrics.ECE`)
-- (Detection) Maximum Calibration Error [1]_, [12]_ (:class:`netcal.metrics.MCE`)
-- (Detection) Average Calibration Error [11]_, [12]_ (:class:`netcal.metrics.ACE`)
+- (Detection) Expected Calibration Error [1]_, [12]_ (*netcal.metrics.ECE*)
+- (Detection) Maximum Calibration Error [1]_, [12]_  (*netcal.metrics.MCE*)
+- (Detection) Average Calibration Error [11]_, [12]_ (*netcal.metrics.ACE*)
 
 Methods
 ==========
 The calibration methods are separated into binning and scaling methods. The binning methods divide the available information into several bins (like ECE or D-ECE) and perform calibration on each bin. The scaling methods scale the confidence estimates or logits directly to calibrated confidence estimates - on detection calibration, this is done w.r.t. the additional regression branch of a network.
 
-Important: if you use the detection mode, you need to specifiy the flag "detection=True" in the constructor of the according method (this is not necessary for :class:`netcal.scaling.LogisticCalibrationDependent` and :class:`netcal.scaling.BetaCalibrationDependent`).
+Important: if you use the detection mode, you need to specifiy the flag "detection=True" in the constructor of the according method (this is not necessary for *netcal.scaling.LogisticCalibrationDependent* and *netcal.scaling.BetaCalibrationDependent*).
 
 Most of the calibration methods are designed for binary classification tasks. For binning methods, multi-class calibration is performed in "one vs. all" by default.
 
@@ -91,26 +91,26 @@ Binning
 -------
 Implemented binning methods are:
 
-- Histogram Binning for classification [3]_, [4]_ and object detection [12]_ (:class:`netcal.binning.HistogramBinning`)
-- Isotonic Regression [4]_, [5]_ (:class:`netcal.binning.IsotonicRegression`)
-- Bayesian Binning into Quantiles (BBQ) [1]_ (:class:`netcal.binning.BBQ`)
-- Ensemble of Near Isotonic Regression (ENIR) [6]_ (:class:`netcal.binning.ENIR`)
+- Histogram Binning for classification [3]_, [4]_ and object detection [12]_ (*netcal.binning.HistogramBinning*)
+- Isotonic Regression [4]_, [5]_ (*netcal.binning.IsotonicRegression*)
+- Bayesian Binning into Quantiles (BBQ) [1]_ (*netcal.binning.BBQ*)
+- Ensemble of Near Isotonic Regression (ENIR) [6]_ (*netcal.binning.ENIR*)
 
 Scaling
 -------
 Implemented scaling methods are:
 
-- Logistic Calibration/Platt Scaling for classification [10]_, [12]_ and object detection [12]_ (:class:`netcal.scaling.LogisticCalibration`)
-- Dependent Logistic Calibration for object detection [12]_ (:class:`netcal.scaling.LogisticCalibrationDependent`) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Logistic Calibration for object detection
-- Temperature Scaling for classification [7]_ and object detection [12]_ (:class:`netcal.scaling.TemperatureScaling`)
-- Beta Calibration for classification [2]_ and object detection [12]_ (:class:`netcal.scaling.BetaCalibration`)
-- Dependent Beta Calibration for object detection [12]_ (:class:`netcal.scaling.BetaCalibrationDependent`) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Beta Calibration for object detection
+- Logistic Calibration/Platt Scaling for classification [10]_, [12]_ and object detection [12]_ (*netcal.scaling.LogisticCalibration*)
+- Dependent Logistic Calibration for object detection [12]_ (*netcal.scaling.LogisticCalibrationDependent*) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Logistic Calibration for object detection
+- Temperature Scaling for classification [7]_ and object detection [12]_ (*netcal.scaling.TemperatureScaling*)
+- Beta Calibration for classification [2]_ and object detection [12]_ (*netcal.scaling.BetaCalibration*)
+- Dependent Beta Calibration for object detection [12]_ (*netcal.scaling.BetaCalibrationDependent*) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Beta Calibration for object detection
 
 Regularization
 --------------
 Implemented regularization methods are:
 
-- Confidence Penalty [8]_ (:class:`netcal.regularization.confidence_penalty`)
+- Confidence Penalty [8]_ (*netcal.regularization.confidence_penalty*)
 
 Visualization
 ================
@@ -118,7 +118,7 @@ For visualization of miscalibration, one can use a Confidence Histograms & Relia
 
 On detection calibration, the miscalibration can be visualized either along one additional box information (e.g. the x-position of the predictions) or distributed over two additional box information in terms of a heatmap.
 
-- Reliability Diagram [1]_, [12]_ (:class:`netcal.presentation.ReliabilityDiagram`)
+- Reliability Diagram [1]_, [12]_ (*netcal.presentation.ReliabilityDiagram*)
 
 Examples
 ===========
@@ -133,7 +133,7 @@ This is a basic example which uses softmax predictions of a classification task 
     ground_truth  # this is a NumPy 1-D array with ground truth digits between 0-9 - shape: (n_samples,)
     confidences   # this is a NumPy 2-D array with confidence estimates between 0-1 - shape: (n_samples, n_classes)
 
-This is an example for :class:`netcal.scaling.TemperatureScaling` but also works for every calibration method (remind different constructor parameters):
+This is an example for *netcal.scaling.TemperatureScaling* but also works for every calibration method (remind different constructor parameters):
 
 .. code-block:: python
 
@@ -178,7 +178,7 @@ This is a basic example which uses softmax predictions of a classification task 
     confidences            # NumPy 1-D array with confidence estimates between 0-1 - shape: (n_samples,)
     relative_x_position    # NumPy 1-D array with relative center-x position between 0-1 of each prediction - shape: (n_samples,)
 
-This is an example for :class:`netcal.scaling.LogisticCalibration` and :class:`netcal.scaling.LogisticCalibrationDependent` but also works for every calibration method (remind different constructor parameters):
+This is an example for *netcal.scaling.LogisticCalibration* and *netcal.scaling.LogisticCalibrationDependent* but also works for every calibration method (remind different constructor parameters):
 
 .. code-block:: python
 
