@@ -15,7 +15,7 @@ If you use this framework or parts of it for your research, please cite it by::
     @InProceedings{Kueppers_2020_CVPR_Workshops,
        author = {Küppers, Fabian and Kronenberger, Jan and Shantia, Amirhossein and Haselhoff, Anselm},
        title = {Multivariate Confidence Calibration for Object Detection},
-       booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, in press},
+       booktitle = {The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
        month = {June},
        year = {2020}
     }
