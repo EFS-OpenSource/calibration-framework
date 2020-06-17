@@ -397,7 +397,7 @@ class ReliabilityDiagram(object):
         # labels and legend of second plot
         plt.xlabel('Confidence')
         plt.ylabel('Accuracy')
-        plt.legend(['Perfect Calibration', 'Output', 'Gap'])
+        plt.legend(['Perfect Calibration', 'Actual', 'Gap'])
 
         plt.tight_layout()
         return fig
