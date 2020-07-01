@@ -1,0 +1,26 @@
+netcal.scaling.BetaCalibrationDependent
+=======================================
+
+.. currentmodule:: netcal.scaling
+
+.. autoclass:: BetaCalibrationDependent
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BetaCalibrationDependent.__init__
+      ~BetaCalibrationDependent.clear
+      ~BetaCalibrationDependent.fit
+      ~BetaCalibrationDependent.fit_transform
+      ~BetaCalibrationDependent.get_params
+      ~BetaCalibrationDependent.load_model
+      ~BetaCalibrationDependent.save_model
+      ~BetaCalibrationDependent.set_params
+      ~BetaCalibrationDependent.squeeze_generic
+      ~BetaCalibrationDependent.transform
+   
+   

@@ -1,0 +1,26 @@
+netcal.scaling.LogisticCalibrationDependent
+===========================================
+
+.. currentmodule:: netcal.scaling
+
+.. autoclass:: LogisticCalibrationDependent
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LogisticCalibrationDependent.__init__
+      ~LogisticCalibrationDependent.clear
+      ~LogisticCalibrationDependent.fit
+      ~LogisticCalibrationDependent.fit_transform
+      ~LogisticCalibrationDependent.get_params
+      ~LogisticCalibrationDependent.load_model
+      ~LogisticCalibrationDependent.save_model
+      ~LogisticCalibrationDependent.set_params
+      ~LogisticCalibrationDependent.squeeze_generic
+      ~LogisticCalibrationDependent.transform
+   
+   
