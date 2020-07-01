@@ -284,12 +284,28 @@ class ReliabilityDiagram(object):
         median_confidence = (bounds[1:] + bounds[:-1]) * 0.5
 
         for batch_X, batch_y in zip(X, y):
-
-            if len(batch_X.shape) == 2 and not self.detection:
-                prediction = np.argmax(batch_X, axis=1)
-                batch_X = np.reshape(np.max(batch_X, axis=1), (-1, 1))
-            else:
+            if len(batch_X.shape) == 1:
+                batch_X = np.reshape(batch_X, (-1, 1))
                 prediction = np.ones(batch_X.shape[0])
+
+            # got 2D array for X?
+            elif len(batch_X.shape) == 2:
+
+                # on detection mode, assume all predictions as 'matched'
+                if self.detection:
+                    prediction = np.ones(batch_X.shape[0])
+
+                # on classification, if less than 2 entries for 2nd dimension are present, assume binary classification
+                # (independent sigmoids are currently not supported)
+                elif batch_X.shape[1] == 1:
+                    prediction = np.ones(batch_X.shape[0])
+
+                # classification and more than 1 entry for 2nd dimension? assume multiclass classification
+                else:
+                    prediction = np.argmax(batch_X, axis=1)
+                    batch_X = np.reshape(np.max(batch_X, axis=1), (-1, 1))
+            else:
+                prediction = np.ones_like(batch_X)
 
             matched = prediction == batch_y
 
@@ -381,7 +397,7 @@ class ReliabilityDiagram(object):
         # labels and legend of second plot
         plt.xlabel('Confidence')
         plt.ylabel('Accuracy')
-        plt.legend(['Perfect Calibration', 'Output', 'Gap'])
+        plt.legend(['Perfect Calibration', 'Actual', 'Gap'])
 
         plt.tight_layout()
         return fig
