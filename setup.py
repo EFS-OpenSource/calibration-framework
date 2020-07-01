@@ -15,7 +15,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="netcal",
-    version="1.1.1",
+    version="1.1.2",
     author="Fabian Kueppers",
     author_email="fabian.kueppers@hs-ruhrwest.de",
     description="Python Framework to calibrate confidence estimates of classifiers like Neural Networks",
