@@ -93,7 +93,6 @@ class ReliabilityDiagram(object):
         title_suffix : str, optional, default: None
             Suffix for plot title.
         """
-        self.logger = logging.getLogger('calibration')
 
         self.bins = bins
         self.detection = detection
@@ -349,7 +348,8 @@ class ReliabilityDiagram(object):
         # calculate deviation
         deviation = conf - acc
 
-        self.logger.info("Average accuracy: %.4f - average confidence: %.4f" % (mean_acc, mean_conf))
+        logger = logging.getLogger(__name__)
+        logger.info("Average accuracy: %.4f - average confidence: %.4f" % (mean_acc, mean_conf))
 
         # -----------------------------------------
         # plot stuff

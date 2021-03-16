@@ -5,6 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import logging
 import numpy as np
 from netcal import AbstractCalibration, dimensions, accepts
 from sklearn.isotonic import IsotonicRegression as sklearn_iso
@@ -95,8 +96,9 @@ class IsotonicRegression(AbstractCalibration):
 
         # detection mode is not supported natively
         if self.detection:
-            self.logger.warning("Detection mode is not supported natively by IsotonicRegression method. "
-                                "This will discard all additional box information and only keep confidence scores.")
+            logger = logging.getLogger(__name__)
+            logger.warning("Detection mode is not supported natively by IsotonicRegression method. "
+                           "This will discard all additional box information and only keep confidence scores.")
 
             # if 2d, keep only confidence scores and preserve 2d structure
             if len(X.shape) == 2:

@@ -5,6 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import logging
 import numpy as np
 from netcal import AbstractCalibration, dimensions, accepts
 from .NearIsotonicRegression import NearIsotonicRegression
@@ -219,10 +220,12 @@ class ENIR(AbstractCalibration):
             Instance of class :class:`ENIR`.
         """
 
+        logger = logging.getLogger(__name__)
+
         # detection mode is not supported natively
         if self.detection:
-            self.logger.warning("Detection mode is not supported natively by ENIR method. This will discard all "
-                                "additional box information and only keep confidence scores.")
+            logger.warning("Detection mode is not supported natively by ENIR method. This will discard all "
+                           "additional box information and only keep confidence scores.")
 
             # if 2d, keep only confidence scores and preserve 2d structure
             if len(X.shape) == 2:
@@ -248,7 +251,7 @@ class ENIR(AbstractCalibration):
         X, y = self._sort_arrays(X, y)
 
         # log action
-        self.logger.info("Get path of all Near Isotonic Regression models with mPAVA ...")
+        logger.info("Get path of all Near Isotonic Regression models with mPAVA ...")
 
         iso = NearIsotonicRegression(quick_init=self.quick_init,
                                      independent_probabilities=self.independent_probabilities)

@@ -393,7 +393,8 @@ class BetaCalibrationDependent(AbstractCalibration):
         best_loss = np.infty
 
         # use tqdm logger to pipe tqdm output to logger
-        tqdm_logger = TqdmHandler(logger=self.logger, level=logging.INFO)
+        logger = logging.getLogger(__name__)
+        tqdm_logger = TqdmHandler(logger=logger, level=logging.INFO)
         with tqdm(total=num_epochs * num_batches, file=tqdm_logger) as pbar:
             for epoch in range(num_epochs):
 

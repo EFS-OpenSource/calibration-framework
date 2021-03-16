@@ -76,7 +76,6 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         """
 
         super().__init__()
-        self.logger = logging.getLogger('calibration')
 
         self.detection = detection
         self.num_classes = None
@@ -205,8 +204,9 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # count all class labels and warn if not all labels are present
         unique = np.unique(y)
         if len(unique) != self.num_classes:
-            self.logger.warning("Not all class labels are present in ground truth array \'y\'. This could led to "
-                                "errors in some models.")
+            logger = logging.getLogger(__name__)
+            logger.warning("Not all class labels are present in ground truth array \'y\'. This could led to "
+                           "errors in some models.")
 
         return X, y
 
@@ -552,7 +552,8 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         for label in range(self.num_classes):
 
             if np.where(ground_truth == label)[0].size == 0:
-                self.logger.warning("Warning: no training data for label %d present" % label)
+                logger = logging.getLogger(__name__)
+                logger.warning("Warning: no training data for label %d present" % label)
                 continue
 
             # get 1 vs all vector depending on current label
