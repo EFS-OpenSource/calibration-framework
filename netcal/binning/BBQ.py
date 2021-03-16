@@ -5,10 +5,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import logging
 import numpy as np
 import itertools
 from tqdm import tqdm
-from netcal import AbstractCalibration, dimensions, accepts
+from netcal import AbstractCalibration, TqdmHandler, dimensions, accepts
 from .HistogramBinning import HistogramBinning
 
 
@@ -246,7 +247,11 @@ class BBQ(AbstractCalibration):
 
         # iterate over all different binnings and fit Histogram Binning methods
         model_list = []
-        for bins in tqdm(itertools.product(*all_ranges), total=np.power(len(bin_range), num_features)):
+
+        # use tqdm logger to pipe tqdm output to logger
+        logger = logging.getLogger(__name__)
+        tqdm_logger = TqdmHandler(logger=logger, level=logging.INFO)
+        for bins in tqdm(itertools.product(*all_ranges), total=np.power(len(bin_range), num_features), file=tqdm_logger):
 
             bins = bins[0] if not self.detection else bins
             histogram = HistogramBinning(bins=bins, detection=self.detection)
