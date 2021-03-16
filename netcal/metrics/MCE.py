@@ -44,7 +44,7 @@ class MCE(_Miscalibration):
        `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
     .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
     """
 
     @dimensions((1, 2), (1, 2), None, None)

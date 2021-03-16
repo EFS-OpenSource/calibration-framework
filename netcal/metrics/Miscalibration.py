@@ -43,7 +43,7 @@ class _Miscalibration(object):
        `Get source online <https://openreview.net/pdf?id=S1lG7aTnqQ>`_
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
     """
 
     epsilon = np.finfo(np.float).eps

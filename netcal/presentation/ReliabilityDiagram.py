@@ -56,7 +56,7 @@ class ReliabilityDiagram(object):
        `Get source online <https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf>`_
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
     """
 
     @accepts((int, tuple, list), bool, (float, None), int, (list, None), (float, None), (str, None), (str, None))
