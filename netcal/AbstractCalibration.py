@@ -305,9 +305,6 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # get all params of current instance and save as dict
         params = dict(vars(self))
 
-        # remove logger variable from dict - this is not compatible to pickle
-        del params['logger']
-
         if deep:
 
             # needed for all binary methods that are distributed to multi class by one-vs-all
