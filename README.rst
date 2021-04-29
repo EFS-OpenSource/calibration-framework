@@ -3,8 +3,8 @@ Calibration Framework
 Calibration framework in Python 3 for Neural Networks.
 For full API reference documentation, visit https://fabiankueppers.github.io/calibration-framework.
 
-Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
-AND Visteon Electronics Germany GmbH, Kerpen, Germany
+Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
+AND Elektronische Fahrwerksysteme GmbH, Gaimersheim, Germany
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -233,4 +233,4 @@ References
 .. [9] Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M. and Duchesnay, E.: "Scikit-learn: Machine Learning in Python." In Journal of Machine Learning Research, volume 12 pp 2825-2830, 2011.
 .. [10] Platt, John: "Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods." Advances in large margin classifiers, 10(3): 61–74, 1999.
 .. [11] Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi: "Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection." Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
-.. [12] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff: "Multivariate Confidence Calibration for Object Detection"." The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, in press, 2020
+.. [12] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff: "Multivariate Confidence Calibration for Object Detection"." The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020

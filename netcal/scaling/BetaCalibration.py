@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2020 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Visteon Electronics Germany GmbH, Kerpen, Germany
+# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -91,7 +91,7 @@ class BetaCalibration(AbstractCalibration):
        `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`_
     .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020, in press.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
     """
 
     @accepts(bool, bool, bool)
