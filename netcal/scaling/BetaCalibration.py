@@ -1,16 +1,24 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
+from typing import Tuple, List
+from collections import OrderedDict
+from typing import Union
 import numpy as np
-from scipy.optimize import minimize
-from netcal import AbstractCalibration, dimensions, accepts
+
+import torch
+import torch.distributions.constraints as constraints
+import pyro
+import pyro.distributions as dist
+
+from netcal.scaling import AbstractLogisticRegression
 
 
-class BetaCalibration(AbstractCalibration):
+class BetaCalibration(AbstractLogisticRegression):
     """
     On classification, apply the beta calibration method to obtain a calibration mapping. The original method was
     proposed by [1]_.
@@ -20,7 +28,8 @@ class BetaCalibration(AbstractCalibration):
     calibration mapping by means of the confidence as well as additional features [2]_. This calibration scheme
     assumes independence between all variables.
 
-    It is necessary to provide all data in input parameter ``X`` as an NumPy array of shape ``(n_samples, n_features)``,
+    On detection, it is necessary to provide all data in input parameter ``X`` as an NumPy array
+    of shape ``(n_samples, n_features)``,
     whereas the confidence must be the first feature given in the input array. The ground-truth samples ``y``
     must be an array of shape ``(n_samples,)`` consisting of binary labels :math:`y \\in \\{0, 1\\}`. Those
     labels indicate if the according sample has matched a ground truth box :math:`\\text{m}=1` or is a false
@@ -71,8 +80,23 @@ class BetaCalibration(AbstractCalibration):
 
     Parameters
     ----------
-    auto_select : bool, optional, default: False
-        Auto selection of best combination on detection mode.
+    method : str, default: "mle"
+        Method that is used to obtain a calibration mapping:
+        - 'mle': Maximum likelihood estimate without uncertainty using a convex optimizer.
+        - 'momentum': MLE estimate using Momentum optimizer for non-convex optimization.
+        - 'variational': Variational Inference with uncertainty.
+        - 'mcmc': Markov-Chain Monte-Carlo sampling with uncertainty.
+    momentum_epochs : int, optional, default: 1000
+            Number of epochs used by momentum optimizer.
+    mcmc_steps : int, optional, default: 20
+        Number of weight samples obtained by MCMC sampling.
+    mcmc_chains : int, optional, default: 1
+        Number of Markov-chains used in parallel for MCMC sampling (this will result
+        in mcmc_steps * mcmc_chains samples).
+    mcmc_warmup_steps : int, optional, default: 100
+        Warmup steps used for MCMC sampling.
+    vi_epochs : int, optional, default: 1000
+        Number of epochs used for ELBO optimization.
     detection : bool, default: False
         If False, the input array 'X' is treated as multi-class confidence input (softmax)
         with shape (n_samples, [n_classes]).
@@ -82,6 +106,9 @@ class BetaCalibration(AbstractCalibration):
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
         class are treated as independent of each other (sigmoid).
+    use_cuda : str or bool, optional, default: False
+        Specify if CUDA should be used. If str, you can also specify the device
+        number like 'cuda:0', etc.
 
     References
     ----------
@@ -89,47 +116,45 @@ class BetaCalibration(AbstractCalibration):
        "Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers"
        Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
        `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`_
+
     .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+
+    .. [3] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
+       "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
+       2021 IEEE Intelligent Vehicles Symposium (IV), 2021
     """
 
-    @accepts(bool, bool, bool)
-    def __init__(self, auto_select: bool = False, detection: bool = False, independent_probabilities: bool = False):
-        """
-        Constructor
+    def __init__(self, *args, **kwargs):
+        """ Create an instance of `BetaCalibration`. Detailed parameter description given in class docs. """
 
-        Parameters
-        ----------
-        auto_select : bool, optional, default: False
-            Auto selection of best combination on detection mode.
-        detection : bool, default: False
-            If False, the input array 'X' is treated as multi-class confidence input (softmax)
-            with shape (n_samples, [n_classes]).
-            If True, the input array 'X' is treated as a box predictions with several box features (at least
-            box confidence must be present) with shape (n_samples, [n_box_features]).
-        independent_probabilities : bool, optional, default: False
-            Boolean for multi class probabilities.
-            If set to True, the probability estimates for each
-            class are treated as independent of each other (sigmoid).
-        """
-        super().__init__(detection=detection, independent_probabilities=independent_probabilities)
+        super().__init__(*args, **kwargs)
+        self.mask_negative = True
 
-        self.auto_select = auto_select
-        self._weights = None
+    # -------------------------------------------------
 
-    def clear(self):
-        """
-        Clear model parameters.
-        """
+    @property
+    def intercept(self) -> Union[np.ndarray, float]:
+        """ Getter for intercept of logistic calibration. """
+        if self._sites is None:
+            raise ValueError("Intercept is None. You have to call the method 'fit' first.")
 
-        super().clear()
-        self._weights = None
+        return self._sites['bias']['values']
 
-    @dimensions((1, 2), (1, 2))
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'BetaCalibration':
+    @property
+    def weights(self) -> Union[np.ndarray, float]:
+        """ Getter for weights of beta calibration. """
+        if self._sites is None:
+            raise ValueError("Weights is None. You have to call the method 'fit' first.")
+
+        return self._sites['weights']['bias']
+
+    # -------------------------------------------------
+
+    def prepare(self, X: np.ndarray) -> torch.Tensor:
         """
-        Build Beta Calibration model.
+        Preprocessing of input data before called at the beginning of the fit-function.
 
         Parameters
         ----------
@@ -137,111 +162,189 @@ class BetaCalibration(AbstractCalibration):
             NumPy array with confidence values for each prediction on classification with shapes
             1-D for binary classification, 2-D for multi class (softmax).
             On detection, this array must have 2 dimensions with number of additional box features in last dim.
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
 
         Returns
         -------
-        BetaCalibration
-            Instance of class :class:`BetaCalibration`.
+        torch.Tensor
+            Prepared data vector X as torch tensor.
         """
 
-        X, y = super().fit(X, y)
-        solver = 'SLSQP'
-
-        # number of given features is 1 on classification mode (confidence)
-        num_features = 1
         if len(X.shape) == 1:
             X = np.reshape(X, (-1, 1))
 
-        # on detection mode, check if additional features are given
+        # build 2-D array with [log(x), -log(1-x)]
+        # convert confidences array and clip values to open interval (0, 1)
+
+        # on detection, create array of shape (n_samples, 2*n_features)
         if self.detection:
-            num_features = X.shape[1]
+            features = []
+            for i in range(X.shape[1]):
+                features.append(X[:, i])
+                features.append(1. - X[:, i])
 
-        # prepare data for beta calibration
-        data_input = self._get_data_input(X)
+            data_input = np.stack(features, axis=1)
+            data_input = np.clip(data_input, self.epsilon, 1. - self.epsilon)
+            data_input = np.log(data_input)
+            data_input[:, 1::2] *= -1
 
-        # detection case: logistic regression with multiple features and bias
-        if self.detection:
-            num_weights = num_features * 2 + 1
-            normalizer = 1. / float(num_features * 2)
-
-        # binary classification case: logistic regression with two features and bias
-        elif self._is_binary_classification():
-            num_weights = 3
-            normalizer = 0.5
-
-        # multiclass classification case: multinomial logistic regression with two features and bias for each class
+        # on classification, create an array
+        # - binary classification: shape (n_samples, 2)
+        # - multiclass classification: shape (n_samples, n_classes, 2)
         else:
-            num_weights = self.num_classes * 3
-            normalizer = 0.5
+            features = []
+            for i in range(X.shape[1]):
+                features.append(np.stack([X[:, i], 1. - X[:, i]], axis=1))
 
-            # convert ground truth to one hot if not binary
-            y = self._get_one_hot_encoded_labels(y, self.num_classes)
+            data_input = features[0] if self._is_binary_classification() else np.stack(features, axis=1)
+            data_input = np.clip(data_input, self.epsilon, 1. - self.epsilon)
+            data_input = np.log(data_input)
+            data_input[..., 1] *= -1
 
-        # initial parameter set
-        theta_0 = np.ones(num_weights) * normalizer
-        result = minimize(method=solver,
-                          fun=self._loss_function, x0=theta_0,
-                          args=(data_input, y))
+        return torch.tensor(data_input)
 
-        self._weights = result.x
-
-        # get all weights masked whose values are negative and repeat optimization in that case
-        masked_weights = self._mask_negative_weights(self._weights)
-        if len(masked_weights):
-
-            # rerun minimization routine
-            theta_0 = np.ones(num_weights) * normalizer
-            theta_0[masked_weights] = 0.0
-            result = minimize(method=solver,
-                              fun=self._loss_function, x0=theta_0,
-                              args=(data_input, y, masked_weights))
-
-            self._weights = result.x
-
-        return self
-
-    @dimensions((1, 2))
-    def transform(self, X: np.ndarray) -> np.ndarray:
+    def prior(self):
         """
-        After model calibration, this function is used to get calibrated outputs of uncalibrated
-        confidence estimates.
+        Prior definition of the weights used for log regression. This function has to set the
+        variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
+        """
+
+        self._sites = OrderedDict()
+
+        # on detection mode or binary classification, we have a weight for each given feature (one for binary
+        # classification) and bias
+        if self.detection or self._is_binary_classification():
+            num_bias = 1
+            num_weights = 2
+            feature_weights = 2 * (self.num_features - 1)
+
+            # store feature weights separately from confidence weights as they are unconstrained
+            # in constrast to the confidence weights
+            if feature_weights > 0:
+                self._sites['feature_weights'] = {
+                    'values': None,
+                    'constraint': constraints.real,
+                    'init': {
+                        'mean': torch.ones(feature_weights),
+                        'scale': torch.ones(feature_weights)
+                    },
+                    'prior': dist.Normal(torch.ones(feature_weights), 10 * torch.ones(feature_weights), validate_args=True),
+                }
+
+        # on multiclass classification, we have one weight and one bias for each class separately
+        else:
+            num_bias = self.num_classes
+            num_weights = 2*self.num_classes
+
+        # initialize weight mean by ones and set prior distribution
+        init_mean = torch.ones(num_weights)
+        init_scale = torch.ones(num_weights)
+        prior = dist.Normal(init_mean, 10 * init_scale, validate_args=True)
+
+        # we have constraints on the weights for the confidence
+        # this is usually solved by removing dims with invalid weights on MLE
+        # however, on MCMC and VI this is not possible
+        # instead, we are using a "shifted" LogNormal to obtain only positive samples
+        if self.method in ['variational', 'mcmc']:
+
+            # for this purpose, we need to transform the prior mean first and set the
+            # distribution to be a LogNormal
+            init_mean = torch.log(torch.exp(init_mean)-1)
+            prior = dist.LogNormal(init_mean, 10 * init_scale, validate_args=True)
+
+        # set sites for weights and bias
+        self._sites['weights'] = {
+            'values': None,
+            'constraint': constraints.positive,
+            'init': {
+                'mean': init_mean,
+                'scale': init_scale
+            },
+            'prior': prior
+        }
+
+        self._sites['bias'] = {
+            'values': None,
+            'constraint': constraints.real,
+            'init': {
+                'mean': torch.zeros(num_bias),
+                'scale': torch.ones(num_bias)
+            },
+            'prior': dist.Normal(torch.zeros(num_bias), 10 * torch.ones(num_bias), validate_args=True)
+        }
+
+    def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
+        """
+        Definition of the log regression model.
 
         Parameters
         ----------
-        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
-            NumPy array with confidence values for each prediction on classification with shapes
-            1-D for binary classification, 2-D for multi class (softmax).
-            On detection, this array must have 2 dimensions with number of additional box features in last dim.
+        X : torch.Tensor, shape=(n_samples, n_log_regression_features)
+            Input data that has been prepared by "self.prepare" function call.
+        y : torch.Tensor, shape=(n_samples, [n_classes])
+            Torch tensor with ground truth labels.
+            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D) (for multiclass MLE only).
 
         Returns
         -------
-        np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with calibrated confidence estimates.
-            1-D for binary classification, 2-D for multi class (softmax).
+        torch.Tensor, shape=(n_samples, [n_classes])
+            Logit of the log regression model.
         """
 
-        X = super().transform(X)
+        # sample from prior - on MLE, this weight will be set as conditional
+        bias = pyro.sample("bias", self._sites['bias']['prior'])
+        weights = pyro.sample("weights", self._sites['weights']['prior'])
 
-        # prepare data for beta calibration
-        data_input = self._get_data_input(X)
-        logit = self._get_logit(self._weights, data_input)
+        # on MCMC or VI, use samples obtained by a "shifted" LogNormal
+        # the "shifted" +1 term guarantees positive samples only
+        if self.method in ['variational', 'mcmc']:
+            weights = torch.log(weights + 1)
+            assert (weights >= 0).all().item() == True, "Negative confidence weights are not allowed."
 
-        # compute logistic fit
-        calibrated = self._sigmoid(logit)[:, 0] if self.detection or self._is_binary_classification() else self._softmax(logit)
-        return self.squeeze_generic(calibrated, axes_to_keep=0)
+            # on MCMC sampling, extreme values might occur and can cause an 'inf'
+            # this will result in invalid prob values - catch infs and set to log of max value
+            weights[torch.isinf(weights)] = torch.log(torch.tensor(torch.finfo(weights.dtype).max))
 
-    def _mask_negative_weights(self, weights: np.ndarray) -> list:
+        # additional weights are extra weights for extra features (on detection mode)
+        if "feature_weights" in self._sites.keys():
+            feature_weights = pyro.sample("feature_weights", self._sites['feature_weights']['prior'])
+            weights = torch.cat((weights, feature_weights))
+
+        # the first dimension of the given input data is the "independent" sample dimension
+        with pyro.plate("data", X.shape[0]):
+
+            if self.detection or self._is_binary_classification():
+                weights = torch.reshape(weights, (-1, 1))
+
+                # compute logits and remove unnecessary dimensions
+                logit = torch.squeeze(torch.matmul(X, weights) + bias)
+                probs = torch.sigmoid(logit)
+                dist_op = dist.Bernoulli
+
+            else:
+
+                # get number of weights and biases according to number of classes
+                weights = torch.reshape(weights, (-1, 2, 1))
+
+                # use broadcast mechanism of pytorch: if 3 dimensions are provided, treat first dimension
+                # as a stack of matrices -> this speeds up the calculation
+                result = torch.matmul(X.permute(1, 0, 2), weights)
+
+                # as a result, we obtain an array of shape (n_classes, n_samples, 1)
+                # remove last dim and swap axes
+                logit = torch.transpose(torch.squeeze(result, dim=2), 0, 1) + bias
+                probs = torch.softmax(logit, dim=1)
+                dist_op = dist.Categorical
+
+            # if MLE, (slow) sampling is not necessary. However, this is needed for 'variational' and 'mcmc'
+            if self.method in ['variational', 'mcmc']:
+                pyro.sample("obs", dist_op(probs=probs, validate_args=True), obs=y)
+
+            return logit
+
+    def mask(self) -> Tuple[np.ndarray, List]:
         """
         Seek for all relevant weights whose values are negative. Mask those values with optimization constraints
         in the interval [0, 0].
-
-        Parameters
-        ----------
-        weights : np.ndarray
-            Flattened weights array
 
         Returns
         -------
@@ -249,22 +352,14 @@ class BetaCalibration(AbstractCalibration):
             Indices of masked values.
         """
 
+        # get weights from sites
+        weights = self._sites['weights']['values']
         num_weights = len(weights)
 
         # --------------------------------------------------------------------------------
         # check calculated weights
         # if either param a or param b < 0, the second distribution's parameter is fixed to zero
         # the logistic fit is repeated afterwards with remaining distribution
-
-        # first step: extract weights without bias and get all weights below 0
-
-        # on detection or binary classification, only face the confidence weights
-        if self.detection or self._is_binary_classification():
-            weights = weights[1:3]
-
-            # on multiclass classification, face all weights (without biases)
-        else:
-            weights = weights[self.num_classes:]
 
         # now check if negative entries are present
         masked_weights = np.where((weights.flatten() < 0))[0]
@@ -292,126 +387,18 @@ class BetaCalibration(AbstractCalibration):
             # increase indices for optimization routine due to bias values
             masked_weights += 1 if self.detection or self._is_binary_classification() else self.num_classes
 
-        return masked_weights
+            # masking of the values is done by setting linear constraints for the masked values
+            # make sure that the remaining values are also >0 by settings the bounds accordingly
+            # first part: bounds for the bias (None); second part: bounds for the parameters
+            if self.detection or self._is_binary_classification():
+                bounds = [(None, None), ] + \
+                         [(0, 0) if i in masked_weights else (0, None) for i in range(num_weights - 1)]
+            else:
+                bounds = [(None, None), ] * self.num_classes + \
+                         [(0, 0) if i in masked_weights else (0, None) for i in range(num_weights - self.num_classes)]
 
-    def _get_data_input(self, X: np.ndarray) -> np.ndarray:
-        """
-        Build data input for beta calibration logistic regression.
-
-        Note for multiclass classification:
-        For NumPy's matmul function it is mandatory to provide the class dimension in the first
-        axis in order to use its broadcasting mechanism that allows multiple dot-products in a single run.
-
-        Parameters
-        ----------
-        X : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
-            1-D for binary classification, 2-D for multi class (softmax).
-
-        Returns
-        -------
-        np.ndarray, shape=(n_samples, 2*n_features) on detection or shape=([n_classes], n_samples, 2) on classification
-            NumPy array with prepared input data for beta calibration.
-        """
-
-        if len(X.shape) == 1:
-            X = np.reshape(X, (-1, 1))
-
-        # build 2-D array with [log(x), -log(1-x)]
-        # convert confidences array and clip values to open interval (0, 1)
-
-        # on detection, create array of shape (n_samples, 2*n_features)
-        if self.detection:
-            features = []
-            for i in range(X.shape[1]):
-                features.append(X[:, i])
-                features.append(1. - X[:, i])
-
-            data_input = np.stack(features, axis=1)
-            data_input = np.clip(data_input, self.epsilon, 1. - self.epsilon)
-            data_input = np.log(data_input)
-            data_input[:, 1::2] *= -1
-
-        # on classification, create an array
-        # - binary classification: shape (n_samples, 2)
-        # - multiclass classification: shape (n_classes, n_samples, 2)
+            # prepend bounds by (non-present) limits for intercept
+            bounds = [(None, None), ] * len(self._sites['bias']['values']) + bounds
+            return masked_weights, bounds
         else:
-            features = []
-            for i in range(X.shape[1]):
-                features.append(np.stack([X[:, i], 1. - X[:, i]], axis=1))
-
-            data_input = features[0] if self._is_binary_classification() else np.stack(features, axis=0)
-            data_input = np.clip(data_input, self.epsilon, 1. - self.epsilon)
-            data_input = np.log(data_input)
-            data_input[..., 1] *= -1
-
-        return data_input
-
-    def _get_logit(self, weights: np.ndarray, data_input: np.ndarray) -> np.ndarray:
-        """
-        Calculate logit depending on the provided weights and prepared data input for beta calibration.
-
-        Parameters
-        ----------
-        weights : np.ndarray, shape=(3,) for binary classification or shape=(3*n_classes,) for multiclass
-            Weights for logistic fit with dependencies.
-        data_input : np.ndarray, shape=([n_classes], n_samples, 2)
-            NumPy 2-D array with data input.
-
-        Returns
-        -------
-        np.ndarray, shape=(n_samples, [n_classes])
-            Logit for beta calibration.
-        """
-
-        if self.detection or self._is_binary_classification():
-            bias = weights[0]
-            weights = np.array(weights[1:]).reshape(-1, 1)
-
-            # compute logits
-            logit = np.matmul(data_input, weights) + bias
-
-        else:
-
-            # get number of weights and biases according to number of classes
-            bias = weights[:self.num_classes]
-            weights = np.reshape(weights[self.num_classes:], (-1, 2, 1))
-
-            # use broadcast mechanism of NumPy: if 3 dimensions are provided, treat first dimension
-            # as a stack of matrices -> this speeds up the calculation
-            result = np.matmul(data_input, weights)
-
-            # as a result, we obtain an array of shape (n_classes, n_samples, 1)
-            # remove last dim and swap axes
-            logit = np.swapaxes(np.squeeze(result), 0, 1) + bias
-
-        return logit
-
-    def _loss_function(self, weights: np.ndarray, data_input: np.ndarray, y: np.ndarray, masked: list = None) -> float:
-        """
-        Wrapper function for SciPy's loss. This is simply NLL-Loss.
-        This wrapper is necessary because the first parameter is interpreted as the optimization parameter.
-
-        Parameters
-        ----------
-        weights : np.ndarray, shape=(2*n_features+1) for detection, shape=(3,) for binary classification or
-                 shape=(3*n_classes,) for multiclass
-            Weights for logistic fit with dependencies.
-        data_input : np.ndarray, shape=(n_samples, 2*n_features) for detection or shape=([n_classes], n_samples, 2)
-                     for classification
-            NumPy array with data input.
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
-
-        Returns
-        -------
-        float
-            NLL-Loss
-        """
-
-        if masked is not None:
-            weights[masked] = 0.
-
-        logit = self._get_logit(weights, data_input)
-        return self._nll_loss(logit, y)
+            return masked_weights, []
