@@ -299,6 +299,7 @@ This is an example for *netcal.scaling.LogisticCalibration* and *netcal.scaling.
     calibrated = lr_dependent.transform(input)
 
 You can directly pass the output to the D-ECE and PICP instance to measure miscalibration and mask quality:
+
 .. code-block:: python
 
     from netcal.metrics import ECE
