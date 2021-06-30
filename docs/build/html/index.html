@@ -202,9 +202,11 @@ w.r.t. additional bounding box information but also to model correlations and de
 <li><p>matplotlib&gt;=3.1</p></li>
 <li><p>scikit-learn&gt;=0.21</p></li>
 <li><p>torch&gt;=1.4</p></li>
+<li><p>torchvision&gt;=0.5.0</p></li>
 <li><p>tqdm&gt;=4.40</p></li>
 <li><p>pyro-ppl&gt;=1.3</p></li>
 <li><p>tikzplotlib&gt;=0.9.8</p></li>
+<li><p>tensorboard&gt;=2.2</p></li>
 </ul>
 </div>
 </div>
@@ -391,23 +393,26 @@ For object detection, we implemented the <em>Detection Calibration Error</em> (D
 <span class="n">calibrated</span> <span class="o">=</span> <span class="n">lr_dependent</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can directly pass the output to the D-ECE and PICP instance to measure miscalibration and mask quality:
-.. code-block:: python</p>
-<blockquote>
-<div><p>from netcal.metrics import ECE
-from netcal.metrics import PICP</p>
-<p>n_bins = 10
-ece = ECE(n_bins, detection=True)
-picp = PICP(n_bins, detection=True)</p>
-<p># the following function calls are equivalent:
-miscalibration = ece.measure(calibrated, matched, uncertainty=”mean”)
-miscalibration = ece.measure(np.mean(calibrated, axis=0), matched)</p>
-<p># now determine uncertainty quality
-uncertainty = picp.measure(calibrated, matched, uncertainty=”mean”)</p>
-<p>print(“D-ECE:”, miscalibration)
-print(“PICP:”, uncertainty.picp) # prediction coverage probability
-print(“MPIW:”, uncertainty.mpiw) # mean prediction interval width</p>
-</div></blockquote>
+<p>You can directly pass the output to the D-ECE and PICP instance to measure miscalibration and mask quality:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">ECE</span>
+<span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">PICP</span>
+
+<span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">ece</span> <span class="o">=</span> <span class="n">ECE</span><span class="p">(</span><span class="n">n_bins</span><span class="p">,</span> <span class="n">detection</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">picp</span> <span class="o">=</span> <span class="n">PICP</span><span class="p">(</span><span class="n">n_bins</span><span class="p">,</span> <span class="n">detection</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># the following function calls are equivalent:</span>
+<span class="n">miscalibration</span> <span class="o">=</span> <span class="n">ece</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">calibrated</span><span class="p">,</span> <span class="n">matched</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+<span class="n">miscalibration</span> <span class="o">=</span> <span class="n">ece</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">calibrated</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">matched</span><span class="p">)</span>
+
+<span class="c1"># now determine uncertainty quality</span>
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">picp</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">calibrated</span><span class="p">,</span> <span class="n">matched</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;D-ECE:&quot;</span><span class="p">,</span> <span class="n">miscalibration</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PICP:&quot;</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">picp</span><span class="p">)</span> <span class="c1"># prediction coverage probability</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MPIW:&quot;</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">mpiw</span><span class="p">)</span> <span class="c1"># mean prediction interval width</span>
+</pre></div>
+</div>
 <p>If we want to measure miscalibration and uncertainty quality by means of the relative x position, we need to broadcast the according information:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># broadcast and stack x information to calibrated information</span>
 <span class="n">broadcasted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">relative_x_position</span><span class="p">,</span> <span class="n">calibrated</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
