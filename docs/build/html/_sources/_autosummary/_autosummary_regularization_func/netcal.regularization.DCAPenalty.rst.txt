@@ -1,0 +1,60 @@
+netcal.regularization.DCAPenalty
+================================
+
+.. currentmodule:: netcal.regularization
+
+.. autoclass:: DCAPenalty
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DCAPenalty.__init__
+      ~DCAPenalty.add_module
+      ~DCAPenalty.apply
+      ~DCAPenalty.bfloat16
+      ~DCAPenalty.buffers
+      ~DCAPenalty.children
+      ~DCAPenalty.cpu
+      ~DCAPenalty.cuda
+      ~DCAPenalty.double
+      ~DCAPenalty.eval
+      ~DCAPenalty.extra_repr
+      ~DCAPenalty.float
+      ~DCAPenalty.forward
+      ~DCAPenalty.half
+      ~DCAPenalty.load_state_dict
+      ~DCAPenalty.modules
+      ~DCAPenalty.named_buffers
+      ~DCAPenalty.named_children
+      ~DCAPenalty.named_modules
+      ~DCAPenalty.named_parameters
+      ~DCAPenalty.parameters
+      ~DCAPenalty.register_backward_hook
+      ~DCAPenalty.register_buffer
+      ~DCAPenalty.register_forward_hook
+      ~DCAPenalty.register_forward_pre_hook
+      ~DCAPenalty.register_parameter
+      ~DCAPenalty.requires_grad_
+      ~DCAPenalty.share_memory
+      ~DCAPenalty.state_dict
+      ~DCAPenalty.to
+      ~DCAPenalty.train
+      ~DCAPenalty.type
+      ~DCAPenalty.zero_grad
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DCAPenalty.dump_patches
+   
+   

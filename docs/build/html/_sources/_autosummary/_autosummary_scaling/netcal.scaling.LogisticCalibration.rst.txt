@@ -14,13 +14,23 @@ netcal.scaling.LogisticCalibration
    
       ~LogisticCalibration.__init__
       ~LogisticCalibration.clear
+      ~LogisticCalibration.convex
       ~LogisticCalibration.fit
       ~LogisticCalibration.fit_transform
       ~LogisticCalibration.get_params
+      ~LogisticCalibration.guide
       ~LogisticCalibration.load_model
+      ~LogisticCalibration.mask
+      ~LogisticCalibration.mcmc
+      ~LogisticCalibration.model
+      ~LogisticCalibration.momentum
+      ~LogisticCalibration.prepare
+      ~LogisticCalibration.prior
       ~LogisticCalibration.save_model
       ~LogisticCalibration.set_params
       ~LogisticCalibration.squeeze_generic
+      ~LogisticCalibration.to
       ~LogisticCalibration.transform
+      ~LogisticCalibration.variational
    
    

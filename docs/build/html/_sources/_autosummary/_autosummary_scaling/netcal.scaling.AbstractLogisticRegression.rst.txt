@@ -1,0 +1,36 @@
+netcal.scaling.AbstractLogisticRegression
+=========================================
+
+.. currentmodule:: netcal.scaling
+
+.. autoclass:: AbstractLogisticRegression
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AbstractLogisticRegression.__init__
+      ~AbstractLogisticRegression.clear
+      ~AbstractLogisticRegression.convex
+      ~AbstractLogisticRegression.fit
+      ~AbstractLogisticRegression.fit_transform
+      ~AbstractLogisticRegression.get_params
+      ~AbstractLogisticRegression.guide
+      ~AbstractLogisticRegression.load_model
+      ~AbstractLogisticRegression.mask
+      ~AbstractLogisticRegression.mcmc
+      ~AbstractLogisticRegression.model
+      ~AbstractLogisticRegression.momentum
+      ~AbstractLogisticRegression.prepare
+      ~AbstractLogisticRegression.prior
+      ~AbstractLogisticRegression.save_model
+      ~AbstractLogisticRegression.set_params
+      ~AbstractLogisticRegression.squeeze_generic
+      ~AbstractLogisticRegression.to
+      ~AbstractLogisticRegression.transform
+      ~AbstractLogisticRegression.variational
+   
+   

@@ -1,29 +1,27 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
-
-
+from typing import Tuple
+from collections import OrderedDict
 import numpy as np
-from scipy.optimize import minimize
 import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-from torch.utils.data import TensorDataset
-from tqdm import tqdm
+import torch.distributions.constraints as constraints
 
-from netcal import AbstractCalibration, accepts, dimensions
+import pyro
+import pyro.distributions as dist
+
+from netcal.scaling import AbstractLogisticRegression
 
 
-class LogisticCalibrationDependent(AbstractCalibration):
+class LogisticCalibrationDependent(AbstractLogisticRegression):
     """
-    This calibration method uses multivariate normal distributions to obtain a
-    calibration mapping by means of the confidence as well as additional features. This method is originally
-    proposed by [1]_. This calibration scheme
-    tries to model several dependencies in the variables given by the input ``X``.
+    This calibration method is for detection only and uses multivariate normal distributions to obtain a
+    calibration mapping by means of the confidence as well as additional features. This calibration scheme
+    tries to model several dependencies in the variables given by the input ``X`` [1]_.
 
     It is necessary to provide all data in input parameter ``X`` as an NumPy array of shape ``(n_samples, n_features)``,
     whereas the confidence must be the first feature given in the input array. The ground-truth samples ``y``
@@ -46,7 +44,7 @@ class LogisticCalibrationDependent(AbstractCalibration):
 
        g(s) = \\frac{1}{1 + \\exp(-z(s))} ,
 
-    According to [1]_, we can interpret the logit :math:`z` as the logarithm of the posterior odds
+    According to [2]_, we can interpret the logit :math:`z` as the logarithm of the posterior odds
 
     .. math::
 
@@ -69,129 +67,112 @@ class LogisticCalibrationDependent(AbstractCalibration):
     matrix V as
 
     .. math::
-       \\Sigma = V^T * V
+       \\Sigma = V^T V
 
     instead of estimating :math:`\\Sigma` directly. This guarantees both requirements.
 
     Parameters
     ----------
-    detection : bool, default: True
-        IMPORTANT: this parameter is only for compatibility reasons. It MUST be set to True.
-        If False, the input array 'X' is treated as multi-class confidence input (softmax)
-        with shape (n_samples, [n_classes]).
-        If True, the input array 'X' is treated as a box predictions with several box features (at least
-        box confidence must be present) with shape (n_samples, [n_box_features]).
+    method : str, default: "mle"
+        Method that is used to obtain a calibration mapping:
+        - 'mle': Maximum likelihood estimate without uncertainty using a convex optimizer.
+        - 'momentum': MLE estimate using Momentum optimizer for non-convex optimization.
+        - 'variational': Variational Inference with uncertainty.
+        - 'mcmc': Markov-Chain Monte-Carlo sampling with uncertainty.
+    momentum_epochs : int, optional, default: 1000
+            Number of epochs used by momentum optimizer.
+    mcmc_steps : int, optional, default: 20
+        Number of weight samples obtained by MCMC sampling.
+    mcmc_chains : int, optional, default: 1
+        Number of Markov-chains used in parallel for MCMC sampling (this will result
+        in mcmc_steps * mcmc_chains samples).
+    mcmc_warmup_steps : int, optional, default: 100
+        Warmup steps used for MCMC sampling.
+    vi_epochs : int, optional, default: 1000
+        Number of epochs used for ELBO optimization.
+    independent_probabilities : bool, optional, default: False
+        Boolean for multi class probabilities.
+        If set to True, the probability estimates for each
+        class are treated as independent of each other (sigmoid).
+    use_cuda : str or bool, optional, default: False
+        Specify if CUDA should be used. If str, you can also specify the device
+        number like 'cuda:0', etc.
 
     References
     ----------
     .. [1] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+
+    .. [2] Kull, Meelis, Telmo Silva Filho, and Peter Flach:
+       "Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers"
+       Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
+       `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`_
+
+    .. [3] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
+       "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
+       2021 IEEE Intelligent Vehicles Symposium (IV), 2021
     """
 
-    @accepts(bool)
-    def __init__(self, detection: bool = True):
+    def __init__(self, *args, **kwargs):
+        """ Create an instance of `LogisticCalibrationDependent`. Detailed parameter description given in class docs. """
+
+        # an instance of this class is definitely of type detection
+        if 'detection' in kwargs and kwargs['detection'] == False:
+            print("WARNING: On LogisticCalibrationDependent, attribute \'detection\' must be True.")
+
+        kwargs['detection'] = True
+        super().__init__(*args, **kwargs)
+
+    # -------------------------------------------------
+
+    @property
+    def intercept(self) -> float:
+        """ Getter for intercept of dependent logistic calibration. """
+        if self._sites is None:
+            raise ValueError("Intercept is None. You have to call the method 'fit' first.")
+
+        return self._sites['bias']['values']
+
+    @property
+    def means(self) -> Tuple[np.ndarray, np.ndarray]:
+        """ Getter for mean vectors of dependent logistic calibration. """
+        if self._sites is None:
+            raise ValueError("Weights is None. You have to call the method 'fit' first.")
+
+        index_1 = 2 * (self.num_features ** 2)
+        index_2 = index_1 + self.num_features
+
+        weights = self._sites['weights']['values']
+        return weights[index_1:index_2], weights[index_2:]
+
+    @property
+    def covariances(self) -> Tuple[np.ndarray, np.ndarray]:
+        """ Getter for covariance matrices of dependent logistic calibration. """
+        if self._sites is None:
+            raise ValueError("Weights is None. You have to call the method 'fit' first.")
+
+        index_1 = self.num_features ** 2
+        index_2 = index_1 + self.num_features ** 2
+
+        weights = self._sites['weights']['values']
+
+        decomposed_inv_cov_pos = np.reshape(weights[:index_1], (self.num_features, self.num_features))
+        decomposed_inv_cov_neg = np.reshape(weights[index_1:index_2], (self.num_features, self.num_features))
+
+        inv_cov_pos = np.matmul(decomposed_inv_cov_pos.T, decomposed_inv_cov_pos.T)
+        inv_cov_neg = np.matmul(decomposed_inv_cov_neg.T, decomposed_inv_cov_neg.T)
+
+        cov_pos = np.linalg.inv(inv_cov_pos)
+        cov_neg = np.linalg.inv(inv_cov_neg)
+
+        return cov_pos, cov_neg
+
+    # -------------------------------------------------
+
+    def prepare(self, X: np.ndarray) -> torch.Tensor:
         """
-        Constructor.
-
-        Parameters
-        ----------
-        detection : bool, default: True
-            IMPORTANT: this parameter is only for compatibility reasons. It MUST be set to True.
-            If False, the input array 'X' is treated as multi-class confidence input (softmax)
-            with shape (n_samples, [n_classes]).
-            If True, the input array 'X' is treated as a box predictions with several box features (at least
-            box confidence must be present) with shape (n_samples, [n_box_features]).
-        """
-
-        assert detection, "Classification mode (detection=False) is not supported for class LogisticCalibrationDependent."
-        super().__init__(detection=True, independent_probabilities=False)
-
-        self._bias = None
-        self._inverse_cov_pos = None
-        self._inverse_cov_neg = None
-        self._mean_pos = None
-        self._mean_neg = None
-
-    def clear(self):
-        """
-        Clear model parameters.
-        """
-
-        super().clear()
-
-        self._bias = None
-        self._inverse_cov_pos = None
-        self._inverse_cov_neg = None
-        self._mean_pos = None
-        self._mean_neg = None
-
-    @dimensions((1, 2), (1, 2))
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'LogisticCalibrationDependent':
-        """
-        Build Logistic Calibration model for multivariate normal distributions.
-
-        Parameters
-        ----------
-        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
-            NumPy array with confidence values for each prediction on classification with shapes
-            1-D for binary classification, 2-D for multi class (softmax).
-            On detection, this array must have 2 dimensions with number of additional box features in last dim.
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
-
-        Returns
-        -------
-        LogisticCalibrationDependent
-            Instance of class :class:`LogisticCalibrationDependent`.
-        """
-
-        X, y = super().fit(X, y)
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-
-        solver = 'SLSQP'
-
-        # build data input to compute logit
-        data_input = self._build_data_input(X)
-        num_features = X.shape[1]
-
-        # scipy optimizer is very fast. SLSQP has shown similar performance compared to momentum optimizer
-        theta_0 = np.random.rand(1 + np.power(num_features, 2) * 2 + num_features * 2)
-        result = minimize(method=solver,
-                          fun=self._loss_function, x0=theta_0,
-                          args=(data_input, y, num_features))
-
-        # get result of optimization and extract
-        weights = result.x
-
-        # get indices of weights and decompose
-        index_1 = 1 + int(np.power(num_features, 2))
-        index_2 = index_1 + int(np.power(num_features, 2))
-        index_3 = index_2 + num_features
-
-        # covariance matrices are not evaluated directly
-        decomposed_inv_cov_pos = np.array(weights[1:index_1]).reshape((num_features, num_features))
-        decomposed_inv_cov_neg = np.array(weights[index_1:index_2]).reshape((num_features, num_features))
-
-        # calculate covariance matrices
-        self._inverse_cov_pos = np.matmul(decomposed_inv_cov_pos, decomposed_inv_cov_pos.T)
-        self._inverse_cov_neg = np.matmul(decomposed_inv_cov_neg, decomposed_inv_cov_neg.T)
-
-        # get mean vectors and bias
-        self._mean_pos = np.array(weights[index_2:index_3])
-        self._mean_neg = np.array(weights[index_3:])
-
-        self._bias = weights[0]
-
-        return self
-
-    @dimensions((1, 2))
-    def transform(self, X: np.ndarray) -> np.ndarray:
-        """
-        After model calibration, this function is used to get calibrated outputs of uncalibrated
-        confidence estimates.
+        Preprocessing of input data before called at the beginning of the fit-function.
 
         Parameters
         ----------
@@ -202,144 +183,128 @@ class LogisticCalibrationDependent(AbstractCalibration):
 
         Returns
         -------
-        np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with calibrated confidence estimates.
-            1-D for binary classification, 2-D for multi class (softmax).
+        torch.Tensor
+            Prepared data vector X as torch tensor.
         """
 
-        X = super().transform(X)
-
-        data_input = self._build_data_input(X)
-        logit = self._get_gaussian_ratio(data_input, self._bias, self._inverse_cov_pos, self._inverse_cov_neg,
-                                         self._mean_pos, self._mean_neg)
-
-        calibrated = self._sigmoid(logit)
-        return calibrated
-
-    @dimensions((1, 2))
-    def _build_data_input(self, X: np.ndarray) -> np.ndarray:
-        """
-        Build data input for Matrix/Platt/Temperature scaling (even for detection mode).
-
-        Parameters
-        ----------
-        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
-            NumPy array with confidence values for each prediction on classification with shapes
-            1-D for binary classification, 2-D for multi class (softmax).
-            On detection, this array must have 2 dimensions with number of additional box features in last dim.
-
-        Returns
-        -------
-        np.ndarray
-            Data input to calculate logits.
-        """
+        assert self.detection, "Detection mode must be enabled for dependent logistic calibration."
 
         if len(X.shape) == 1:
             X = np.reshape(X, (-1, 1))
 
-        # if binary, use sigmoid instead of softmax
-        if self.num_classes <= 2 or self.independent_probabilities or self.detection:
-            if self.detection:
-                data_input = np.concatenate((self._inverse_sigmoid(X[:, 0]).reshape(-1, 1), X[:, 1:]), axis=1)
-            else:
-                data_input = self._inverse_sigmoid(X)
-        else:
-            data_input = self._inverse_softmax(X)
+        # on detection mode, convert confidence to sigmoid and append the remaining features
+        data_input = np.concatenate((self._inverse_sigmoid(X[:, 0]).reshape(-1, 1), X[:, 1:]), axis=1)
+        return torch.Tensor(data_input)
 
-        return data_input
-
-    @dimensions(2, None, 2, 2, 1, 1)
-    def _get_gaussian_ratio(self, data_input: np.ndarray, bias: float,
-                            inverse_cov_pos: np.ndarray, inverse_cov_neg: np.ndarray,
-                            mean_pos: np.ndarray, mean_neg: np.ndarray) -> np.ndarray:
+    def prior(self):
         """
-        Calculate ratio between two gaussian distributions given with parameters.
+        Prior definition of the weights used for log regression. This function has to set the
+        variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
+        """
+
+        # number of weights
+        num_weights = 2 * (self.num_features ** 2 + self.num_features)
+
+        # prior estimates for decomposed inverse covariance matrices and mean vectors
+        decomposed_inv_cov_prior = torch.diag(torch.ones(self.num_features))
+        mean_mean_prior = torch.ones(self.num_features)
+
+        # initial stddev for all weights is always the same
+        weights_mean_prior = torch.cat((decomposed_inv_cov_prior.flatten(),
+                                        decomposed_inv_cov_prior.flatten(),
+                                        mean_mean_prior.flatten(),
+                                        mean_mean_prior.flatten()))
+
+        self._sites = OrderedDict()
+
+        # set properties for "weights"
+        self._sites['weights'] = {
+            'values': None,
+            'constraint': constraints.real,
+            'init': {
+                'mean': weights_mean_prior,
+                'scale': torch.ones(num_weights)
+            },
+            'prior': dist.Normal(weights_mean_prior, 10 * torch.ones(num_weights), validate_args=True),
+        }
+
+        # set properties for "bias"
+        self._sites['bias'] = {
+            'values': None,
+            'constraint': constraints.real,
+            'init': {
+                'mean': torch.zeros(1),
+                'scale': torch.ones(1)
+            },
+            'prior': dist.Normal(torch.zeros(1), 10 * torch.ones(1), validate_args=True),
+        }
+
+    def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
+        """
+        Definition of the log regression model.
 
         Parameters
         ----------
-        data_input : np.ndarray, shape=(n_samples, n_features)
-            Data input to calculate logits.
-        bias : float
-            Bias for the ratio.
-        inverse_cov_pos : np.ndarray, shape=(n_features, n_features)
-            Inverse covariance matrix of positive labels.
-        inverse_cov_neg : np.ndarray, shape=(n_features, n_features)
-            Inverse covariance matrix of negative labels.
-        mean_pos : np.ndarray, shape=(n_features,)
-            Means of positive labels.
-        mean_neg : np.ndarray, shape=(n_features,)
-            Means of negative labels.
+        X : torch.Tensor, shape=(n_samples, n_log_regression_features)
+            Input data that has been prepared by "self.prepare" function call.
+        y : torch.Tensor, shape=(n_samples, [n_classes])
+            Torch tensor with ground truth labels.
+            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D) (for multiclass MLE only).
 
         Returns
         -------
-        np.ndarray, shape=(n_samples,)
-            Ratio between both distributions.
-        """
-
-        # calculate data without means
-        difference_pos = data_input - mean_pos
-        difference_neg = data_input - mean_neg
-
-        # add a new dimensions. This is necessary for NumPy to distribute dot product
-        difference_pos = np.expand_dims(difference_pos, axis=-1)
-        difference_neg = np.expand_dims(difference_neg, axis=-1)
-
-        logit = 0.5 * (np.matmul(np.transpose(difference_neg, axes=[0, 2, 1]),
-                                 np.matmul(inverse_cov_neg, difference_neg)) -
-                       np.matmul(np.transpose(difference_pos, axes=[0, 2, 1]),
-                                 np.matmul(inverse_cov_pos, difference_pos))
-                       )
-
-        # remove unnecessary dimensions
-        logit = self.squeeze_generic(logit, axes_to_keep=0)
-
-        # add log determinant ratio to logit
-        logit = bias + logit
-        return logit
-
-    def _loss_function(self, weights: np.ndarray, data_input: np.ndarray,
-                       y: np.ndarray, num_features: int) -> float:
-        """
-        Wrapper function for SciPy's loss. This is simply NLL-Loss.
-        This wrapper is necessary because the first parameter is interpreted as the optimization parameter.
-
-        Parameters
-        ----------
-        weights : np.ndarray, shape=(3,) or (2*num_features + 1,)
-            Weights for logistic fit with dependencies.
-        data_input : np.ndarray, shape=(n_samples, n_features)
-            NumPy 2-D array with data input.
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
-        num_features : int
-            Number of features for multivariate distribution.
-
-        Returns
-        -------
-        float
-            NLL-Loss
+        torch.Tensor, shape=(n_samples, [n_classes])
+            Logit of the log regression model.
         """
 
         # get indices of weights
-        index_1 = 1 + int(np.power(num_features, 2))
-        index_2 = index_1 + int(np.power(num_features, 2))
-        index_3 = index_2 + num_features
+        index_1 = int(np.power(self.num_features, 2))
+        index_2 = index_1 + int(np.power(self.num_features, 2))
+        index_3 = index_2 + self.num_features
 
-        # get weights of decomposed cov matrices V
-        decomposed_inv_cov_pos = np.array(weights[1:index_1]).reshape((num_features, num_features))
-        decomposed_inv_cov_neg = np.array(weights[index_1:index_2]).reshape((num_features, num_features))
+        # sample from prior - on MLE, this weight will be set as conditional
+        bias = pyro.sample("bias", self._sites["bias"]["prior"])
+        weights = pyro.sample("weights", self._sites["weights"]["prior"])
 
-        # calculate covariance matrices
-        # COV^-1 = V^-1 * V^(-1,T)
-        inv_cov_pos = np.matmul(decomposed_inv_cov_pos, decomposed_inv_cov_pos.T)
-        inv_cov_neg = np.matmul(decomposed_inv_cov_neg, decomposed_inv_cov_neg.T)
+        # the first dimension of the given input data is the "independent" sample dimension
+        with pyro.plate("data", X.shape[0]):
 
-        mean_pos = np.array(weights[index_2:index_3])
-        mean_neg = np.array(weights[index_3:])
+            # get weights of decomposed cov matrices V^(-1)
+            decomposed_inv_cov_pos = torch.reshape(weights[:index_1], (self.num_features, self.num_features))
+            decomposed_inv_cov_neg = torch.reshape(weights[index_1:index_2], (self.num_features, self.num_features))
 
-        bias = weights[0]
+            mean_pos = weights[index_2:index_3]
+            mean_neg = weights[index_3:]
 
-        # get logits by calculating gaussian ratio between both distributions
-        logit = self._get_gaussian_ratio(data_input, bias, inv_cov_pos, inv_cov_neg, mean_pos, mean_neg)
-        return self._nll_loss(logit=logit, ground_truth=y)
+            # get logits by calculating gaussian ratio between both distributions
+            # calculate covariance matrices
+            # COV^(-1) = V^(-1) * V^(-1,T)
+            inverse_cov_pos = torch.matmul(decomposed_inv_cov_pos, decomposed_inv_cov_pos.transpose(1, 0))
+            inverse_cov_neg = torch.matmul(decomposed_inv_cov_neg, decomposed_inv_cov_neg.transpose(1, 0))
+
+            # calculate data without means
+            difference_pos = X - mean_pos
+            difference_neg = X - mean_neg
+
+            # add a new dimensions. This is necessary for torch to distribute dot product
+            difference_pos = torch.unsqueeze(difference_pos, 2)
+            difference_neg = torch.unsqueeze(difference_neg, 2)
+
+            logit = 0.5 * (torch.matmul(difference_neg.transpose(2, 1),
+                                        torch.matmul(inverse_cov_neg, difference_neg)) -
+                           torch.matmul(difference_pos.transpose(2, 1),
+                                        torch.matmul(inverse_cov_pos, difference_pos))
+                           )
+
+            # remove unnecessary dimensions
+            logit = torch.squeeze(logit)
+
+            # add bias ratio to logit
+            logit = bias + logit
+
+            # if MLE, (slow) sampling is not necessary. However, this is needed for 'variational' and 'mcmc'
+            if self.method in ['variational', 'mcmc']:
+                probs = torch.sigmoid(logit)
+                pyro.sample("obs", dist.Bernoulli(probs=probs, validate_args=True), obs=y)
+
+        return logit

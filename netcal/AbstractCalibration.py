@@ -1,18 +1,19 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
-import abc, os, logging
+import abc, os
 import numpy as np
-from typing import Union
-from scipy.special import expit as safe_sigmoid
-from scipy.special import logit as safe_logit
-from scipy.special import softmax as safe_softmax
+from typing import Union, Tuple, Iterable, List
 from sklearn.base import BaseEstimator, TransformerMixin
 
+import torch
+import torch.nn.functional as F
+
+from netcal import __version__ as version
 from .Decorator import accepts, dimensions
 
 
@@ -44,18 +45,10 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
     epsilon : float
         Lowest possible digit that can be computed. Needed for several operations like divisions or log to guarantee
         values inequal to 0 or 1.
-
-    logger : RootLogger
-        Logger for printing debug/info/warning/error messages.
-
     """
 
     # epsilon to prevent division by zero
     epsilon = np.finfo(np.float).eps
-
-    # number of iterations used for validation
-    # this is for auto-select models in detection mode
-    num_validation_iterations = 5
 
     @accepts(bool, bool)
     def __init__(self, detection: bool = False, independent_probabilities: bool = False):
@@ -85,7 +78,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         self._default_independent_probabilities = independent_probabilities
 
     @abc.abstractmethod
-    def fit(self, X: np.ndarray, y: np.ndarray) -> tuple:
+    def fit(self, X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """
         Abstract function call to build the calibration model.
         This function performs several checks and returns the improved X and y.
@@ -203,10 +196,14 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         # count all class labels and warn if not all labels are present
         unique = np.unique(y)
+
+        # on detection, only binary labels are allowed
+        if self.detection and len(unique) != 2:
+            raise RuntimeError("On detection mode, it is mandatory to provide binary labels y in [0,1].")
+
         if len(unique) != self.num_classes:
-            logger = logging.getLogger(__name__)
-            logger.warning("Not all class labels are present in ground truth array \'y\'. This could led to "
-                           "errors in some models.")
+            print("WARNING: Not all class labels are present in ground truth array \'y\'. "
+                  "This could led to errors in some models.")
 
         return X, y
 
@@ -350,7 +347,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
     @accepts(str)
     def save_model(self, filename: str):
         """
-        Save model instance as Pickle Object.
+        Save model instance as with torch's save function as this is safer for torch tensors.
 
         Parameters
         ----------
@@ -363,11 +360,11 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             os.makedirs(dir_path, exist_ok=True)
 
         with open(filename, 'wb') as write_object:
-            pickle.dump(self.get_params(deep=True), write_object, pickle.HIGHEST_PROTOCOL)
+            torch.save(self.get_params(deep=True), write_object, pickle_protocol=pickle.HIGHEST_PROTOCOL)
 
     def load_model(self, filename):
         """
-        Load model from saved Pickle instance.
+        Load model from saved torch dump.
 
         Parameters
         ----------
@@ -380,14 +377,17 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             Instance of a child class of `AbstractCalibration`.
         """
 
-        with open(filename, 'rb') as read_object:
-            params = pickle.load(read_object)
+        try:
+            with open(filename, 'rb') as read_object:
+                params = torch.load(read_object)
+        except RuntimeError:
+            raise IOError("Stored models of version <1.1 are not compatible with current version %s" % version)
 
         self.set_params(**params)
         return self
 
     @classmethod
-    def squeeze_generic(cls, a: np.ndarray, axes_to_keep: Union[int, list, tuple]) -> np.ndarray:
+    def squeeze_generic(cls, a: np.ndarray, axes_to_keep: Union[int, Iterable[int]]) -> np.ndarray:
         """
         Squeeze input array a but keep axes defined by parameter 'axes_to_keep' even if the dimension is
         of size 1.
@@ -415,8 +415,8 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         return a.reshape(out_s)
 
     @accepts(np.ndarray, np.ndarray, list, str)
-    def _calc_model_scores(self, confidences: np.ndarray, ground_truth: np.ndarray, model_list: list,
-                           score_function: str = 'BIC') -> np.ndarray:
+    def _calc_model_scores(self, confidences: np.ndarray, ground_truth: np.ndarray,
+                           model_list: List['AbstractCalibration'], score_function: str = 'BIC') -> np.ndarray:
         """
         Calculates the Bayesian Scores for each Histogram Binning model and discards each model which
         gets a score of 0 to speed up predictions later on.
@@ -445,7 +445,20 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         log_likelihood = np.zeros(len(model_list))
         for i, model in enumerate(model_list):
             estimate = model.transform(confidences)
-            log_likelihood[i] = self._log_likelihood(estimate, ground_truth)
+
+            # use torch routines to get log likelihood
+            if self._is_binary_classification():
+                loss = F.binary_cross_entropy(torch.from_numpy(estimate).type(torch.FloatTensor),
+                                              torch.from_numpy(ground_truth).type(torch.FloatTensor),
+                                              reduction='sum')
+
+            # on multiclass, use NLLLoss - this function expects log-probabilities
+            else:
+                loss = F.nll_loss(torch.from_numpy(np.log(estimate)).type(torch.FloatTensor),
+                                  torch.from_numpy(ground_truth).type(torch.FloatTensor),
+                                  reduction='sum')
+
+            log_likelihood[i] = -loss.item()
 
         # get degrees of freedom of each model. This is equivalent to number of groups
         degrees_of_freedom = np.array([x.get_degrees_of_freedom() for x in model_list], dtype=np.int)
@@ -464,8 +477,8 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         return model_scores
 
     @accepts(np.ndarray, np.ndarray, list, str, float)
-    def _elbow(self, confidences: np.ndarray, ground_truth: np.ndarray, model_list: list, score_function: str = 'BIC',
-               alpha: float = 0.001) -> tuple:
+    def _elbow(self, confidences: np.ndarray, ground_truth: np.ndarray, model_list: List['AbstractCalibration'],
+               score_function: str = 'BIC', alpha: float = 0.001) -> Tuple[List[float], List['AbstractCalibration']]:
         """
         Select models by Bayesian score and discard models below a certain threshold with elbow method.
 
@@ -523,7 +536,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         return kept_scores, kept_models
 
     def _create_one_vs_all_models(self, confidences: np.ndarray, ground_truth: np.ndarray,
-                                  model_class: 'AbstractCalibration', *constructor_args) -> list:
+                                  model_class: 'AbstractCalibration', *constructor_args) -> List['AbstractCalibration']:
         """
         Create for K classes K one vs all calibration models.
 
@@ -549,8 +562,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         for label in range(self.num_classes):
 
             if np.where(ground_truth == label)[0].size == 0:
-                logger = logging.getLogger(__name__)
-                logger.warning("Warning: no training data for label %d present" % label)
+                print("WARNING: no training data for label %d present" % label)
                 continue
 
             # get 1 vs all vector depending on current label
@@ -559,16 +571,16 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
             # build an own Histogram Binning model for each label in a 1 vs all manner
             # now it's a k-fold binary classification task
-            binning_model = model_class(*constructor_args, independent_probabilities=self.independent_probabilities)
-            binning_model.fit(onevsall_confidence, onevsall_ground_truth)
+            model = model_class(*constructor_args, independent_probabilities=self.independent_probabilities)
+            model.fit(onevsall_confidence, onevsall_ground_truth)
 
             # add instances to internal list for calibrating new confidence estimates
-            multiclass_instances.append(tuple((label, binning_model)))
+            multiclass_instances.append(tuple((label, model)))
 
         return multiclass_instances
 
     @classmethod
-    def _sort_arrays(cls, array1: np.ndarray, *args) -> tuple:
+    def _sort_arrays(cls, array1: np.ndarray, *args) -> Tuple:
         """
         Sort multiple NumPy arrays by values given with array1.
 
@@ -679,207 +691,3 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         onevsall_conf = confidences[:, label]
         return onevsall_conf
-
-    @dimensions(1, None)
-    def _get_one_hot_encoded_labels(self, labels: np.ndarray, num_classes: int) -> np.ndarray:
-        """
-        Compute one hot encoded label array by given label vector.
-
-        Parameters
-        ----------
-        labels : np.ndarray, shape=(n_samples,)
-            NumPy 1-D array with labels.
-        num_classes : int
-            Total amount of present classes.
-
-        Returns
-        -------
-        np.ndarray
-            NumPy 2-D array with one hot encoded labels.
-        """
-
-        # one hot encoded label vector on multi class calibration
-        return np.eye(num_classes)[labels]
-
-    @dimensions((1, 2), (1, 2))
-    def _nll_loss(self, logit: np.ndarray, ground_truth: np.ndarray) -> float:
-        """
-        Compute negative log-likelihood.
-
-        Parameters
-        ----------
-        logit : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with logits for each prediction.
-            1-D for binary classification, 2-D for multi class (softmax).
-        ground_truth : np.ndarray, shape=(n_samples,)
-            NumPy array with ground truth labels.
-            1-D for binary classification, 2-D for multi class (one-hot encoded).
-
-        Returns
-        -------
-        float
-            float with NLL-Loss.
-        """
-
-        num_samples = ground_truth.shape[0]
-
-        # scale logits by optional parameter 'scale_logits' (cf. Temperature Scaling)
-        # afterwards, compute softmax or sigmoid (depends on binary/multi class)
-        if self.num_classes <= 2 or self.independent_probabilities or self.detection:
-
-            # if array is two dimensional, 2 cases can occur:
-            # - 2nd dimension is length 1 - thus, the dimension can be squeezed
-            # - 2nd dimension is length 2 - logits for y=0 and y=1 - take estimates for y=1 then
-            if len(logit.shape) == 2 and not self.independent_probabilities:
-                logit = logit[:, -1]
-
-            confidences = self._sigmoid(logit)
-        else:
-            # convert ground truth to one hot encoded if necessary
-            if len(ground_truth.shape) == 1:
-                ground_truth = self._get_one_hot_encoded_labels(ground_truth, self.num_classes)
-
-            confidences = self._softmax(logit)
-
-        # clip to epsilon and 1.-epsilon
-        confidences = np.clip(confidences, self.epsilon, 1. - self.epsilon)
-
-        log_likelihood = self._log_likelihood(confidences, ground_truth)
-        return -log_likelihood / num_samples
-
-    @dimensions((1, 2), (1, 2))
-    def _log_likelihood(self, confidences: np.ndarray, ground_truth: np.ndarray) -> float:
-        """
-        Compute log-likelihood of predictions given in confidences with according
-        ground truth information.
-
-        Parameters
-        ----------
-        confidences : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with confidence values for each prediction.
-            1-D for binary classification, 2-D for multi class (softmax).
-        ground_truth : np.ndarray, shape=(n_samples,)
-            NumPy array with ground truth labels.
-            1-D for binary classification, 2-D for multi class (one-hot encoded).
-
-        Returns
-        -------
-        float
-            Log likelihood.
-
-        Raises:
-            ValueError
-                If number of classes is 2 but 1-D NumPy array provided.
-        """
-
-        if self.num_classes > 2:
-            if len(confidences.shape) < 2:
-                raise ValueError("Need 2-D array for multiclass log-likelihood")
-
-            # convert ground truth to one hot encoded if necessary
-            if len(ground_truth.shape) == 1 and len(confidences.shape) == 2:
-                ground_truth = self._get_one_hot_encoded_labels(ground_truth, self.num_classes)
-
-            # clip confidences for log
-            confidences = np.clip(confidences, self.epsilon, 1. - self.epsilon)
-
-            # first, create log of softmax and multiply by according ground truth (0 or 1)
-            # second, sum each class and calculate mean over all samples
-            cross_entropy = np.multiply(ground_truth, np.log(confidences))
-            log_likelihood = np.sum(cross_entropy)
-
-        else:
-
-            # binary classification problem but got two entries? (probability for 0 and 1 separately)?
-            # we only need probability p for Y=1 (probability for 0 is (1-p) )
-            if len(confidences.shape) == 2:
-                confidences = np.array(confidences[:, -1])
-
-            # clip confidences for log - extra clip for negative values necessary due to
-            # numerical stability
-            negative_confidences = np.clip(1. - confidences, self.epsilon, 1. - self.epsilon)
-            confidences = np.clip(confidences, self.epsilon, 1. - self.epsilon)
-
-            # first, create log of sigmoid and multiply by according ground truth (0 or 1)
-            # second, calculate mean over all samples
-            cross_entropy = np.multiply(ground_truth, np.log(confidences)) + \
-                            np.multiply(1. - ground_truth, np.log(negative_confidences))
-
-            log_likelihood = np.sum(cross_entropy)
-
-        return float(log_likelihood)
-
-    @dimensions((1, 2))
-    def _sigmoid(self, logit: np.ndarray) -> np.ndarray:
-        """
-        Calculate Sigmoid of Logit
-
-        Parameters
-        ----------
-        logit : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with logit of Neural Network.
-
-        Returns
-        -------
-        np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with sigmoid output.
-        """
-
-        return safe_sigmoid(logit)
-
-    @dimensions((1, 2))
-    def _inverse_sigmoid(self, confidence: np.ndarray) -> np.ndarray:
-        """
-        Calculate inverse of Sigmoid to get Logit.
-
-        Parameters
-        ----------
-        confidence : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with Sigmoid output.
-
-        Returns
-        -------
-        np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with logit.
-        """
-
-        # return - np.log( (1./(confidence + self.epsilon)) - 1)
-        clipped = np.clip(confidence, self.epsilon, 1. - self.epsilon)
-        return safe_logit(clipped)
-
-    @dimensions(2)
-    def _softmax(self, logit: np.ndarray) -> np.ndarray:
-        """
-        Calculate Softmax of multi class logit.
-
-        Parameters
-        ----------
-        logit : np.ndarray, shape=(n_samples, n_classes)
-            NumPy 2-D array with logits.
-
-        Returns
-        -------
-        np.ndarray, shape=(n_samples, n_classes)
-            NumPy 2-D array with softmax output.
-        """
-
-        return safe_softmax(logit, axis=1)
-
-    @dimensions(2)
-    def _inverse_softmax(self, confidences: np.ndarray) -> np.ndarray:
-        """
-        Calculate inverse of multi class softmax.
-
-        Parameters
-        ----------
-        confidences : np.ndarray, shape=(n_samples, n_classes)
-            NumPy 2-D array with softmaxes.
-
-        Returns
-        -------
-        np.ndarray, shape=(n_samples, n_classes)
-            NumPy 2-D array with logits.
-        """
-
-        clipped = np.clip(confidences, self.epsilon, 1. - self.epsilon)
-        return np.log(clipped)

@@ -1,16 +1,23 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
+
+from collections import OrderedDict
+from typing import Union
 
 import numpy as np
-from scipy.optimize import minimize
-from netcal import AbstractCalibration, accepts, dimensions
+import torch
+import torch.distributions.constraints as constraints
+import pyro
+import pyro.distributions as dist
+
+from netcal.scaling import AbstractLogisticRegression
 
 
-class LogisticCalibration(AbstractCalibration):
+class LogisticCalibration(AbstractLogisticRegression):
     """
     On classification, apply the logistic calibration method aka Platt scaling to obtain a
     calibration mapping. This method is originally proposed by [1]_.
@@ -66,6 +73,23 @@ class LogisticCalibration(AbstractCalibration):
     ----------
     temperature_only : bool, default: False
         If True, use Temperature Scaling instead of Platt/Vector Scaling.
+    method : str, default: "mle"
+        Method that is used to obtain a calibration mapping:
+        - 'mle': Maximum likelihood estimate without uncertainty using a convex optimizer.
+        - 'momentum': MLE estimate using Momentum optimizer for non-convex optimization.
+        - 'variational': Variational Inference with uncertainty.
+        - 'mcmc': Markov-Chain Monte-Carlo sampling with uncertainty.
+    momentum_epochs : int, optional, default: 1000
+            Number of epochs used by momentum optimizer.
+    mcmc_steps : int, optional, default: 20
+        Number of weight samples obtained by MCMC sampling.
+    mcmc_chains : int, optional, default: 1
+        Number of Markov-chains used in parallel for MCMC sampling (this will result
+        in mcmc_steps * mcmc_chains samples).
+    mcmc_warmup_steps : int, optional, default: 100
+        Warmup steps used for MCMC sampling.
+    vi_epochs : int, optional, default: 1000
+        Number of epochs used for ELBO optimization.
     detection : bool, default: False
         If False, the input array 'X' is treated as multi-class confidence input (softmax)
         with shape (n_samples, [n_classes]).
@@ -75,6 +99,9 @@ class LogisticCalibration(AbstractCalibration):
         Boolean for multi class probabilities.
         If set to True, the probability estimates for each
         class are treated as independent of each other (sigmoid).
+    use_cuda : str or bool, optional, default: False
+        Specify if CUDA should be used. If str, you can also specify the device
+        number like 'cuda:0', etc.
 
     References
     ----------
@@ -91,113 +118,44 @@ class LogisticCalibration(AbstractCalibration):
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+
+    .. [4] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
+       "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
+       2021 IEEE Intelligent Vehicles Symposium (IV), 2021
     """
 
-    @accepts(bool, bool, bool)
-    def __init__(self, temperature_only: bool = False, detection: bool = False, independent_probabilities: bool = False):
-        """
-        Constructor
+    def __init__(self, *args, temperature_only: bool = False, **kwargs):
+        """ Create an instance of `LogisticCalibration`. Detailed parameter description given in class docs. """
 
-        Parameters
-        ----------
-        temperature_only : bool, default: False
-            If True, use Temperature Scaling instead of Platt/Vector Scaling.
-        detection : bool, default: False
-            If False, the input array 'X' is treated as multi-class confidence input (softmax)
-            with shape (n_samples, [n_classes]).
-            If True, the input array 'X' is treated as a box predictions with several box features (at least
-            box confidence must be present) with shape (n_samples, [n_box_features]).
-        independent_probabilities : bool, optional, default: False
-            Boolean for multi class probabilities.
-            If set to True, the probability estimates for each
-            class are treated as independent of each other (sigmoid).
-        """
-
-        super().__init__(detection=detection, independent_probabilities=independent_probabilities)
-
+        super().__init__(*args, **kwargs)
         self.temperature_only = temperature_only
 
-        self._weights = None
-        self._num_combination = 0
+    # -------------------------------------------------
 
-    def clear(self):
-        """
-        Clear model parameters.
-        """
+    @property
+    def intercept(self) -> Union[np.ndarray, float]:
+        """ Getter for intercept of logistic calibration. """
+        if self._sites is None:
+            raise ValueError("Intercept is None. You have to call the method 'fit' first.")
 
-        super().clear()
-
-        self._weights = None
-        self._num_combination = 0
-
-    @dimensions((1, 2), (1, 2))
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'LogisticCalibration':
-        """
-        Build logitic calibration model.
-
-        Parameters
-        ----------
-        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
-            NumPy array with confidence values for each prediction on classification with shapes
-            1-D for binary classification, 2-D for multi class (softmax).
-            On detection, this array must have 2 dimensions with number of additional box features in last dim.
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
-
-        Returns
-        -------
-        LogisticCalibration
-            Instance of class :class:`LogisticCalibration`.
-        """
-
-        X, y = super().fit(X, y)
-        data_input = self._build_data_input(X)
-
-        # convert ground truth to one hot if not binary and not detection mode
-        if self.num_classes > 2 and not self.detection:
-            y = self._get_one_hot_encoded_labels(y, self.num_classes)
-
-        # initialize weights
-        # on temperature scaling, number of weights is single scalar
         if self.temperature_only:
-            initial_weights = np.array(1.0)
+            raise ValueError("There is no intercept for temperature scaling.")
 
-        else:
-            # detection mode: number of weights is number of features + bias
-            # initialize weights equally weighted and bias slightly greater than 0
-            if self.detection:
-                num_weights = X.shape[1] + 1
-                initial_weights = np.ones(num_weights) / float(num_weights-1)
-                initial_weights[0] = self.epsilon
+        return self._sites['bias']['values']
 
-            # binary classification: use one weight and one bias
-            elif self._is_binary_classification():
-                num_weights = 2
-                initial_weights = np.ones(num_weights)
-                initial_weights[0] = self.epsilon
+    @property
+    def weights(self) -> Union[np.ndarray, float]:
+        """ Getter for weights of logistic calibration. """
+        if self._sites is None:
+            raise ValueError("Weights is None. You have to call the method 'fit' first.")
 
-            # multiclass classification: use one weight and one bias for each class separately
-            else:
-                num_weights = 2*self.num_classes
-                initial_weights = np.ones(num_weights)
-                initial_weights[:self.num_classes] = self.epsilon
+        return self._sites['weights']['values']
 
-        # -----------------------------
+    # -------------------------------------------------
 
-        # invoke SciPy's optimization function
-        result = minimize(fun=self._loss_function, x0=initial_weights, args=(data_input, y))
-
-        # get weights after optimization
-        self._weights = result.x
-
-        return self
-
-    @dimensions((1, 2))
-    def transform(self, X: np.ndarray) -> np.ndarray:
+    def prepare(self, X: np.ndarray) -> torch.Tensor:
         """
-        After model calibration, this function is used to get calibrated outputs of uncalibrated
-        confidence estimates.
+        Preprocessing of input data before called at the beginning of the fit-function.
 
         Parameters
         ----------
@@ -208,39 +166,8 @@ class LogisticCalibration(AbstractCalibration):
 
         Returns
         -------
-        np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with calibrated confidence estimates.
-            1-D for binary classification, 2-D for multi class (softmax).
-        """
-
-        X = super().transform(X)
-
-        # get data input and logits
-        data_input = self._build_data_input(X)
-        logit = self._calculate_logit(data_input, self._weights)
-
-        if self.detection or self._is_binary_classification():
-            calibrated = self._sigmoid(logit)
-        else:
-            calibrated = self._softmax(logit)
-
-        return self.squeeze_generic(calibrated, axes_to_keep=0)
-
-    def _build_data_input(self, X: np.ndarray) -> np.ndarray:
-        """
-        Build data input for Vector/Platt/Temperature scaling (even for detection mode).
-
-        Parameters
-        ----------
-        X : np.ndarray, shape=(n_samples, [n_classes]) or (n_samples, [n_box_features])
-            NumPy array with confidence values for each prediction on classification with shapes
-            1-D for binary classification, 2-D for multi class (softmax).
-            On detection, this array must have 2 dimensions with number of additional box features in last dim.
-
-        Returns
-        -------
-        np.ndarray
-            Data input to calculate logits.
+        torch.Tensor
+            Prepared data vector X as torch tensor.
         """
 
         if len(X.shape) == 1:
@@ -258,70 +185,125 @@ class LogisticCalibration(AbstractCalibration):
         else:
             data_input = self._inverse_softmax(X)
 
-        return data_input
+        return torch.Tensor(data_input)
 
-    def _calculate_logit(self, data_input: np.ndarray, weights: np.ndarray) -> np.ndarray:
+    def prior(self):
         """
-        Calculate logit by given data input and weights. The weights are decomposed automatically.
-
-        Parameters
-        ----------
-        data_input : np.ndarray
-            Data input to calculate logits.
-        weights : np.ndarray
-            Weights for scaling and shifting data input to calculate logits.
-
-        Returns
-        -------
-        np.ndarray
-            Scaled and shifted logits.
+        Prior definition of the weights used for log regression. This function has to set the
+        variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
         """
 
-        # only one weight is equal to temperature scaling - set bias to 0
-        if len(weights) == 1:
-            bias = 0.0
-            logit = (data_input * weights) + bias
+        self._sites = OrderedDict()
 
-        # more than one weight is vector/platt scaling or detection calibration
+        # on temperature scaling, we only have one single weight for all classes
+        if self.temperature_only:
+            self._sites['weights'] = {
+                'values': None,
+                'constraint': constraints.real,
+                'init': {
+                    'mean': torch.ones(1),
+                    'scale': torch.ones(1)
+                    },
+                'prior': dist.Normal(torch.ones(1), 10 * torch.ones(1), validate_args=True)
+            }
+
         else:
 
-            # on detection, perform a dot product operation
-            # this is equivalent to (column-wise) multiplication on binary case
+            # on detection mode or binary classification, we have a weight for each given feature (one for binary
+            # classification) and bias
             if self.detection or self._is_binary_classification():
-                bias = weights[0]
-                weights = np.array(weights[1:]).reshape(-1, 1)
-                logit = np.matmul(data_input, weights) + bias
+                num_bias = 1
+                num_weights = self.num_features
 
-            # on binary classification, extract bias and weights and perform (column-wise) multiplication
-            # this is equivalent to a weight matrix restricted to a diagonal
+            # on multiclass classification, we have one weight and one bias for each class separately
             else:
-                bias = weights[:self.num_classes]
-                weights = np.array(weights[self.num_classes:])
-                logit = np.multiply(data_input, weights) + bias
+                num_bias = self.num_classes
+                num_weights = self.num_classes
 
-        return logit
+            # set properties for "weights"
+            self._sites['weights'] = {
+                'values': None,
+                'constraint': constraints.real,
+                'init': {
+                    'mean': torch.ones(num_weights),
+                    'scale': torch.ones(num_weights)
+                },
+                'prior': dist.Normal(torch.ones(num_weights), 10 * torch.ones(num_weights), validate_args=True),
+            }
 
-    @dimensions(1, (1, 2), (1, 2))
-    def _loss_function(self, weights: np.ndarray, data_input: np.ndarray, y: np.ndarray) -> float:
+            # set properties for "bias"
+            self._sites['bias'] = {
+                'values': None,
+                'constraint': constraints.real,
+                'init': {
+                    'mean': torch.zeros(num_bias),
+                    'scale': torch.ones(num_bias)
+                },
+                'prior': dist.Normal(torch.zeros(num_bias), 10 * torch.ones(num_bias), validate_args=True),
+            }
+
+    def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
         """
-        Wrapper function for SciPy's loss. This is simply NLL-Loss.
-        This wrapper is necessary because the first parameter is interpreted as the optimization parameter.
+        Definition of the log regression model.
 
         Parameters
         ----------
-        weights : np.ndarray, shape=(3,) or (2*num_features + 1,)
-            Weights for logistic fit with dependencies.
-        data_input : np.ndarray, shape=(n_samples, 2)
-            NumPy 2-D array with data input.
-        y : np.ndarray, shape=(n_samples, [n_classes])
-            NumPy array with ground truth labels.
-            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+        X : torch.Tensor, shape=(n_samples, n_log_regression_features)
+            Input data that has been prepared by "self.prepare" function call.
+        y : torch.Tensor, shape=(n_samples, [n_classes])
+            Torch tensor with ground truth labels.
+            Either as label vector (1-D) or as one-hot encoded ground truth array (2-D) (for multiclass MLE only).
 
         Returns
         -------
-        float
-            NLL-Loss
+        torch.Tensor, shape=(n_samples, [n_classes])
+            Logit of the log regression model.
         """
 
-        logit = self._calculate_logit(data_input, weights)
-        return self._nll_loss(logit, y)
+        # sample from prior - on MLE, this weight will be set as conditional
+        weights = pyro.sample("weights", self._sites["weights"]["prior"])
+
+        if self.temperature_only:
+            bias = 0.
+        else:
+            bias = pyro.sample("bias", self._sites["bias"]["prior"])
+
+        # on detection or binary classification, use dot product to sum up all given features to one logit
+        if self.detection or self._is_binary_classification():
+
+            # we need squeeze to remove last (unnecessary) dim to avoid site-effects
+            # temperature scaling: sinlge scalar
+            if self.temperature_only:
+                def logit_op(x, w, b): return torch.squeeze(torch.sum(torch.mul(x, w), dim=1))
+
+            # platt scaling: one weight for each feature given
+            else:
+                weights = torch.reshape(weights, (-1, 1))
+                def logit_op(x, w, b): return torch.squeeze(torch.matmul(x, w) + b)
+
+            # define as probabilistic output the sigmoid and a bernoulli distribution
+            prob_op = torch.sigmoid
+            dist_op = dist.Bernoulli
+
+        else:
+
+            # the op for calculating the logit is an element-wise multiplication
+            # for vector scaling and to keep multinomial output
+            def logit_op(x, w, b): return torch.mul(x, w) + b
+
+            # define as probabilistic output the softmax and a categorical distribution
+            def prob_op(logit): return torch.softmax(logit, dim=1)
+            dist_op = dist.Categorical
+
+        # the first dimension of the given input data is the "independent" sample dimension
+        with pyro.plate("data", X.shape[0]):
+
+            # calculate logit
+            logit = logit_op(X, weights, bias)
+
+            # if MLE, (slow) sampling is not necessary. However, this is needed for 'variational' and 'mcmc'
+            if self.method in ['variational', 'mcmc']:
+                probs = prob_op(logit)
+                pyro.sample("obs", dist_op(probs=probs, validate_args=True), obs=y)
+
+        return logit

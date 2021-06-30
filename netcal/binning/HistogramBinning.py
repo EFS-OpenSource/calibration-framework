@@ -1,24 +1,23 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 import numpy as np
 from scipy.stats import binned_statistic_dd
-from typing import Union
+from typing import Union, Iterable
 from netcal import AbstractCalibration, dimensions, accepts
 
 
 class HistogramBinning(AbstractCalibration):
     """
-    Simple Histogram Binning calibration method. This method is originally proposed by [1]_. Each prediction is sorted into a bin
+    Simple Histogram Binning calibration method [1]_. Each prediction is sorted into a bin
     and assigned its calibrated confidence estimate. This method normally works for binary
     classification. For multiclass classification, this method is applied into a 1-vs-all manner [2]_.
 
-    The bin boundaries are either chosen to be
-    equal length intervals or to equalize the number of samples in each bin.
+    The bin boundaries are either chosen to be equal length intervals or to equalize the number of samples in each bin.
 
     On object detection, use a multidimensional binning to include additional information of the box
     regression branch [3]_.
@@ -60,7 +59,7 @@ class HistogramBinning(AbstractCalibration):
     """
 
     @accepts((int, tuple, list), bool, bool, bool)
-    def __init__(self, bins: Union[int, tuple, list] = 10, equal_intervals: bool = True,
+    def __init__(self, bins: Union[int, Iterable[int]] = 10, equal_intervals: bool = True,
                  detection: bool = False, independent_probabilities: bool = False):
         """
         Create an instance of `HistogramBinning`.
@@ -90,9 +89,6 @@ class HistogramBinning(AbstractCalibration):
         self.bins = bins
         self.equal_intervals = equal_intervals
 
-        if not self.equal_intervals:
-            raise ValueError("Parameter \'equal_intervals=False\' is currently not implemented.")
-
         # for multi class calibration with K classes, K binary calibration models are needed
         self._multiclass_instances = []
 
@@ -119,8 +115,9 @@ class HistogramBinning(AbstractCalibration):
 
         self._multiclass_instances.clear()
 
-    @dimensions((1, 2), (1, 2))
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'HistogramBinning':
+    @dimensions((1, 2), (1, 2), None, None, None)
+    def fit(self, X: np.ndarray, y: np.ndarray, random_state: int = None,
+                  tensorboard: bool = False, log_dir: str = None) -> 'HistogramBinning':
         """
         Function call to build the calibration model.
 
@@ -133,6 +130,8 @@ class HistogramBinning(AbstractCalibration):
         y : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with ground truth labels.
             Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+        random_state : int, optional, default: None
+            Fix the random seed for the random number (only for compatibility here)
 
         Returns
         -------
@@ -149,7 +148,7 @@ class HistogramBinning(AbstractCalibration):
         if not self._is_binary_classification() and not self.detection:
 
             # create multiple one vs all models
-            self._multiclass_instances = self._create_one_vs_all_models(X, y, HistogramBinning, self.bins)
+            self._multiclass_instances = self._create_one_vs_all_models(X, y, HistogramBinning, self.bins, self.equal_intervals)
             return self
 
         # ---------------------------------------
@@ -201,6 +200,17 @@ class HistogramBinning(AbstractCalibration):
         # get bin bounds
         self._bin_bounds = [np.linspace(0.0, 1.0, bin + 1) for bin in self.bins]
 
+        # on equal_intervals=True, simply use linspace
+        # if the goal is to equalize the amount of samples in each bin, use np.quantile
+        if not self.equal_intervals:
+            for dim, bounds in enumerate(self._bin_bounds):
+                quantile = np.quantile(X[:, dim], q=bounds, axis=0)
+
+                # set lower and upper bounds to confidence limits
+                quantile[0] = 0.
+                quantile[-1] = 1.
+                self._bin_bounds[dim] = quantile
+
         # X must have the same shape as y
         acc_hist, _, _ = binned_statistic_dd(X, matched, statistic='mean', bins=self._bin_bounds)
 
@@ -217,8 +227,8 @@ class HistogramBinning(AbstractCalibration):
 
         return self
 
-    @dimensions((1, 2))
-    def transform(self, X: np.ndarray) -> np.ndarray:
+    @dimensions((1, 2), None, None)
+    def transform(self, X: np.ndarray, num_samples: int = 1, random_state: int = None) -> np.ndarray:
         """
         After model calibration, this function is used to get calibrated outputs of uncalibrated
         confidence estimates.
@@ -228,6 +238,11 @@ class HistogramBinning(AbstractCalibration):
         X : np.ndarray, shape=(n_samples, [n_classes])
             NumPy array with uncalibrated confidence estimates.
             1-D for binary classification, 2-D for multi class (softmax).
+        num_samples : int, optional, default: 1000
+            Number of samples generated on MCMC sampling or Variational Inference - only for compatibility and
+            not used by Histogram Binning!
+        random_state : int, optional, default: None
+            Fix the random seed for the random number
 
         Returns
         -------
@@ -261,6 +276,9 @@ class HistogramBinning(AbstractCalibration):
 
             if len(X.shape) == 1:
                 X = np.reshape(X, (-1, 1))
+
+            if self.ndim != X.shape[1]:
+                raise RuntimeError("Histogram binning has been trained for %d dimensions but only %d are provided." % (self.ndim, X.shape[1]))
 
             # on detection, this is equivalent to the number of features
             # on binary classification, this is simply 1
@@ -300,3 +318,10 @@ class HistogramBinning(AbstractCalibration):
         """
 
         return int(np.prod(self.bins))
+
+    @property
+    def ndim(self):
+        if self._bin_map is not None:
+            return self._bin_map.ndim
+        else:
+            return -1

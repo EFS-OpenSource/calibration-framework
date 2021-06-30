@@ -27,7 +27,7 @@ copyright = '2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germa
 author = 'Fabian Kueppers'
 
 # The full version, including alpha/beta/rc tags
-release = '1.1.3'
+release = '1.2.0'
 
 
 # -- General configuration ---------------------------------------------------

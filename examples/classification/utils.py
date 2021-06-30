@@ -1,9 +1,9 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 import os
 import numpy as np
@@ -14,9 +14,9 @@ from netcal.metrics import ACE, ECE, MCE
 from netcal.presentation import ReliabilityDiagram
 
 
-@global_accepts(list, str, int, (None, str), float, bool)
+@global_accepts(list, str, int, (None, str), float, bool, str)
 def single_example(models: list, datafile: str, bins: int, diagram: str = None,
-                   validation_split: float = 0.7, save_models: bool = False) -> int:
+                   validation_split: float = 0.7, save_models: bool = False, domain: str = ".") -> int:
     """
     Measure miscalibration of given methods on specified dataset.
 
@@ -34,6 +34,8 @@ def single_example(models: list, datafile: str, bins: int, diagram: str = None,
         Split ratio between build set and validation set.
     save_models : bool
         True if instances of calibration methods should be stored.
+    domain : str, optional, default: "."
+        Domain/directory where to store the results.
 
     Returns
     -------
@@ -80,7 +82,7 @@ def single_example(models: list, datafile: str, bins: int, diagram: str = None,
         instance.fit(build_set_sm, build_set_gt)
 
         if save_models:
-            instance.save_model("./models/%s.pkl" % name)
+            instance.save_model("%s/models/%s.pkl" % (domain, name))
 
     # ------------------------------------------
 
@@ -126,8 +128,8 @@ def single_example(models: list, datafile: str, bins: int, diagram: str = None,
     return 0
 
 
-@global_accepts(list, str, int, bool)
-def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bool = False) -> int:
+@global_accepts(list, str, int, bool, str)
+def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bool = False, domain: str = '.') -> int:
     """
     5x2 cross validation on given methods on specified dataset.
 
@@ -141,12 +143,17 @@ def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bo
         Number of bins used by ECE, MCE and ReliabilityDiagram.
     save_models : bool, optional, default: False
         True if instances of calibration methods should be stored.
+    domain : str, optional, default: "."
+        Domain/directory where to store the results.
 
     Returns
     -------
     int
         0 on success, -1 otherwise
     """
+
+    network = datafile[datafile.rfind("/")+1:datafile.rfind(".npz")]
+    seeds = [60932, 29571058, 127519, 23519410, 74198274]
 
     if not os.path.exists(datafile):
         print("Dataset \'%s\' does not exist" % datafile)
@@ -178,13 +185,20 @@ def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bo
     all_ece = []
     all_mce = []
 
-    for i in range(5):
+    it = 0
+    for i, seed in enumerate(seeds):
+
+        np.random.seed(seed)
+
         # split data set into build set and validation set
         build_set_gt, validation_set_gt, build_set_sm, validation_set_sm = train_test_split(ground_truth, predictions,
+                                                                                            random_state=seed,
                                                                                             test_size=0.5,
                                                                                             stratify=ground_truth)
 
-        for _ in range(2):
+        for j in range(2):
+
+            calibrated_data = {}
 
             # 5x2 cross validation - flip build/val set after each iteration
             build_set_gt, validation_set_gt = validation_set_gt, build_set_gt
@@ -219,18 +233,20 @@ def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bo
 
                 instance.fit(build_set_sm, build_set_gt)
                 if save_models:
-                    instance.save_model("./models/%s_run_%d.pkl" % (name, i))
+                    instance.save_model("%s/models/%s-%s-%d.pkl" % (domain, network, name, i))
 
-            # ------------------------------------------
-
-            # perform predictions
-            for model in models:
-                _, instance = model
                 prediction = instance.transform(validation_set_sm)
+                calibrated_data[name] = prediction
 
                 if n_classes > 2:
+                    if prediction.ndim == 3:
+                        prediction = np.mean(prediction, axis=0)
+
                     labels = np.argmax(prediction, axis=1)
                 else:
+                    if prediction.ndim == 2:
+                        prediction = np.mean(prediction, axis=0)
+
                     labels = np.where(prediction > 0.5, np.ones_like(validation_set_gt),
                                       np.zeros_like(validation_set_gt))
 
@@ -246,6 +262,15 @@ def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bo
             all_ace.append(it_all_ace)
             all_ece.append(it_all_ece)
             all_mce.append(it_all_mce)
+
+            filename = "%s/results/%s_%02d.npz" % (domain, network, it)
+            with open(filename, "wb") as open_file:
+                np.savez_compressed(open_file,
+                                    train_gt=build_set_gt, test_gt=validation_set_gt,
+                                    train_scores=build_set_sm, test_scores=validation_set_sm,
+                                    **calibrated_data)
+
+            it += 1
 
     # convert to NumPy arrays and reduce mean afterwards
     all_accuracy = np.array(all_accuracy)

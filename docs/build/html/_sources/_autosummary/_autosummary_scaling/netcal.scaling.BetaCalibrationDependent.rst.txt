@@ -14,13 +14,23 @@ netcal.scaling.BetaCalibrationDependent
    
       ~BetaCalibrationDependent.__init__
       ~BetaCalibrationDependent.clear
+      ~BetaCalibrationDependent.convex
       ~BetaCalibrationDependent.fit
       ~BetaCalibrationDependent.fit_transform
       ~BetaCalibrationDependent.get_params
+      ~BetaCalibrationDependent.guide
       ~BetaCalibrationDependent.load_model
+      ~BetaCalibrationDependent.mask
+      ~BetaCalibrationDependent.mcmc
+      ~BetaCalibrationDependent.model
+      ~BetaCalibrationDependent.momentum
+      ~BetaCalibrationDependent.prepare
+      ~BetaCalibrationDependent.prior
       ~BetaCalibrationDependent.save_model
       ~BetaCalibrationDependent.set_params
       ~BetaCalibrationDependent.squeeze_generic
+      ~BetaCalibrationDependent.to
       ~BetaCalibrationDependent.transform
+      ~BetaCalibrationDependent.variational
    
    

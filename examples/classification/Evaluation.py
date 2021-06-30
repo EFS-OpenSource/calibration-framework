@@ -1,21 +1,19 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 import os
 import pandas as pd
 import numpy as np
-from typing import Union
-from matplotlib import pyplot as plt
+from typing import List
 
-from netcal.metrics import ACE, ECE, MCE
-from netcal.presentation import ReliabilityDiagram
+from netcal.metrics import ECE
 
 
-def read(base_dir: str, network: str) -> list:
+def read(base_dir: str, network: str) -> List:
     """
     Read calibrated data set from NumPy archive.
     Returns
@@ -37,7 +35,7 @@ def read(base_dir: str, network: str) -> list:
     return data
 
 
-def measure(key: str, ground_truth: list, data: list, uncertainty: str, bins: int):
+def measure(key: str, ground_truth: List, data: List, uncertainty: str, bins: int):
     """ Measure miscalibration (batched mode) """
 
     print("Measure: %s" % key)
@@ -64,8 +62,8 @@ def measure(key: str, ground_truth: list, data: list, uncertainty: str, bins: in
     return np.mean(miscalibration)
 
 
-def measure_miscalibration(bins: int, methods: list, uncertainty: str,
-                           map_data: list = None, mcmc_data: list = None, vi_data: list = None):
+def measure_miscalibration(bins: int, methods: List, uncertainty: str,
+                           map_data: List = None, mcmc_data: List = None, vi_data: List = None):
     """
     Measure miscalibration and write to stdout.
 
@@ -95,7 +93,7 @@ def measure_miscalibration(bins: int, methods: list, uncertainty: str,
     columns_methods = [[] for _ in methods]
 
     if map_data is not None:
-        types.append('MAP')
+        types.append('MLE')
         column_baseline.append(measure('test_scores', **map_kwargs))
 
         for i, method in enumerate(methods):

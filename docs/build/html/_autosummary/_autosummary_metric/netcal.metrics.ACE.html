@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.metrics.ACE &#8212; calibration-framework 1.1.3 documentation</title>
+    <title>netcal.metrics.ACE &#8212; calibration-framework 1.2.0 documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="../netcal.metrics.html" title="netcal.metrics"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.1.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../netcal.metrics.html" accesskey="U">netcal.metrics</a> &#187;</li> 
       </ul>
     </div>  
@@ -49,7 +49,7 @@
 <h1>netcal.metrics.ACE<a class="headerlink" href="#netcal-metrics-ace" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="netcal.metrics.ACE">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.metrics.</code><code class="sig-name descname">ACE</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">tuple</em>, <em class="sig-param">list] = 10</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">sample_threshold: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ACE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">netcal.metrics.</code><code class="sig-name descname">ACE</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">Iterable[int]] = 10</em>, <em class="sig-param">equal_intervals: bool = True</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">sample_threshold: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ACE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.Miscalibration._Miscalibration</span></code></p>
 <p>Average Calibration Error (ACE).
 This metric is used on classification <a class="footnote-reference brackets" href="#id3" id="id1">1</a> or as Detection Average Calibration Error (D-ACE)
@@ -65,10 +65,13 @@ The main difference to <a class="reference internal" href="netcal.metrics.ECE.ht
 <li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the Histogram Binning.
 On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
 If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>equal_intervals</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: True</em>) – If True, the bins have the same width. If False, the bins are splitted to equalize
+the number of samples in each bin.</p></li>
 <li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
 with shape (n_samples, [n_classes]).
 If True, the input array ‘X’ is treated as a box predictions with several box features (at least
 box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
+<li><p><strong>sample_threshold</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: 1</em>) – Bins with an amount of samples below this threshold are not included into the miscalibration metrics.</p></li>
 </ul>
 </dd>
 </dl>
@@ -83,7 +86,8 @@ Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
 <dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
 <dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
 “Multivariate Confidence Calibration for Object Detection.”
-The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.</p>
+The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
+<a class="reference external" href="https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf">Get source online</a></p>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -93,11 +97,23 @@ The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Worksh
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, detection, sample_threshold])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, equal_intervals, detection, …])</p></td>
 <td><p>Constructor.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y[, return_map, return_num_samples])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code>(bin_bounds, samples, *values[, nan])</p></td>
+<td><p>Perform binning on value (and all additional values passed) based on samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y[, batched, uncertainty, …])</p></td>
 <td><p>Measure calibration by given predictions with confidence and the according ground truth.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Check input data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code>(metric, acc_hist, conf_hist, …)</p></td>
+<td><p>Determine miscalibration based on passed histograms.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce</span></code>(histogram, distribution, axis[, …])</p></td>
+<td><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
 <td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
@@ -105,54 +121,128 @@ The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Worksh
 </tbody>
 </table>
 <dl class="method">
-<dt id="netcal.metrics.ACE.measure">
-<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em>, <em class="sig-param">return_map: bool = False</em>, <em class="sig-param">return_num_samples: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[numpy.ndarray, tuple]<a class="headerlink" href="#netcal.metrics.ACE.measure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure calibration by given predictions with confidence and the according ground truth.
-Assume binary predictions with y=1.</p>
+<dt id="netcal.metrics.ACE.binning">
+<code class="sig-name descname">binning</code><span class="sig-paren">(</span><em class="sig-param">bin_bounds: List</em>, <em class="sig-param">samples: numpy.ndarray</em>, <em class="sig-param">*values: Iterable</em>, <em class="sig-param">nan: float = 0.0</em><span class="sig-paren">)</span> &#x2192; Tuple<a class="headerlink" href="#netcal.metrics.ACE.binning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform binning on value (and all additional values passed) based on samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
-1-D for binary classification, 2-D for multi class (softmax).
-On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
-Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
-<li><p><strong>return_map</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, return map with miscalibration metric separated into all remaining dimension bins.</p></li>
-<li><p><strong>return_num_samples</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, also return the number of samples in each bin.</p></li>
+<li><p><strong>bin_bounds</strong> (<em>list</em><em>, </em><em>length=samples.shape</em><em>[</em><em>1</em><em>]</em>) – Binning boundaries used for each dimension given in ‘samples’ parameter.</p></li>
+<li><p><strong>samples</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Array used to group all samples into bins.</p></li>
+<li><p><strong>*values</strong> (<em>instances np.ndarray of shape</em><em> (</em><em>n_samples</em><em>, </em><em>1</em><em>)</em>) – Arrays whose values are binned.</p></li>
+<li><p><strong>nan</strong> (<em>float</em><em>, </em><em>optional default: 0.0</em>) – If a bin has no samples or less than defined sample_threshold, the according bin is marked as
+NaN. Specify fill float to insert instead of NaN.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Always returns miscalibration metric.
-If ‘return_map’ is False, return ACE only (or num_samples map).
-If ‘return_map’ is True, return tuple with ACE and map over all bins.
-If ‘return_num_samples’ is False, ACE only (or ACE map).
-If ‘return_num_samples’ is True, return tuple with ACE and number of samples in each bin.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float or tuple of (float, np.ndarray) or tuple of (float, np.ndarray, np.ndarray)</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple of length equal to the amount of passed value arrays with binning schemes and an additional histogram</em></p></li>
+<li><p><em>with number of samples in each bin as well as an index tuple containing the bin indices.</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="netcal.metrics.ACE.squeeze_generic">
-<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, list, tuple]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.metrics.ACE.squeeze_generic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
-of size 1.</p>
+<dt id="netcal.metrics.ACE.measure">
+<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param">X: Union[Iterable[numpy.ndarray], numpy.ndarray], y: Union[Iterable[numpy.ndarray], numpy.ndarray], batched: bool = False, uncertainty: str = None, return_map: bool = False, return_num_samples: bool = False, return_uncertainty_map: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[float, Tuple]<a class="headerlink" href="#netcal.metrics.ACE.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure calibration by given predictions with confidence and the according ground truth.
+Assume binary predictions with y=1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
-<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
+<li><p><strong>X</strong> (<em>iterable of np.ndarray</em><em>, or </em><em>np.ndarray of shape=</em><em>(</em><em>[</em><em>n_bayes</em><em>]</em><em>, </em><em>n_samples</em><em>, </em><em>[</em><em>n_classes/n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+If 3-D, interpret first dimension as samples from an Bayesian estimator with mulitple data points
+for a single sample (e.g. variational inference or MC dropout samples).
+If this is an iterable over multiple instances of np.ndarray and parameter batched=True,
+interpret this parameter as multiple predictions that should be averaged.
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
+<li><p><strong>y</strong> (<em>iterable of np.ndarray with same length as X</em><em> or </em><em>np.ndarray of shape=</em><em>(</em><em>[</em><em>n_bayes</em><em>]</em><em>, </em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
+Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+If 3-D, interpret first dimension as samples from an Bayesian estimator with mulitple data points
+for a single sample (e.g. variational inference or MC dropout samples).
+If iterable over multiple instances of np.ndarray and parameter batched=True,
+interpret this parameter as multiple predictions that should be averaged.</p></li>
+<li><p><strong>batched</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Multiple predictions can be evaluated at once (e.g. cross-validation examinations) using batched-mode.
+All predictions given by X and y are separately evaluated and their results are averaged afterwards
+for visualization.</p></li>
+<li><p><strong>uncertainty</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – <p>Define uncertainty handling if input X has been sampled e.g. by Monte-Carlo dropout or similar methods
+that output an ensemble of predictions per sample. Choose one of the following options:
+- flatten:  treat everything as a separate prediction - this option will yield into a slightly better</p>
+<blockquote>
+<div><p>calibration performance but without the visualization of a prediction interval.</p>
+</div></blockquote>
+<ul>
+<li><dl class="simple">
+<dt>mean:     compute Monte-Carlo integration to obtain a simple confidence estimate for a sample</dt><dd><p>(mean) with a standard deviation that is visualized.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
+<li><p><strong>return_map</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, return map with miscalibration metric separated into all remaining dimension bins.</p></li>
+<li><p><strong>return_num_samples</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, also return the number of samples in each bin.</p></li>
+<li><p><strong>return_uncertainty_map</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, also return the average deviation of the confidence within each bin.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Squeezed array.</p>
+<dd class="field-even"><p>Always returns Average Calibration Error.
+If ‘return_map’ is True, return tuple and append miscalibration map over all bins.
+If ‘return_num_samples’ is True, return tuple and append the number of samples in each bin (excluding confidence dimension).
+If ‘return_uncertainty’ is True, return tuple and append the average standard deviation of confidence within each bin (excluding confidence dimension).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>float or tuple of (float, np.ndarray, [np.ndarray, [np.ndarray]])</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.ACE.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">X: Union[Iterable[numpy.ndarray], numpy.ndarray], y: Union[Iterable[numpy.ndarray], numpy.ndarray], batched: bool = False, uncertainty: str = None</em><span class="sig-paren">)</span> &#x2192; Tuple[List[numpy.ndarray], List[numpy.ndarray], List[numpy.ndarray], List, int]<a class="headerlink" href="#netcal.metrics.ACE.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check input data. For detailed documentation of the input parameters, check “_measure” method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.ACE.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param">metric: str</em>, <em class="sig-param">acc_hist: numpy.ndarray</em>, <em class="sig-param">conf_hist: numpy.ndarray</em>, <em class="sig-param">variance_hist: numpy.ndarray</em>, <em class="sig-param">num_samples_hist: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; Tuple[float, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]<a class="headerlink" href="#netcal.metrics.ACE.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine miscalibration based on passed histograms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric</strong> (<em>str</em>) – Identifier to specify the used metric. Must be one of ‘ace’, ‘ece’ or ‘mce’.</p></li>
+<li><p><strong>acc_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with average accuracy in each bin.</p></li>
+<li><p><strong>conf_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with average confidence in each bin.</p></li>
+<li><p><strong>variance_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with average variance in each bin. This array is currently not used but
+might be utilized in the future.</p></li>
+<li><p><strong>num_samples_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with number of samples in each bin.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple of length 6 (miscalibration score, miscalibration map, accuracy map, confidence map, variance map, num samples map)</em></p></li>
+<li><p><em>All maps without confidence dimension.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.ACE.reduce">
+<code class="sig-name descname">reduce</code><span class="sig-paren">(</span><em class="sig-param">histogram: numpy.ndarray</em>, <em class="sig-param">distribution: numpy.ndarray</em>, <em class="sig-param">axis: int</em>, <em class="sig-param">reduce_result: Tuple = None</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ACE.reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.
+If ‘reduce_result’ is given, reuse the data distribution of the previous result instead of the distribution
+given by ‘distribution’ parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.ACE.squeeze_generic">
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[Iterable[int], int]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.metrics.ACE.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squeeze input array a but keep axes defined by parameter
+‘axes_to_keep’ even if the dimension is of size 1.</p>
 </dd></dl>
 
 </dd></dl>
@@ -207,7 +297,7 @@ of size 1.</p>
         <li class="right" >
           <a href="../netcal.metrics.html" title="netcal.metrics"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.1.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../netcal.metrics.html" >netcal.metrics</a> &#187;</li> 
       </ul>
     </div>

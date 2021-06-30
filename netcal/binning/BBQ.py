@@ -1,21 +1,21 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
-import logging
 import numpy as np
 import itertools
 from tqdm import tqdm
-from netcal import AbstractCalibration, TqdmHandler, dimensions, accepts
+
+from netcal import AbstractCalibration, dimensions, accepts
 from .HistogramBinning import HistogramBinning
 
 
 class BBQ(AbstractCalibration):
     """
-    Bayesian Binning into Quantiles (BBQ). This method is originally proposed by [1]_. This method utilizes multiple :class:`HistogramBinning`
+    Bayesian Binning into Quantiles (BBQ) [1]_. This method utilizes multiple :class:`HistogramBinning`
     instances with different amounts of bins and computes a weighted sum of all methods to obtain a
     well-calibrated confidence estimate. The scoring function "BDeu", which is proposed in the original paper,
     is currently not supported.
@@ -60,6 +60,9 @@ class BBQ(AbstractCalibration):
         define score functions:
         - 'BIC': Bayesian-Information-Criterion
         - 'AIC': Akaike-Information-Criterion
+    equal_intervals : bool, optional, default: True
+        If True, the bins have the same width. If False, the bins are splitted to equalize
+        the number of samples in each bin.
     detection : bool, default: False
         If False, the input array 'X' is treated as multi-class confidence input (softmax)
         with shape (n_samples, [n_classes]).
@@ -79,8 +82,9 @@ class BBQ(AbstractCalibration):
 
     """
 
-    @accepts(str, bool, bool)
-    def __init__(self, score_function: str = 'BIC', detection: bool = False, independent_probabilities: bool = False):
+    @accepts(str, bool, bool, bool)
+    def __init__(self, score_function: str = 'BIC', equal_intervals: bool = True,
+                 detection: bool = False, independent_probabilities: bool = False):
         """
         Constructor.
 
@@ -116,6 +120,7 @@ class BBQ(AbstractCalibration):
             raise AttributeError("Unknown score function \'%s\'" % score_function)
 
         self.score_function = score_function.lower()
+        self.equal_intervals = equal_intervals
 
     def clear(self):
         """
@@ -225,7 +230,7 @@ class BBQ(AbstractCalibration):
         if not self._is_binary_classification() and not self.detection:
 
             # create multiple one vs all models
-            self._multiclass_instances = self._create_one_vs_all_models(X, y, BBQ, self.score_function)
+            self._multiclass_instances = self._create_one_vs_all_models(X, y, BBQ, self.score_function, self.equal_intervals)
             return self
 
         num_features = 1
@@ -248,13 +253,11 @@ class BBQ(AbstractCalibration):
         # iterate over all different binnings and fit Histogram Binning methods
         model_list = []
 
-        # use tqdm logger to pipe tqdm output to logger
-        logger = logging.getLogger(__name__)
-        tqdm_logger = TqdmHandler(logger=logger, level=logging.INFO)
-        for bins in tqdm(itertools.product(*all_ranges), total=np.power(len(bin_range), num_features), file=tqdm_logger):
+        # iterate over all bin combinations
+        for bins in tqdm(itertools.product(*all_ranges), total=np.power(len(bin_range), num_features)):
 
             bins = bins[0] if not self.detection else bins
-            histogram = HistogramBinning(bins=bins, detection=self.detection)
+            histogram = HistogramBinning(bins=bins, equal_intervals=self.equal_intervals, detection=self.detection)
             histogram.fit(X, y)
 
             model_list.append(histogram)

@@ -1,11 +1,10 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
-import logging
 import numpy as np
 from netcal import AbstractCalibration, dimensions, accepts
 from .NearIsotonicRegression import NearIsotonicRegression
@@ -13,7 +12,7 @@ from .NearIsotonicRegression import NearIsotonicRegression
 
 class ENIR(AbstractCalibration):
     """
-    Ensemble of Near Isotonic Regression (ENIR) models. This method is originally proposed by [1]_. These models allow - in contrast to standard
+    Ensemble of Near Isotonic Regression (ENIR) models [1]_. These models allow - in contrast to standard
     :class:`IsotonicRegression` method - a violation of the monotony restrictions. Using the *modified
     Pool-Adjacent-Violators Algorithm (mPAVA)*, this method build multiple Near Isotonic Regression models
     and weights them by a certain score function.
@@ -220,12 +219,10 @@ class ENIR(AbstractCalibration):
             Instance of class :class:`ENIR`.
         """
 
-        logger = logging.getLogger(__name__)
-
         # detection mode is not supported natively
         if self.detection:
-            logger.warning("Detection mode is not supported natively by ENIR method. This will discard all "
-                           "additional box information and only keep confidence scores.")
+            print("WARNING: Detection mode is not supported natively by ENIR method. "
+                  "This will discard all additional box information and only keep confidence scores.")
 
             # if 2d, keep only confidence scores and preserve 2d structure
             if len(X.shape) == 2:
@@ -251,8 +248,7 @@ class ENIR(AbstractCalibration):
         X, y = self._sort_arrays(X, y)
 
         # log action
-        logger.info("Get path of all Near Isotonic Regression models with mPAVA ...")
-
+        print("Get path of all Near Isotonic Regression models with mPAVA ...")
         iso = NearIsotonicRegression(quick_init=self.quick_init,
                                      independent_probabilities=self.independent_probabilities)
         iso.fit(X, y)

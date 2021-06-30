@@ -13,7 +13,11 @@ netcal.metrics.ECE
    .. autosummary::
    
       ~ECE.__init__
+      ~ECE.binning
       ~ECE.measure
+      ~ECE.prepare
+      ~ECE.process
+      ~ECE.reduce
       ~ECE.squeeze_generic
    
    

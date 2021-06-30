@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>netcal.metrics.PICP &#8212; calibration-framework 1.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="netcal.presentation" href="../netcal.presentation.html" />
+    <link rel="prev" title="netcal.metrics.MMCE" href="netcal.metrics.MMCE.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../netcal.presentation.html" title="netcal.presentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="netcal.metrics.MMCE.html" title="netcal.metrics.MMCE"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../netcal.metrics.html" accesskey="U">netcal.metrics</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="netcal-metrics-picp">
+<h1>netcal.metrics.PICP<a class="headerlink" href="#netcal-metrics-picp" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="netcal.metrics.PICP">
+<em class="property">class </em><code class="sig-prename descclassname">netcal.metrics.</code><code class="sig-name descname">PICP</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">Iterable[int]] = 10</em>, <em class="sig-param">equal_intervals: bool = True</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">sample_threshold: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.PICP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.Miscalibration._Miscalibration</span></code></p>
+<p>Compute Prediction Interval Coverage Probability (PICP) <a class="footnote-reference brackets" href="#id3" id="id1">1</a>,[2]_ and Mean Prediction Interval Width (MPIW) <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.
+This metric is used for Bayesian models to determine the quality of the uncertainty estimates.
+In Bayesian mode, an uncertainty estimate is attached to each sample. The PICP measures the probability, that
+the true (observed) accuracy falls into the p% prediction interval. The uncertainty is well-calibrated, if
+the PICP is equal to p%. Simultaneously, the MPIW measures the mean width of all prediction intervals to evaluate
+the sharpness of the uncertainty estimates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the Histogram Binning.
+On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>equal_intervals</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: True</em>) – If True, the bins have the same width. If False, the bins are splitted to equalize
+the number of samples in each bin.</p></li>
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
+<li><p><strong>sample_threshold</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: 1</em>) – Bins with an amount of samples below this threshold are not included into the process metrics.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Kuleshov, V.; Fenner, N. &amp; Ermon, S.:
+“Accurate Uncertainties for Deep Learning Using Calibrated Regression.”
+International Conference on Machine Learning (ICML), 2018
+<a class="reference external" href="http://proceedings.mlr.press/v80/kuleshov18a/kuleshov18a.pdf">Get source online</a></p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Jiayu  Yao,  Weiwei  Pan,  Soumya  Ghosh,  and  Finale  Doshi-Velez:
+“Quality of Uncertainty Quantification for Bayesian Neural Network Inference.”
+Workshop on Uncertainty and Robustness in Deep Learning, ICML, 2019
+<a class="reference external" href="https://arxiv.org/pdf/1906.09686.pdf">Get source online</a></p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, equal_intervals, detection, …])</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">accuracy</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Measure the accuracy of each point by binning.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code>(bin_bounds, samples, *values[, nan])</p></td>
+<td><p>Perform binning on value (and all additional values passed) based on samples.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y[, p, use_hpd, batched, …])</p></td>
+<td><p>Measure calibration by given predictions with confidence and the according ground truth.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Check input data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code>(metric, acc_hist, conf_hist, …)</p></td>
+<td><p>Determine miscalibration based on passed histograms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce</span></code>(histogram, distribution, axis[, …])</p></td>
+<td><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
+<td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="netcal.metrics.PICP.accuracy">
+<code class="sig-name descname">accuracy</code><span class="sig-paren">(</span><em class="sig-param">X: Union[Iterable[numpy.ndarray], numpy.ndarray], y: Union[Iterable[numpy.ndarray], numpy.ndarray], batched: bool = False, uncertainty: str = 'mean'</em><span class="sig-paren">)</span> &#x2192; Tuple[List[numpy.ndarray], List[numpy.ndarray], List[numpy.ndarray], List[numpy.ndarray], List, int]<a class="headerlink" href="#netcal.metrics.PICP.accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure the accuracy of each point by binning.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.PICP.binning">
+<code class="sig-name descname">binning</code><span class="sig-paren">(</span><em class="sig-param">bin_bounds: List</em>, <em class="sig-param">samples: numpy.ndarray</em>, <em class="sig-param">*values: Iterable</em>, <em class="sig-param">nan: float = 0.0</em><span class="sig-paren">)</span> &#x2192; Tuple<a class="headerlink" href="#netcal.metrics.PICP.binning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform binning on value (and all additional values passed) based on samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bin_bounds</strong> (<em>list</em><em>, </em><em>length=samples.shape</em><em>[</em><em>1</em><em>]</em>) – Binning boundaries used for each dimension given in ‘samples’ parameter.</p></li>
+<li><p><strong>samples</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Array used to group all samples into bins.</p></li>
+<li><p><strong>*values</strong> (<em>instances np.ndarray of shape</em><em> (</em><em>n_samples</em><em>, </em><em>1</em><em>)</em>) – Arrays whose values are binned.</p></li>
+<li><p><strong>nan</strong> (<em>float</em><em>, </em><em>optional default: 0.0</em>) – If a bin has no samples or less than defined sample_threshold, the according bin is marked as
+NaN. Specify fill float to insert instead of NaN.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple of length equal to the amount of passed value arrays with binning schemes and an additional histogram</em></p></li>
+<li><p><em>with number of samples in each bin as well as an index tuple containing the bin indices.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.PICP.measure">
+<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param">X: Union[Iterable[numpy.ndarray], numpy.ndarray], y: Union[Iterable[numpy.ndarray], numpy.ndarray], p: float = 0.05, use_hpd: bool = True, batched: bool = False, uncertainty: str = 'mean', return_map: bool = False</em><span class="sig-paren">)</span> &#x2192; NamedTuple<a class="headerlink" href="#netcal.metrics.PICP.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure calibration by given predictions with confidence and the according ground truth.
+Assume binary predictions with y=1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>iterable of np.ndarray</em><em>, or </em><em>np.ndarray of shape=</em><em>(</em><em>[</em><em>n_bayes</em><em>]</em><em>, </em><em>n_samples</em><em>, </em><em>[</em><em>n_classes/n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
+1-D for binary classification, 2-D for multi class (softmax).
+If 3-D, interpret first dimension as samples from an Bayesian estimator with mulitple data points
+for a single sample (e.g. variational inference or MC dropout samples).
+If this is an iterable over multiple instances of np.ndarray and parameter batched=True,
+interpret this parameter as multiple predictions that should be averaged.
+On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
+<li><p><strong>y</strong> (<em>iterable of np.ndarray with same length as X</em><em> or </em><em>np.ndarray of shape=</em><em>(</em><em>[</em><em>n_bayes</em><em>]</em><em>, </em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
+Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
+If 3-D, interpret first dimension as samples from an Bayesian estimator with mulitple data points
+for a single sample (e.g. variational inference or MC dropout samples).
+If iterable over multiple instances of np.ndarray and parameter batched=True,
+interpret this parameter as multiple predictions that should be averaged.</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default: 0.05</em>) – Confidence level.</p></li>
+<li><p><strong>use_hpd</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: True</em>) – If True, use highest posterior density (HPD) interval to determine the prediction interval width.
+Use variance with Gaussian assumption otherwise.</p></li>
+<li><p><strong>batched</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Multiple predictions can be evaluated at once (e.g. cross-validation examinations) using batched-mode.
+All predictions given by X and y are separately evaluated and their results are averaged afterwards
+for visualization.</p></li>
+<li><p><strong>uncertainty</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: &quot;mean&quot;</em>) – Mode to measure mean estimate and uncertainty of the samples in Bayesian mode. Must be one
+of “mean” (mean of all samples), “mode” (mode of all samples), “median” (median of all samples) or
+“flatten” (no uncertainty will be computed, all samples are seen as independent predictions).</p></li>
+<li><p><strong>return_map</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, return map with PICP and MPIW metric separated into all remaining dimension bins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Namedtuple PICPResult with fields “picp” and “mpiw”, where each field either holds the PICP/MPIW score</em></p></li>
+<li><p><em>or a tuple of (float, np.ndarray)</em> – Always returns a named tuple with PICP (prediction interval coverage probability) and MPIW
+(mean prediction interval width).
+If ‘return_map’ is True, each field holds a tuple for the metric itself and the PICP/MPIW distribution
+over all bins.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.PICP.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">X: Union[Iterable[numpy.ndarray], numpy.ndarray], y: Union[Iterable[numpy.ndarray], numpy.ndarray], batched: bool = False, uncertainty: str = None</em><span class="sig-paren">)</span> &#x2192; Tuple[List[numpy.ndarray], List[numpy.ndarray], List[numpy.ndarray], List, int]<a class="headerlink" href="#netcal.metrics.PICP.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check input data. For detailed documentation of the input parameters, check “_measure” method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.PICP.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param">metric: str</em>, <em class="sig-param">acc_hist: numpy.ndarray</em>, <em class="sig-param">conf_hist: numpy.ndarray</em>, <em class="sig-param">variance_hist: numpy.ndarray</em>, <em class="sig-param">num_samples_hist: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; Tuple[float, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]<a class="headerlink" href="#netcal.metrics.PICP.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine miscalibration based on passed histograms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric</strong> (<em>str</em>) – Identifier to specify the used metric. Must be one of ‘ace’, ‘ece’ or ‘mce’.</p></li>
+<li><p><strong>acc_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with average accuracy in each bin.</p></li>
+<li><p><strong>conf_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with average confidence in each bin.</p></li>
+<li><p><strong>variance_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with average variance in each bin. This array is currently not used but
+might be utilized in the future.</p></li>
+<li><p><strong>num_samples_hist</strong> (<em>np.ndarray of shape</em><em> (</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>n_bins</em><em>, </em><em>[</em><em>..</em><em>]</em><em>]</em><em>]</em><em>)</em>) – Histogram with number of samples in each bin.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple of length 6 (miscalibration score, miscalibration map, accuracy map, confidence map, variance map, num samples map)</em></p></li>
+<li><p><em>All maps without confidence dimension.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.PICP.reduce">
+<code class="sig-name descname">reduce</code><span class="sig-paren">(</span><em class="sig-param">histogram: numpy.ndarray</em>, <em class="sig-param">distribution: numpy.ndarray</em>, <em class="sig-param">axis: int</em>, <em class="sig-param">reduce_result: Tuple = None</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.PICP.reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.
+If ‘reduce_result’ is given, reuse the data distribution of the previous result instead of the distribution
+given by ‘distribution’ parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="netcal.metrics.PICP.squeeze_generic">
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[Iterable[int], int]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.metrics.PICP.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squeeze input array a but keep axes defined by parameter
+‘axes_to_keep’ even if the dimension is of size 1.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="netcal.metrics.MMCE.html"
+                        title="previous chapter">netcal.metrics.MMCE</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../netcal.presentation.html"
+                        title="next chapter">netcal.presentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_autosummary/_autosummary_metric/netcal.metrics.PICP.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../netcal.presentation.html" title="netcal.presentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="netcal.metrics.MMCE.html" title="netcal.metrics.MMCE"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../netcal.metrics.html" >netcal.metrics</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germany AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
