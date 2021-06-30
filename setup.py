@@ -20,7 +20,7 @@ setuptools.setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/fabiankueppers/calibration-framework",
     packages=setuptools.find_packages(),
-    install_requires = ['numpy>=1.17', 'scipy>=1.3', 'matplotlib>=3.1', 'scikit-learn>=0.21', 'torch>=1.4', 'tqdm>=4.40', 'pyro-ppl>=1.3', 'tikzplotlib>=0.9.8'],
+    install_requires = ['numpy>=1.17', 'scipy>=1.3', 'matplotlib>=3.1', 'scikit-learn>=0.21', 'torch>=1.4', 'torchvision>=0.5.0', 'tqdm>=4.40', 'pyro-ppl>=1.3', 'tikzplotlib>=0.9.8', 'tensorboard>=2.2'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",

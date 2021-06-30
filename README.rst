@@ -88,9 +88,11 @@ Requirements
 - matplotlib>=3.1
 - scikit-learn>=0.21
 - torch>=1.4
+- torchvision>=0.5.0
 - tqdm>=4.40
 - pyro-ppl>=1.3
 - tikzplotlib>=0.9.8
+- tensorboard>=2.2
 
 
 Calibration Metrics
