@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
