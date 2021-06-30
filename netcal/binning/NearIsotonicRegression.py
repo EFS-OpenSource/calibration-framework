@@ -1,9 +1,9 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 import numpy as np
 from typing import Union
@@ -12,7 +12,7 @@ from netcal import AbstractCalibration, dimensions, accepts
 
 class NearIsotonicRegression(AbstractCalibration):
     """
-    Near Isotonic Regression Calibration method. This method is originally proposed by [1]_ (commonly used by :class:`ENIR`).
+    Near Isotonic Regression Calibration method [1]_ (commonly used by :class:`ENIR` [2]_).
 
     Parameters
     ----------
@@ -234,7 +234,7 @@ class NearIsotonicRegression(AbstractCalibration):
 
         # one hot encoded label vector on multi class calibration
         if len(X.shape) == 2:
-            y = self._get_one_hot_encoded_labels(y, X.shape[1])
+            y = np.eye(self.num_classes)[y]
 
         # sort arrays by confidence - always flatten (this has no effect to 1-D arrays)
         X, y = self._sort_arrays(X.flatten(), y.flatten())
@@ -268,7 +268,7 @@ class NearIsotonicRegression(AbstractCalibration):
 
         # one hot encoded label vector on multi class calibration
         if len(X.shape) == 2:
-            y = self._get_one_hot_encoded_labels(y, X.shape[1])
+            y = np.eye(self.num_classes)[y]
 
         # sort arrays by confidence - always flatten (this has no effect to 1-D arrays)
         X, y = self._sort_arrays(X.flatten(), y.flatten())

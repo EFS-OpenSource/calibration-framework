@@ -1,11 +1,10 @@
 # Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Apache License 2.0
+# If a copy of the APL2 was not distributed with this
+# file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
-import logging
 import numpy as np
 from netcal import AbstractCalibration, dimensions, accepts
 from sklearn.isotonic import IsotonicRegression as sklearn_iso
@@ -13,7 +12,7 @@ from sklearn.isotonic import IsotonicRegression as sklearn_iso
 
 class IsotonicRegression(AbstractCalibration):
     """
-    Isotonic Regression method. This method is originally proposed by [1]_. This method is similar to :class:`HistogramBinning` but with dynamic bin sizes
+    Isotonic Regression method [1]_. This method is similar to :class:`HistogramBinning` but with dynamic bin sizes
     and boundaries. A piecewise constant function gets fit to ground truth labels sorted by
     given confidence estimates.
 
@@ -96,9 +95,8 @@ class IsotonicRegression(AbstractCalibration):
 
         # detection mode is not supported natively
         if self.detection:
-            logger = logging.getLogger(__name__)
-            logger.warning("Detection mode is not supported natively by IsotonicRegression method. "
-                           "This will discard all additional box information and only keep confidence scores.")
+            print("WARNING: Detection mode is not supported natively by IsotonicRegression method. "
+                  "This will discard all additional box information and only keep confidence scores.")
 
             # if 2d, keep only confidence scores and preserve 2d structure
             if len(X.shape) == 2:
