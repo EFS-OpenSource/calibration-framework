@@ -28,7 +28,6 @@ file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
            booktitle = {Proceedings of the IEEE Intelligent Vehicles Symposium (IV)},
            month = {July},
            year = {2021},
-           note = {in press}
         }
 
 .. contents:: Table of Contents
