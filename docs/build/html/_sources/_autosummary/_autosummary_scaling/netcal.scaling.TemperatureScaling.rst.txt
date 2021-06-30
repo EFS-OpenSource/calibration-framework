@@ -14,13 +14,23 @@ netcal.scaling.TemperatureScaling
    
       ~TemperatureScaling.__init__
       ~TemperatureScaling.clear
+      ~TemperatureScaling.convex
       ~TemperatureScaling.fit
       ~TemperatureScaling.fit_transform
       ~TemperatureScaling.get_params
+      ~TemperatureScaling.guide
       ~TemperatureScaling.load_model
+      ~TemperatureScaling.mask
+      ~TemperatureScaling.mcmc
+      ~TemperatureScaling.model
+      ~TemperatureScaling.momentum
+      ~TemperatureScaling.prepare
+      ~TemperatureScaling.prior
       ~TemperatureScaling.save_model
       ~TemperatureScaling.set_params
       ~TemperatureScaling.squeeze_generic
+      ~TemperatureScaling.to
       ~TemperatureScaling.transform
+      ~TemperatureScaling.variational
    
    

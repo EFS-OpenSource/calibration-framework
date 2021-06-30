@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.AbstractCalibration &#8212; calibration-framework 1.1.3 documentation</title>
+    <title>netcal.AbstractCalibration &#8212; calibration-framework 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="../_autosummary/_autosummary_presentation/netcal.presentation.ReliabilityDiagram.html" title="netcal.presentation.ReliabilityDiagram"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.1.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -73,17 +73,6 @@ values inequal to 0 or 1.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="netcal.AbstractCalibration.logger">
-<code class="sig-name descname">logger</code><a class="headerlink" href="#netcal.AbstractCalibration.logger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Logger for printing debug/info/warning/error messages.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>RootLogger</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -107,10 +96,10 @@ values inequal to 0 or 1.</p>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_model</span></code>(filename)</p></td>
-<td><p>Load model from saved Pickle instance.</p></td>
+<td><p>Load model from saved torch dump.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_model</span></code>(filename)</p></td>
-<td><p>Save model instance as Pickle Object.</p></td>
+<td><p>Save model instance as with torch’s save function as this is safer for torch tensors.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
@@ -131,7 +120,7 @@ values inequal to 0 or 1.</p>
 
 <dl class="method">
 <dt id="netcal.AbstractCalibration.fit">
-<em class="property">abstract </em><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#netcal.AbstractCalibration.fit" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, numpy.ndarray]<a class="headerlink" href="#netcal.AbstractCalibration.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract function call to build the calibration model.
 This function performs several checks and returns the improved X and y.</p>
 <dl class="field-list simple">
@@ -205,7 +194,7 @@ contained subobjects that are estimators.</p>
 <dl class="method">
 <dt id="netcal.AbstractCalibration.load_model">
 <code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration.load_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load model from saved Pickle instance.</p>
+<dd><p>Load model from saved torch dump.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – String with filename.</p>
@@ -222,7 +211,7 @@ contained subobjects that are estimators.</p>
 <dl class="method">
 <dt id="netcal.AbstractCalibration.save_model">
 <code class="sig-name descname">save_model</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration.save_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save model instance as Pickle Object.</p>
+<dd><p>Save model instance as with torch’s save function as this is safer for torch tensors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – String with filename.</p>
@@ -250,7 +239,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="netcal.AbstractCalibration.squeeze_generic">
-<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, list, tuple]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.AbstractCalibration.squeeze_generic" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, Iterable[int]]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.AbstractCalibration.squeeze_generic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
 of size 1.</p>
 <dl class="field-list simple">
@@ -347,7 +336,7 @@ On detection, this array must have 2 dimensions with number of additional box fe
         <li class="right" >
           <a href="../_autosummary/_autosummary_presentation/netcal.presentation.ReliabilityDiagram.html" title="netcal.presentation.ReliabilityDiagram"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.1.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

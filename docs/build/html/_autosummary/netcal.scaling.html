@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.scaling &#8212; calibration-framework 1.1.3 documentation</title>
+    <title>netcal.scaling &#8212; calibration-framework 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="netcal.scaling.LogisticCalibration" href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html" />
+    <link rel="next" title="netcal.scaling.AbstractLogisticRegression" href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" />
     <link rel="prev" title="netcal.binning.ENIR" href="_autosummary_binning/netcal.binning.ENIR.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,12 +30,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html" title="netcal.scaling.LogisticCalibration"
+          <a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" title="netcal.scaling.AbstractLogisticRegression"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="_autosummary_binning/netcal.binning.ENIR.html" title="netcal.binning.ENIR"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.1.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -57,19 +57,22 @@ confidence estimates to observed accuracy.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html#netcal.scaling.LogisticCalibration" title="netcal.scaling.LogisticCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogisticCalibration</span></code></a>([temperature_only, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html#netcal.scaling.AbstractLogisticRegression" title="netcal.scaling.AbstractLogisticRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractLogisticRegression</span></code></a>([method, …])</p></td>
+<td><p>Abstract class for all calibration methods that base on logistic regression.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html#netcal.scaling.LogisticCalibration" title="netcal.scaling.LogisticCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogisticCalibration</span></code></a>(*args[, temperature_only])</p></td>
 <td><p>On classification, apply the logistic calibration method aka Platt scaling to obtain a calibration mapping.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibrationDependent.html#netcal.scaling.LogisticCalibrationDependent" title="netcal.scaling.LogisticCalibrationDependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogisticCalibrationDependent</span></code></a>([detection])</p></td>
-<td><p>This calibration method uses multivariate normal distributions to obtain a calibration mapping by means of the confidence as well as additional features.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibrationDependent.html#netcal.scaling.LogisticCalibrationDependent" title="netcal.scaling.LogisticCalibrationDependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogisticCalibrationDependent</span></code></a>(*args, **kwargs)</p></td>
+<td><p>This calibration method is for detection only and uses multivariate normal distributions to obtain a calibration mapping by means of the confidence as well as additional features.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.TemperatureScaling.html#netcal.scaling.TemperatureScaling" title="netcal.scaling.TemperatureScaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TemperatureScaling</span></code></a>([detection, …])</p></td>
-<td><p>Perform Temperature scaling to logits of NN.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.TemperatureScaling.html#netcal.scaling.TemperatureScaling" title="netcal.scaling.TemperatureScaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TemperatureScaling</span></code></a>(*args, **kwargs)</p></td>
+<td><p>On classification or detection, apply the temperature scaling method described in <a href="#id2"><span class="problematic" id="id1">[1]_</span></a> to obtain a calibration mapping.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibration.html#netcal.scaling.BetaCalibration" title="netcal.scaling.BetaCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BetaCalibration</span></code></a>([auto_select, detection, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibration.html#netcal.scaling.BetaCalibration" title="netcal.scaling.BetaCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BetaCalibration</span></code></a>(*args, **kwargs)</p></td>
 <td><p>On classification, apply the beta calibration method to obtain a calibration mapping.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibrationDependent.html#netcal.scaling.BetaCalibrationDependent" title="netcal.scaling.BetaCalibrationDependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BetaCalibrationDependent</span></code></a>([momentum, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibrationDependent.html#netcal.scaling.BetaCalibrationDependent" title="netcal.scaling.BetaCalibrationDependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BetaCalibrationDependent</span></code></a>(*args[, method])</p></td>
 <td><p>This calibration method uses a multivariate variant of a Beta distribution to obtain a calibration mapping by means of the confidence as well as additional features.</p></td>
 </tr>
 </tbody>
@@ -95,8 +98,8 @@ confidence estimates to observed accuracy.</p>
   <p class="topless"><a href="_autosummary_binning/netcal.binning.ENIR.html"
                         title="previous chapter">netcal.binning.ENIR</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html"
-                        title="next chapter">netcal.scaling.LogisticCalibration</a></p>
+  <p class="topless"><a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html"
+                        title="next chapter">netcal.scaling.AbstractLogisticRegression</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -128,12 +131,12 @@ confidence estimates to observed accuracy.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html" title="netcal.scaling.LogisticCalibration"
+          <a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" title="netcal.scaling.AbstractLogisticRegression"
              >next</a> |</li>
         <li class="right" >
           <a href="_autosummary_binning/netcal.binning.ENIR.html" title="netcal.binning.ENIR"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.1.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

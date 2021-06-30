@@ -1,0 +1,18 @@
+netcal.metrics.MMCE
+===================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: MMCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MMCE.__init__
+      ~MMCE.measure
+   
+   

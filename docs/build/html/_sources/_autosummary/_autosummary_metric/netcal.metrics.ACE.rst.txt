@@ -13,7 +13,11 @@ netcal.metrics.ACE
    .. autosummary::
    
       ~ACE.__init__
+      ~ACE.binning
       ~ACE.measure
+      ~ACE.prepare
+      ~ACE.process
+      ~ACE.reduce
       ~ACE.squeeze_generic
    
    

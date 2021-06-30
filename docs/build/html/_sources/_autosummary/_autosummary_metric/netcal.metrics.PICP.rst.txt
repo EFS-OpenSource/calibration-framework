@@ -1,0 +1,24 @@
+netcal.metrics.PICP
+===================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: PICP
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PICP.__init__
+      ~PICP.accuracy
+      ~PICP.binning
+      ~PICP.measure
+      ~PICP.prepare
+      ~PICP.process
+      ~PICP.reduce
+      ~PICP.squeeze_generic
+   
+   

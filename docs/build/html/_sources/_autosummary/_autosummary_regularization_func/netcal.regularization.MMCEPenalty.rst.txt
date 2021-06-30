@@ -1,0 +1,62 @@
+netcal.regularization.MMCEPenalty
+=================================
+
+.. currentmodule:: netcal.regularization
+
+.. autoclass:: MMCEPenalty
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MMCEPenalty.__init__
+      ~MMCEPenalty.add_module
+      ~MMCEPenalty.apply
+      ~MMCEPenalty.bfloat16
+      ~MMCEPenalty.buffers
+      ~MMCEPenalty.children
+      ~MMCEPenalty.cpu
+      ~MMCEPenalty.cuda
+      ~MMCEPenalty.double
+      ~MMCEPenalty.eval
+      ~MMCEPenalty.extra_repr
+      ~MMCEPenalty.float
+      ~MMCEPenalty.forward
+      ~MMCEPenalty.half
+      ~MMCEPenalty.kernel
+      ~MMCEPenalty.load_state_dict
+      ~MMCEPenalty.modules
+      ~MMCEPenalty.named_buffers
+      ~MMCEPenalty.named_children
+      ~MMCEPenalty.named_modules
+      ~MMCEPenalty.named_parameters
+      ~MMCEPenalty.parameters
+      ~MMCEPenalty.register_backward_hook
+      ~MMCEPenalty.register_buffer
+      ~MMCEPenalty.register_forward_hook
+      ~MMCEPenalty.register_forward_pre_hook
+      ~MMCEPenalty.register_parameter
+      ~MMCEPenalty.requires_grad_
+      ~MMCEPenalty.share_memory
+      ~MMCEPenalty.state_dict
+      ~MMCEPenalty.to
+      ~MMCEPenalty.train
+      ~MMCEPenalty.type
+      ~MMCEPenalty.zero_grad
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MMCEPenalty.dump_patches
+      ~MMCEPenalty.epsilon
+   
+   
