@@ -382,7 +382,7 @@ class _Miscalibration(object):
         # -------------------------------------------------
         # now evaluate the accuracy/precision
         # on detection mode or binary classification, the accuracy/precision is already given in y
-        if self.detection or len(np.unique(y)) < 2:
+        if self.detection or len(np.unique(y)) <= 2:
             matched = np.array(y)
 
         # on multiclass classification, we need to evaluate the accuracy by the predictions in X
