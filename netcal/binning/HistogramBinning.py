@@ -95,6 +95,7 @@ class HistogramBinning(AbstractCalibration):
         self._multiclass_instances = []
 
         # holds the multi-dimensional bin map with calibrated confidence estimates
+        self._bins_internal = None
         self._bin_map = None
         self._bin_bounds = None
 
@@ -106,6 +107,7 @@ class HistogramBinning(AbstractCalibration):
         """
 
         super().clear()
+        self._bins_internal = None
         self._bin_map = None
         self._bin_bounds = None
 
@@ -183,12 +185,14 @@ class HistogramBinning(AbstractCalibration):
             # check bins parameter
             # is int? distribute to all dimensions
             if isinstance(self.bins, int):
-                self.bins = [self.bins, ] * num_features
+                self._bins_internal = [self.bins, ] * num_features
 
             # is iterable? check for compatibility with all properties found
             elif isinstance(self.bins, (tuple, list)):
                 if len(self.bins) != num_features:
                     raise AttributeError("Length of \'bins\' parameter must match number of features.")
+                else:
+                    self._bins_internal = self.bins
             else:
                 raise AttributeError("Unknown type of parameter \'bins\'.")
         else:
@@ -196,11 +200,11 @@ class HistogramBinning(AbstractCalibration):
             if not isinstance(self.bins, int):
                 raise AttributeError("Parameter \'bins\' must be int for classification mode.")
 
-            self.bins = [self.bins]
+            self._bins_internal = [self.bins]
 
         # ---------------------------------------
         # get bin bounds
-        self._bin_bounds = [np.linspace(0.0, 1.0, bin + 1) for bin in self.bins]
+        self._bin_bounds = [np.linspace(0.0, 1.0, bin + 1) for bin in self._bins_internal]
 
         # on equal_intervals=True, simply use linspace
         # if the goal is to equalize the amount of samples in each bin, use np.quantile
@@ -298,7 +302,7 @@ class HistogramBinning(AbstractCalibration):
 
                     # if an index is out of bounds (e.g. 0), sort into first bin
                     indices[indices == -1] = 0
-                    indices[indices == self.bins[i]] = self.bins[i] - 1
+                    indices[indices == self._bins_internal[i]] = self._bins_internal[i] - 1
                     bin_indices.append(indices)
             else:
                 # TODO: implement equal intervals
@@ -319,7 +323,7 @@ class HistogramBinning(AbstractCalibration):
             Integer with degree of freedom.
         """
 
-        return int(np.prod(self.bins))
+        return int(np.prod(self._bins_internal))
 
     @property
     def ndim(self):
