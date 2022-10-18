@@ -244,8 +244,8 @@ class LogisticCalibration(AbstractLogisticRegression):
                 'values': None,
                 'constraint': constraints.real,
                 'init': {
-                    'mean': torch.zeros(num_bias),
-                    'scale': torch.ones(num_bias)
+                    'mean': torch.zeros(num_bias, dtype=dtype),
+                    'scale': torch.ones(num_bias, dtype=dtype)
                 },
                 'prior': dist.Normal(torch.zeros(num_bias, dtype=dtype), 10 * torch.ones(num_bias, dtype=dtype), validate_args=True),
             }

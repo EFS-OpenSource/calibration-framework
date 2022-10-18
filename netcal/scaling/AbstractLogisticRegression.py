@@ -104,6 +104,16 @@ class AbstractLogisticRegression(AbstractCalibration):
        "An introduction to variational methods for graphical models." Machine learning, 37(2): 183–233, 1999.
     """
 
+    dtypes = {
+        torch.float16: np.float16,
+        torch.float32: np.float32,
+        torch.float64: np.float64,
+        torch.int8: np.int8,
+        torch.int16: np.int16,
+        torch.int32: np.int32,
+        torch.int64: np.int64,
+    }
+
     @accepts(str, int, int, int, int, int, bool, bool, (str, bool))
     def __init__(self,
                  method: str = 'mle',
@@ -358,6 +368,10 @@ class AbstractLogisticRegression(AbstractCalibration):
         # prepare data input for algorithm
         data = self.prepare(X).to(self._device)
 
+        # check if input data type is known
+        if data.dtype not in self.dtypes:
+            raise RuntimeError("Unsupported input data type: ", data.dtype)
+
         # if y is given as one-hot, convert back to categorical encoding
         if y.ndim == 2:
             y = np.argmax(y, axis=1)
@@ -537,6 +551,8 @@ class AbstractLogisticRegression(AbstractCalibration):
             NumPy array with ground truth labels as 1-D vector (binary).
         """
 
+        dtype = data.dtype
+
         # optimization objective function
         # compute NLL loss - fix weights given of the model for the current iteration step
         def MLE(w, x, y):
@@ -545,14 +561,14 @@ class AbstractLogisticRegression(AbstractCalibration):
             start = 0
             for name, site in self._sites.items():
                 num_weights = len(site['init']['mean'])
-                data[name] = torch.from_numpy(w[start:start+num_weights]).to(self._device)
+                data[name] = torch.from_numpy(w[start:start+num_weights]).to(
+                    dtype=dtype,
+                    device=self._device,
+                )
                 start += num_weights
 
             return loss_op(torch.squeeze(pyro.condition(self.model, data=data)(x)), y).item()
 
-        # convert input data to double as well as the weights
-        # this might be necessary for the optimizer
-        data = data.double()
         initial_weights = np.concatenate(
             [site['init']['mean'].cpu().numpy() for site in self._sites.values()]
         )
@@ -582,7 +598,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         start = 0
         for name, site in self._sites.items():
             num_weights = len(site['init']['mean'])
-            site['values'] = result.x[start:start + num_weights]
+            site['values'] = result.x[start:start + num_weights].astype(self.dtypes[dtype])
             start += num_weights
 
         # on some methods like Beta calibration, it is necessary to repeat the optimization
@@ -600,7 +616,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         start = 0
         for name, site in self._sites.items():
             num_weights = len(site['init']['mean'])
-            site['values'] = result.x[start:start + num_weights]
+            site['values'] = result.x[start:start + num_weights].astype(self.dtypes[dtype])
             start += num_weights
 
     def momentum(self, data: torch.Tensor, y: torch.Tensor, tensorboard: bool, log_dir: str):
@@ -741,7 +757,11 @@ class AbstractLogisticRegression(AbstractCalibration):
 
         # convert input data and weights to torch (and possibly to CUDA)
         data = self.prepare(X).to(self._device)
-        num_data = data.shape[0]
+        dtype = data.dtype
+
+        # check if input data type is known
+        if dtype not in self.dtypes:
+            raise RuntimeError("Unsupported input data type: ", data.dtype)
 
         # if weights is 2-D matrix, we are in sampling mode
         # treat each row as a separate weights vector
@@ -758,10 +778,16 @@ class AbstractLogisticRegression(AbstractCalibration):
                     for name, site in self._sites.items():
                         weights[name] = torch.from_numpy(np.mean(self.mcmc_model[name])).to(self._device)
 
+                        if weights[name].dtype != dtype:
+                            raise RuntimeError("Training dtype %s does not match to passed data dtype %s." % (weights[name].dtype, dtype))
+
                 # on variational inference, use mean of the variational distribution for inference
                 elif self.vi_model is not None:
                     for name, site in self._sites.items():
                         weights[name] = torch.from_numpy(self.vi_model['params']['%s_mean' % name]).to(self._device)
+
+                        if weights[name].dtype != dtype:
+                            raise RuntimeError("Training dtype %s does not match to passed data dtype %s." % (weights[name].dtype, dtype))
 
                 else:
                     raise ValueError("Internal error: neither MCMC nor variational model given.")
@@ -821,6 +847,9 @@ class AbstractLogisticRegression(AbstractCalibration):
             weights = {}
             for name, site in self._sites.items():
                 weights[name] = torch.from_numpy(site['values']).to(self._device)
+
+                if weights[name].dtype != dtype:
+                    raise RuntimeError("Training dtype %s does not match to passed data dtype %s." % (weights[name].dtype, dtype))
 
             # on MLE without uncertainty, only return the single model estimate
             calibrated = process_model(weights).cpu().numpy()
