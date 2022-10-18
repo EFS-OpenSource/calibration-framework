@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -13,12 +13,13 @@ from scipy.interpolate import interp1d, griddata
 import matplotlib.pyplot as plt
 import tikzplotlib
 
-from netcal.metrics import _Miscalibration
+from netcal.metrics.Miscalibration import _Miscalibration
 
 
 class ReliabilityDiagram(object):
     """
-    Plot Confidence Histogram and Reliability Diagram to visualize miscalibration.
+    Plot Confidence Histogram and Reliability Diagram to visualize miscalibration in the context of
+    confidence calibration.
     On classification, plot the gaps between average confidence and observed accuracy bin-wise over the confidence
     space [1]_, [2]_.
     On detection, plot the miscalibration w.r.t. the additional regression information provided (1-D or 2-D) [3]_.
@@ -49,23 +50,31 @@ class ReliabilityDiagram(object):
     .. [1] Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
        "On Calibration of Modern Neural Networks."
        Proceedings of the 34th International Conference on Machine Learning-Volume 70. JMLR. org, 2017.
-       `Get source online <https://arxiv.org/abs/1706.04599>`_
+       `Get source online <https://arxiv.org/abs/1706.04599>`__
 
     .. [2] A. Niculescu-Mizil and R. Caruana:
        “Predicting good probabilities with supervised learning.”
        Proceedings of the 22nd International Conference on Machine Learning, 2005, pp. 625–632.
-       `Get source online <https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf>`_
+       `Get source online <https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf>`__
 
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
-       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`_
+       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`__
     """
 
-    def __init__(self, bins: Union[int, Iterable[int]] = 10, equal_intervals: bool = True,
-                 detection: bool = False, sample_threshold: int = 1,
-                 fmin: float = None, fmax: float = None,
-                 metric: str = 'ECE', **kwargs):
+    def __init__(
+            self,
+            bins: Union[int, Iterable[int]] = 10,
+            *,
+            equal_intervals: bool = True,
+            detection: bool = False,
+            sample_threshold: int = 1,
+            fmin: float = None,
+            fmax: float = None,
+            metric: str = 'ECE',
+            **kwargs
+    ):
         """ Constructor. For detailed parameter documentation view classdocs. """
 
         self.bins = bins
@@ -81,12 +90,24 @@ class ReliabilityDiagram(object):
         if 'title_suffix' in kwargs:
             self.title_suffix = kwargs['title_suffix']
 
-        self._miscalibration = _Miscalibration(bins=bins, equal_intervals=equal_intervals,
-                                               detection=detection, sample_threshold=sample_threshold)
+        self._miscalibration = _Miscalibration(
+            bins=bins, equal_intervals=equal_intervals,
+            detection=detection, sample_threshold=sample_threshold
+        )
 
-    def plot(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray],
-             batched: bool = False, uncertainty: str = None, filename: str = None, tikz: bool = False,
-             title_suffix: str = None, feature_names: List[str] = None, **save_args) -> Union[plt.Figure, str]:
+    def plot(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            *,
+            batched: bool = False,
+            uncertainty: str = None,
+            filename: str = None,
+            tikz: bool = False,
+            title_suffix: str = None,
+            feature_names: List[str] = None,
+            **save_args
+    ) -> Union[plt.Figure, str]:
         """
         Reliability diagram to visualize miscalibration. This could be either in classical way for confidences only
         or w.r.t. additional properties (like x/y-coordinates of detection boxes, width, height, etc.). The additional
@@ -136,6 +157,7 @@ class ReliabilityDiagram(object):
         Returns
         -------
         matplotlib.pyplot.Figure if 'tikz' is False else str with tikz code.
+            Visualization of the reliability diagrams either as Matplotlib figure or as string with tikz code.
 
         Raises
         ------
@@ -170,21 +192,31 @@ class ReliabilityDiagram(object):
             raise AttributeError("Diagram is not defined for more than 2 additional feature dimensions.")
 
         histograms = []
+        num_samples_hist = []
         for batch_X, batch_matched, batch_uncertainty, bounds in zip(X, matched, sample_uncertainty, bin_bounds):
-            batch_histograms = self._miscalibration.binning(bounds, batch_X, batch_matched, batch_X[:, 0], batch_uncertainty[:, 0])
-            histograms.append(batch_histograms[:-1])
+
+            batch_histograms, batch_num_samples, _, _ = self._miscalibration.binning(
+                bounds,
+                batch_X,
+                batch_matched,
+                batch_X[:, 0],
+                batch_uncertainty[:, 0]
+            )
+
+            histograms.append(batch_histograms)
+            num_samples_hist.append(batch_num_samples)
 
         # no additional dimensions? compute standard reliability diagram
         if num_features == 1:
-            fig = self.__plot_confidence_histogram(X, matched, histograms, bin_bounds, title_suffix)
+            fig = self.__plot_confidence_histogram(X, matched, histograms, num_samples_hist, bin_bounds, title_suffix)
 
         # one additional feature? compute 1D-plot
         elif num_features == 2:
-            fig = self.__plot_1d(histograms, bin_bounds, title_suffix, feature_names)
+            fig = self.__plot_1d(histograms, num_samples_hist, bin_bounds, title_suffix, feature_names)
 
         # two additional features? compute 2D plot
         elif num_features == 3:
-            fig = self.__plot_2d(histograms, bin_bounds, title_suffix, feature_names)
+            fig = self.__plot_2d(histograms, num_samples_hist, bin_bounds, title_suffix, feature_names)
 
         # number of dimensions exceeds 3? quit
         else:
@@ -223,8 +255,15 @@ class ReliabilityDiagram(object):
         metric_map[nans] = griddata(x(~nans), metric_map[~nans], x(nans), method='cubic', fill_value=mean)
         return metric_map
 
-    def __plot_confidence_histogram(self, X: List[np.ndarray], matched: List[np.ndarray], histograms: List[np.ndarray],
-                                    bin_bounds: List, title_suffix: str = None) -> plt.Figure:
+    def __plot_confidence_histogram(
+            self,
+            X: List[np.ndarray],
+            matched: List[np.ndarray],
+            histograms: List[np.ndarray],
+            num_samples_hist: List[np.ndarray],
+            bin_bounds: List,
+            title_suffix: str = None
+    ) -> plt.Figure:
         """ Plot confidence histogram and reliability diagram to visualize miscalibration for condidences only. """
 
         # get number of bins (self.bins has not been processed yet)
@@ -232,9 +271,12 @@ class ReliabilityDiagram(object):
 
         median_confidence = [(bounds[0][1:] + bounds[0][:-1]) * 0.5 for bounds in bin_bounds]
         mean_acc, mean_conf = [], []
-        for batch_X, batch_matched, batch_hist, batch_median in zip(X, matched, histograms, median_confidence):
-            acc_hist, conf_hist, _, num_samples_hist = batch_hist
-            empty_bins, = np.nonzero(num_samples_hist == 0)
+        for batch_X, batch_matched, batch_hist, batch_num_samples, batch_median in zip(
+                X, matched, histograms, num_samples_hist, median_confidence
+        ):
+
+            acc_hist, conf_hist, _ = batch_hist
+            empty_bins, = np.nonzero(batch_num_samples == 0)
 
             # calculate overall mean accuracy and confidence
             mean_acc.append(np.mean(batch_matched))
@@ -245,13 +287,13 @@ class ReliabilityDiagram(object):
             conf_hist[empty_bins] = batch_median[empty_bins]
 
             # convert num_samples to relative afterwards (inplace denoted by [:])
-            num_samples_hist[:] = num_samples_hist / np.sum(num_samples_hist)
+            batch_num_samples[:] = batch_num_samples / np.sum(batch_num_samples)
 
         # get mean histograms and values over all batches
         acc = np.mean([hist[0] for hist in histograms], axis=0)
         conf = np.mean([hist[1] for hist in histograms], axis=0)
         uncertainty = np.sqrt(np.mean([hist[2] for hist in histograms], axis=0))
-        num_samples = np.mean([hist[3] for hist in histograms], axis=0)
+        num_samples = np.mean([x for x in num_samples_hist], axis=0)
         mean_acc = np.mean(mean_acc)
         mean_conf = np.mean(mean_conf)
         median_confidence = np.mean(median_confidence, axis=0)
@@ -318,11 +360,17 @@ class ReliabilityDiagram(object):
         ax.set_ylabel('Accuracy')
         ax.legend(['Perfect Calibration', 'Output', 'Gap'])
 
-        plt.tight_layout()
+        fig.tight_layout()
         return fig
 
-    def __plot_1d(self, histograms: List[np.ndarray], bin_bounds: List,
-                  title_suffix: str = None, feature_names: List[str] = None) -> plt.Figure:
+    def __plot_1d(
+            self,
+            histograms: List[np.ndarray],
+            num_samples_hist: List[np.ndarray],
+            bin_bounds: List,
+            title_suffix: str = None,
+            feature_names: List[str] = None
+    ) -> plt.Figure:
         """ Plot 1-D miscalibration w.r.t. one additional feature. """
 
         # z score for credible interval (if uncertainty is given)
@@ -330,8 +378,9 @@ class ReliabilityDiagram(object):
         z_score = norm.ppf(1. - (p / 2))
 
         results = []
-        for batch_hist, bounds in zip(histograms, bin_bounds):
-            result = self._miscalibration.process(self.metric, *batch_hist)
+        for batch_hist, batch_num_samples, bounds in zip(histograms, num_samples_hist, bin_bounds):
+
+            result = self._miscalibration.process(self.metric, *batch_hist, num_samples_hist=batch_num_samples)
             bin_median = (bounds[-1][:-1] + bounds[-1][1:]) * 0.5
 
             # interpolate missing values
@@ -406,13 +455,20 @@ class ReliabilityDiagram(object):
         fig.tight_layout()
         return fig
 
-    def __plot_2d(self, histograms: List[np.ndarray], bin_bounds: List[np.ndarray],
-                  title_suffix: str = None, feature_names: List[str] = None) -> plt.Figure:
+    def __plot_2d(
+            self,
+            histograms: List[np.ndarray],
+            num_samples_hist: List[np.ndarray],
+            bin_bounds: List[np.ndarray],
+            title_suffix: str = None,
+            feature_names: List[str] = None
+    ) -> plt.Figure:
         """ Plot 2D miscalibration reliability diagram heatmap. """
 
         results = []
-        for batch_hist in histograms:
-            result = self._miscalibration.process(self.metric, *batch_hist)
+        for batch_hist, batch_num_samples in zip(histograms, num_samples_hist):
+
+            result = self._miscalibration.process(self.metric, *batch_hist, num_samples_hist=batch_num_samples)
 
             # interpolate 2D data inplace to avoid "empty" bins
             batch_samples = result[-1]
