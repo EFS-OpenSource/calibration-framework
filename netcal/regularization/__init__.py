@@ -24,6 +24,5 @@ Available functions
 
 from .ConfidencePenalty import confidence_penalty
 from .ConfidencePenalty import ConfidencePenalty
-from .ECEPenalty import ECEPenalty
 from .MMCEPenalty import MMCEPenalty
 from .DCAPenalty import DCAPenalty
