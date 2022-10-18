@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -15,7 +15,9 @@ from .HistogramBinning import HistogramBinning
 
 class BBQ(AbstractCalibration):
     """
-    Bayesian Binning into Quantiles (BBQ) [1]_. This method utilizes multiple :class:`HistogramBinning`
+    Bayesian Binning into Quantiles (BBQ).
+    This method has been proposed by [1]_.
+    This method utilizes multiple :class:`HistogramBinning`
     instances with different amounts of bins and computes a weighted sum of all methods to obtain a
     well-calibrated confidence estimate. The scoring function "BDeu", which is proposed in the original paper,
     is currently not supported.
@@ -78,7 +80,7 @@ class BBQ(AbstractCalibration):
     .. [1] Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
        "Obtaining well calibrated probabilities using bayesian binning."
        Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`__
 
     """
 

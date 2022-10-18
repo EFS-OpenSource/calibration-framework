@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -12,7 +12,8 @@ from netcal import AbstractCalibration, dimensions, accepts
 
 class NearIsotonicRegression(AbstractCalibration):
     """
-    Near Isotonic Regression Calibration method [1]_ (commonly used by :class:`ENIR` [2]_).
+    Near Isotonic Regression Calibration method.
+    Has been proposed by [1]_ and is commonly used by :class:`ENIR` [2]_.
 
     Parameters
     ----------
