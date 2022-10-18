@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -7,28 +7,28 @@
 
 import numpy as np
 from typing import Union, Iterable, Tuple
-from .Miscalibration import _Miscalibration
+from netcal.metrics.Miscalibration import _Miscalibration
 
 
-class ECE(_Miscalibration):
+class ACE(_Miscalibration):
     """
-    Expected Calibration Error (ECE).
-    This metric is used on classification [1]_ or as Detection Expected Calibration Error on object
-    detection tasks [2]_. This metrics measures the expected difference between accuracy and confidence by grouping
-    all samples (size :math:`N`) into :math:`K` bins
-    and calculating
+    Average Calibration Error (ACE) for classification and Detection Average Calibration Error (D-ACE) for
+    object detection or segmentation.
+    This metric is used on classification [1]_ or as Detection Average Calibration Error (D-ACE)
+    [2]_ on object detection tasks. This metrics measures the average difference between accuracy and confidence by
+    grouping all samples into :math:`B` bins and calculating
 
     .. math::
 
-       ECE = \\sum_{i=1}^K \\frac{|B_i|}{N} |\\text{acc}_i - \\text{conf}_i| ,
+       ACE = \\frac{1}{B} \\sum_{b=1}^B |\\text{acc}(b) - \\text{conf}(b)| ,
 
-    where :math:`\\text{acc}_i` and :math:`\\text{conf}_i` denote the accuracy and average confidence in the i-th bin
-    and :math:`|B_i|` denote the number of samples in bin :math:`B_i`.
+    where :math:`\\text{acc}(b)` and :math:`\\text{conf}(b)` denote the accuracy and average confidence in the b-th bin.
+    The main difference to :class:`netcal.regression.confidence.ECE` is that each bin is weighted equally.
 
     Parameters
     ----------
     bins : int or iterable, default: 10
-        Number of bins used by the Histogram Binning.
+        Number of bins used by the ACE.
         On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = ... = bins).
         If iterable, use different amount of bins for each dimension (nx1, nx2, ... = bins).
     equal_intervals : bool, optional, default: True
@@ -44,21 +44,26 @@ class ECE(_Miscalibration):
 
     References
     ----------
-    .. [1] Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
-       "Obtaining well calibrated probabilities using bayesian binning."
-       Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+    .. [1] Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
+       "Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection."
+       Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
+       `Get source online <https://openreview.net/pdf?id=S1lG7aTnqQ>`__
     .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
-       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`_.
+       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`__
     """
 
-    def measure(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray],
-                batched: bool = False, uncertainty: str = None,
-                return_map: bool = False,
-                return_num_samples: bool = False,
-                return_uncertainty_map: bool = False) -> Union[float, Tuple]:
+    def measure(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            batched: bool = False,
+            uncertainty: str = None,
+            return_map: bool = False,
+            return_num_samples: bool = False,
+            return_uncertainty_map: bool = False
+    ) -> Union[float, Tuple]:
         """
         Measure calibration by given predictions with confidence and the according ground truth.
         Assume binary predictions with y=1.
@@ -101,14 +106,15 @@ class ECE(_Miscalibration):
         Returns
         -------
         float or tuple of (float, np.ndarray, [np.ndarray, [np.ndarray]])
-            Always returns Expected Calibration Error.
+            Always returns Average Calibration Error.
             If 'return_map' is True, return tuple and append miscalibration map over all bins.
             If 'return_num_samples' is True, return tuple and append the number of samples in each bin (excluding confidence dimension).
             If 'return_uncertainty' is True, return tuple and append the average standard deviation of confidence within each bin (excluding confidence dimension).
         """
 
-        return self._measure(X=X, y=y, metric='ece',
-                             batched=batched, uncertainty=uncertainty,
-                             return_map=return_map,
-                             return_num_samples=return_num_samples,
-                             return_uncertainty_map=return_uncertainty_map)
+        return self._measure(
+            X=X, y=y, metric='ace', batched=batched, uncertainty=uncertainty,
+            return_map=return_map,
+            return_num_samples=return_num_samples,
+            return_uncertainty_map=return_uncertainty_map
+        )

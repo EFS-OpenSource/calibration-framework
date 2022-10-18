@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -7,26 +7,27 @@
 
 from typing import Union, Iterable, Tuple
 import numpy as np
-from .Miscalibration import _Miscalibration
+from netcal.metrics.Miscalibration import _Miscalibration
 
 
 class MCE(_Miscalibration):
     """
-    Maximum Calibration Error (MCE).
+    Maximum Calibration Error (MCE) for classification and Detection Maximum Calibration Error (D-MCE) for
+    object detection or segmentation.
     This metric is used on classification [1]_ or as Detection Maximum calibration error (D-MCE) on
     object detection [2]_. This metrics measures the maximum difference between accuracy and confidence over all bins
-    by grouping all samples into :math:`K` bins and calculating
+    by grouping all samples into :math:`B` bins and calculating
 
     .. math::
 
-       MCE = \max_{i \\in \\{1, ..., K\\}} |\\text{acc}_i - \\text{conf}_i| ,
+       MCE = \max_{b \\in \\{1, ..., B\\}} |\\text{acc}(b) - \\text{conf}(b)| ,
 
-    where :math:`\\text{acc}_i` and :math:`\\text{conf}_i` denote the accuracy and average confidence in the i-th bin.
+    where :math:`\\text{acc}(b)` and :math:`\\text{conf}(b)` denote the accuracy and average confidence in the b-th bin.
 
     Parameters
     ----------
     bins : int or iterable, default: 10
-        Number of bins used by the Histogram Binning.
+        Number of bins used by the MCE.
         On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = ... = bins).
         If iterable, use different amount of bins for each dimension (nx1, nx2, ... = bins).
     equal_intervals : bool, optional, default: True
@@ -45,18 +46,23 @@ class MCE(_Miscalibration):
     .. [1] Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
        "Obtaining well calibrated probabilities using bayesian binning."
        Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`__
     .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
-       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`_
+       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`__
     """
 
-    def measure(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray],
-                batched: bool = False, uncertainty: str = None,
-                return_map: bool = False,
-                return_num_samples: bool = False,
-                return_uncertainty_map: bool = False) -> Union[float, Tuple]:
+    def measure(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            batched: bool = False,
+            uncertainty: str = None,
+            return_map: bool = False,
+            return_num_samples: bool = False,
+            return_uncertainty_map: bool = False
+    ) -> Union[float, Tuple]:
         """
         Measure calibration by given predictions with confidence and the according ground truth.
         Assume binary predictions with y=1.
@@ -105,8 +111,9 @@ class MCE(_Miscalibration):
             If 'return_uncertainty' is True, return tuple and append the average standard deviation of confidence within each bin (excluding confidence dimension).
         """
 
-        return self._measure(X=X, y=y, metric='mce',
-                             batched=batched, uncertainty=uncertainty,
-                             return_map=return_map,
-                             return_num_samples=return_num_samples,
-                             return_uncertainty_map=return_uncertainty_map)
+        return self._measure(
+            X=X, y=y, metric='mce', batched=batched, uncertainty=uncertainty,
+            return_map=return_map,
+            return_num_samples=return_num_samples,
+            return_uncertainty_map=return_uncertainty_map
+        )

@@ -1,12 +1,11 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 from typing import Iterable
-import logging
 from typing import Union
 import numpy as np
 
@@ -15,13 +14,13 @@ from netcal import accepts
 
 class MMCE(object):
     """
-    Maximum Mean Calibration Error (MMCE) [1]_.
-    A differentiable approximation to the Expected Calibration Error (ECE) using a
+    Maximum Mean Calibration Error (MMCE).
+    The MMCE [1]_ is a differentiable approximation to the Expected Calibration Error (ECE) using a
     reproducing _kernel Hilbert space (RKHS).
-    Using a dataset :math:`\\mathcal{D}` of size :math:`N` consisting of the ground truth labels :math:`\\hat{y} \\in \\{1, ..., K \\}`
-    with input :math:`\\hat{y} \\in \\mathcal{X}`, the MMCE is calculated by using a scoring classifier :math:`\\hat{p}=h(x)`
-    that returns the highest probability for a certain class in conjunction with the predicted label
-    information :math:`y \\in \\{1, ..., K \\}` and is defined by
+    Using a dataset :math:`\\mathcal{D}` of size :math:`N` consisting of the ground truth labels
+    :math:`\\hat{y} \\in \\{1, ..., K \\}` with input :math:`x \\in \\mathcal{X}`, the MMCE is calculated by using
+    a scoring classifier :math:`\\hat{p}=h(x)` that returns the highest probability for a certain class in conjunction
+    with the predicted label information :math:`y \\in \\{1, ..., K \\}` and is defined by
 
     .. math::
 
@@ -46,19 +45,22 @@ class MMCE(object):
     .. [1] Kumar, Aviral, Sunita Sarawagi, and Ujjwal Jain:
        "Trainable calibration measures for neural networks from _kernel mean embeddings."
        International Conference on Machine Learning. 2018.
-       `Get source online <http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf>`_.
+       `Get source online <http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf>`__.
     """
 
     @accepts(bool)
     def __init__(self, detection: bool = False):
         """ Constructor. For parameter doc see class doc. """
 
-        self.logger = logging.getLogger('calibration')
-
         assert not detection, "MMCE is currently not supported for object detection."
         self.detection = detection
 
-    def _batched(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray], batched: bool = False):
+    def _batched(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            batched: bool = False
+    ):
         # batched: interpret X and y as multiple predictions
 
         if not batched:
@@ -88,7 +90,12 @@ class MMCE(object):
         diff = confidence[:, None] - confidence
         return np.exp(-2.5 * np.abs(diff))
 
-    def measure(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray], batched: bool = False):
+    def measure(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            batched: bool = False
+    ):
         """
         Measure calibration by given predictions with confidence and the according ground truth.
 
