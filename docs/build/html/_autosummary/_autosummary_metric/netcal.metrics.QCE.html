@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.metrics.QCE &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.metrics" href="../netcal.metrics.html" />
+    <link rel="next" title="netcal.metrics.NLL" href="netcal.metrics.NLL.html" />
+    <link rel="prev" title="netcal.metrics.PICP" href="netcal.metrics.PICP.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.metrics.QCE</a><ul>
+<li><a class="reference internal" href="#netcal.metrics.QCE"><code class="docutils literal notranslate"><span class="pre">QCE</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="netcal.metrics.PICP.html" title="netcal.metrics.PICP" accesskey="P">previous </a></li>
+              <li><a href="netcal.metrics.NLL.html" title="netcal.metrics.NLL" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.metrics.html" accesskey="U">netcal.metrics</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_metric/netcal.metrics.QCE.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.metrics.html#metrics-package-to-measure-miscalibration">Metrics Package to Measure Miscalibration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.metrics.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.ACE.html">netcal.metrics.ACE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.ECE.html">netcal.metrics.ECE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.MCE.html">netcal.metrics.MCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.MMCE.html">netcal.metrics.MMCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.QuantileLoss.html">netcal.metrics.QuantileLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.PinballLoss.html">netcal.metrics.PinballLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.ENCE.html">netcal.metrics.ENCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.UCE.html">netcal.metrics.UCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.PICP.html">netcal.metrics.PICP</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.metrics.QCE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.metrics.QCE"><code class="docutils literal notranslate"><span class="pre">QCE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.NLL.html">netcal.metrics.NLL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../netcal.metrics.html#packages">Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-metrics-qce">
+<h1>netcal.metrics.QCE<a class="headerlink" href="#netcal-metrics-qce" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.metrics.QCE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.metrics.</span></span><span class="sig-name descname"><span class="pre">QCE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marginal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.QCE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marginal Quantile Calibration Error (M-QCE) and Conditional Quantile Calibration Error (C-QCE) which both measure
+the gap between predicted quantiles and observed quantile coverage also for multivariate distributions.
+The M-QCE and C-QCE have originally been proposed by <a class="footnote-reference brackets" href="#id6" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+The derivation of both metrics are based on
+the Normalized Estimation Error Squared (NEES) known from object tracking <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+The derivation of both metrics is shown in the following.</p>
+<p><strong>Definition of standard NEES:</strong>
+Given mean prediction <span class="math notranslate nohighlight">\(\hat{\boldsymbol{y}} \in \mathbb{R}^M\)</span>, ground-truth
+<span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathbb{R}^M\)</span>, and
+estimated covariance matrix <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\Sigma}} \in \mathbb{R}^{M \times M}\)</span> using
+<span class="math notranslate nohighlight">\(M\)</span> dimensions, the NEES is defined as</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = (\boldsymbol{y} - \hat{\boldsymbol{y}})^\top \hat{\boldsymbol{\Sigma}}^{-1}
+(\boldsymbol{y} - \hat{\boldsymbol{y}}) .\]</div>
+<p>The average NEES is defined as the mean error over <span class="math notranslate nohighlight">\(N\)</span> trials in a Monte-Carlo simulation for
+Kalman-Filter testing, so that</p>
+<div class="math notranslate nohighlight">
+\[\bar{\epsilon} = \frac{1}{N} \sum^N_{i=1} \epsilon_i .\]</div>
+<p>Under the condition, that <span class="math notranslate nohighlight">\(\mathbb{E}[\boldsymbol{y} - \hat{\boldsymbol{y}}] = \boldsymbol{0}\)</span> (zero mean),
+a <span class="math notranslate nohighlight">\(\chi^2\)</span>-test is performed to evaluate the estimated uncertainty. This test is accepted, if</p>
+<div class="math notranslate nohighlight">
+\[\bar{\epsilon} \leq \chi^2_M(\tau),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\chi^2_M(\tau)\)</span> is the PPF score obtained by a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution
+with <span class="math notranslate nohighlight">\(M\)</span> degrees of freedom, for a certain quantile level <span class="math notranslate nohighlight">\(\tau \in [0, 1]\)</span>.</p>
+<p><strong>Marginal Quantile Calibration Error (M-QCE):</strong>
+In the case of regression calibration testing, we are interested in the gap between predicted quantile levels and
+observed quantile coverage probability for a certain set of quantile levels. We assert <span class="math notranslate nohighlight">\(N\)</span> observations of our
+test set that are used to estimate the NEES, so that we can compute the expected deviation between predicted
+quantile level and observed quantile coverage by</p>
+<div class="math notranslate nohighlight">
+\[\text{M-QCE}(\tau) := \mathbb{E} \Big[ \big| \mathbb{P} \big( \epsilon \leq \chi^2_M(\tau) \big) - \tau \big| \Big] ,\]</div>
+<p>which is the definition of the Marginal Quantile Calibration Error (M-QCE) <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+The M-QCE is calculated by</p>
+<div class="math notranslate nohighlight">
+\[\text{M-QCE}(\tau) = \Bigg| \frac{1}{N} \sum^N_{n=1} \mathbb{1} \big( \epsilon_n \leq \chi^2_M(\tau) \big) - \tau \Bigg|\]</div>
+<p><strong>Conditional Quantile Calibration Error (C-QCE):</strong>
+The M-QCE measures the marginal calibration error which is more suitable to test for <em>quantile calibration</em>.
+However, similar to <a class="reference internal" href="../_autosummary_metric_submodules/_autosummary_metric/netcal.metrics.regression.UCE.html#netcal.metrics.regression.UCE" title="netcal.metrics.regression.UCE"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.regression.UCE</span></code></a> and <a class="reference internal" href="../_autosummary_metric_submodules/_autosummary_metric/netcal.metrics.regression.ENCE.html#netcal.metrics.regression.ENCE" title="netcal.metrics.regression.ENCE"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.regression.ENCE</span></code></a>,
+we want to induce a dependency on the estimated covariance, since we require
+that</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}&amp;\mathbb{E}[(\boldsymbol{y} - \hat{\boldsymbol{y}})(\boldsymbol{y} - \hat{\boldsymbol{y}})^\top |
+\hat{\boldsymbol{\Sigma}} = \boldsymbol{\Sigma}] = \boldsymbol{\Sigma},\\&amp;\forall \boldsymbol{\Sigma} \in \mathbb{R}^{M \times M}, \boldsymbol{\Sigma} \succcurlyeq 0,
+\boldsymbol{\Sigma}^\top = \boldsymbol{\Sigma} .\end{aligned}\end{align} \]</div>
+<p>To estimate the a <em>covariance</em> dependent QCE, we apply a binning scheme (similar to the
+<a class="reference internal" href="../_autosummary_metric_submodules/_autosummary_metric/netcal.metrics.confidence.ECE.html#netcal.metrics.confidence.ECE" title="netcal.metrics.confidence.ECE"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.confidence.ECE</span></code></a>) over the square root of the <em>standardized generalized variance</em> (SGV) <a class="footnote-reference brackets" href="#id8" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>,
+that is defined as</p>
+<div class="math notranslate nohighlight">
+\[\sigma_G = \sqrt{\text{det}(\hat{\boldsymbol{\Sigma}})^{\frac{1}{M}}} .\]</div>
+<p>Using the generalized standard deviation, it is possible to get a summarized statistic across different
+combinations of correlations to denote the distribution’s dispersion. Thus, the Conditional Quantile Calibration
+Error (C-QCE) <a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is defined by</p>
+<div class="math notranslate nohighlight">
+\[\text{C-QCE}(\tau) := \mathbb{E}_{\sigma_G, X}\Big[\Big|\mathbb{P}\big(\epsilon \leq \chi^2_M(\tau) | \sigma_G\big) - \tau \Big|\Big] ,\]</div>
+<p>To approximate the expectation over the generalized standard deviation, we use a binning scheme with <span class="math notranslate nohighlight">\(B\)</span> bins
+(similar to the ECE) and <span class="math notranslate nohighlight">\(N_b\)</span> samples per bin to compute the weighted sum across all bins, so that</p>
+<div class="math notranslate nohighlight">
+\[\text{C-QCE}(\tau) \approx \sum^B_{b=1} \frac{N_b}{N} | \text{freq}(b) - \tau |\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{freq}(b)\)</span> is the coverage frequency within bin <span class="math notranslate nohighlight">\(b\)</span> and given by</p>
+<div class="math notranslate nohighlight">
+\[\text{freq}(b) = \frac{1}{N_b} \sum_{n \in \mathcal{M}_b} \mathbb{1}\big(\epsilon_i \leq \chi^2_M(\tau)\big) ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathcal{M}_b\)</span> as the set of indices within bin <span class="math notranslate nohighlight">\(b\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used for the internal binning.
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>marginal</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, compute the M-QCE. This is the marginal probability over all samples falling into the desired
+quantiles. If False, use the C-QCE.
+The C-QCE uses a binning scheme by the gerneralized standard deviation to measure the conditional probability
+over all samples falling into the desired quantiles w.r.t. the generalized standard deviation.</p></li>
+<li><p><strong>sample_threshold</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: 1</em>) – Bins with an amount of samples below this threshold are not included into the miscalibration metrics.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
+<p>Küppers, Fabian, Schneider, Jonas, and Haselhoff, Anselm:
+“Parametric and Multivariate Uncertainty Calibration for Regression and Object Detection.”
+European Conference on Computer Vision (ECCV) Workshops, 2022.
+<a class="reference external" href="https://arxiv.org/pdf/2207.01242.pdf">Get source online</a></p>
+</aside>
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Y. Bar-Shalom, X. R. Li, and T. Kirubarajan:
+“Estimation with applications to tracking and navigation.”
+Theory algorithms and software. John Wiley &amp; Sons, 2004.</p>
+</aside>
+<aside class="footnote brackets" id="id8" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">3</a><span class="fn-bracket">]</span></span>
+<p>A. SenGupta:
+“Tests for standardized generalized variances of multivariate normal populations of possibly different dimensions.”
+Journal of Multivariate Analysis, vol. 23, no. 2, pp. 209–219, 1987.
+<a class="reference external" href="https://pdf.sciencedirectassets.com/272481/1-s2.0-S0047259X87X8001X/1-s2.0-0047259X87901539/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLWVhc3QtMSJHMEUCIAo6pl1vIu8%2F8ZEnEt6OKsA92ajSFy8%2BgjC8Tt9Tr360AiEAiVljbWcKBWAkrSpyT3LCCiX1Wug9gDf9WqxygiF%2B1G8q0gQIRhAEGgwwNTkwMDM1NDY4NjUiDLFU4Fzvuej7%2FpkSSCqvBNybwrdLhAP1yVFKRn0AQPK3G5t2wOY5ssTpqbS1HQzoz1EvOo%2BvWNeXPrWTo%2FhUvw8knQEWp9wA7a5wGdsbnmaBmCAWUFStKxSib9htTLAX1Ij5NCh%2ByA%2BiJwvPk4SXcRAJx4zQfJ8N%2FM2jcA3Lji7VPDYR8jNu7FfMd54veXYuqzUDoIdhVWIF4Czx0fwqngck9errYuNVSQCGSaW28m3%2BCr3%2FiePEQrXJcX0K7Q3z5D0%2FHGJvMsw%2FDqugg9gjWAFCquBO6EL9ircGBmzVsYnx8pKPZfa84aHZgGJPwvJp01o6qvUEdBZXbC5pmvDNAwIkguMahAHfNM3ffVDfyIVzRq1WrZIAKLYfgqFiGpNd3kGEUX5dGbSggAvxNXP7JX%2BifNsde9cIhzhqpjS0Z8BoOW8AGbXq9n15qEK%2F6xKJttpIhouxiadU6DtW%2BSDDFXDgdMVs1xU%2FE6dnWtl%2BQeA5VX4ITvTQMAjHOqu22lXEmOpHOmZ8fGKG5QTmz4iShixLGsgxpUMp2Wz%2F2OlCwt64m0sbI7zXr3YkUpyR019fs6IHJ28EVbeHsvp9xLrc5qltKHN3aoBmK4ZK0SFi%2FqHLhuz1HmWzCRQ0%2FkShcOXz80ttPlaHuX54VdVptvSy%2F1obsurjYuaR2HG9rO3lIneMgwKwwodZcKlu%2Fyo4WUCIk%2FhfKZrOWqVfAqqFPjWomg4CX787OIoqP%2FTz8H6sueGWk7HoeJKgSIW4yEISjNkwpdH7lQY6qQHS3GFk4XwFQEzwimYc%2B59DxQowARFI3PgPN%2F4FzUV5OHhm5G8455Dzm4T6R6E1%2F%2B86lSLdpH9JCkbDXBPJndiHTqXwBUej4wSWPASAvqQ6neC1lcJAqimCB7zn17je6g1dCi80xg1rZ6qU0c5BGtRqsCAB2NZlNn8jul1%2BM%2BiBF8SLE4xoNnT5kwEI%2FnnY81jvJw1kf4DspI9S8sAI2Z3efRca%2FBTIwgVw&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20220701T132912Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=300&amp;X-Amz-Credential=ASIAQ3PHCVTYZE6GY4EQ%2F20220701%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Signature=416cca57ae51cdc7c137e60fa5eba2ba651152e29e6b3485feeeb45f66aaeebb&amp;hash=f03a242d7d2e0652dfaa7c5e3fb713736b321247242986106eaa5412f136af12&amp;host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&amp;pii=0047259X87901539&amp;tid=spdf-4216aa85-a41c-4358-8d5e-3e877785fe29&amp;sid=4e9c65da63ee0949f79bfc42fc03dd438d5egxrqb&amp;type=client&amp;ua=4d545d0256065c055303&amp;rr=723f7d3c3edc2199">Get source online</a></p>
+</aside>
+</aside>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, marginal, sample_threshold])</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code>(bin_bounds, samples, *values[, nan])</p></td>
+<td><p>Perform binning on value (and all additional values passed) based on samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequency</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Measure the frequency of each point by binning.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y, q, *[, kind, reduction, ...])</p></td>
+<td><p>Measure quantile loss for given input data either as tuple consisting of mean and stddev estimates or as NumPy array consisting of a sample distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Check input data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code>(metric, acc_hist, conf_hist, ...)</p></td>
+<td><p>Determine miscalibration based on passed histograms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce</span></code>(histogram, distribution, axis[, ...])</p></td>
+<td><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="netcal.metrics.PICP.html" title="netcal.metrics.PICP" >previous</a></li>
+        <li><a href="netcal.metrics.NLL.html" title="netcal.metrics.NLL" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.metrics.html" >netcal.metrics</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

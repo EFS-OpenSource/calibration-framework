@@ -1,0 +1,23 @@
+netcal.metrics.regression.UCE
+=============================
+
+.. currentmodule:: netcal.metrics.regression
+
+.. autoclass:: UCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~UCE.__init__
+      ~UCE.binning
+      ~UCE.frequency
+      ~UCE.measure
+      ~UCE.prepare
+      ~UCE.process
+      ~UCE.reduce
+   
+   

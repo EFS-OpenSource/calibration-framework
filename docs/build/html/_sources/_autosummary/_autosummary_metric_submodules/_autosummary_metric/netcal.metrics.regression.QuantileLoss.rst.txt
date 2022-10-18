@@ -1,0 +1,18 @@
+netcal.metrics.regression.QuantileLoss
+======================================
+
+.. currentmodule:: netcal.metrics.regression
+
+.. autoclass:: QuantileLoss
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~QuantileLoss.__init__
+      ~QuantileLoss.measure
+   
+   

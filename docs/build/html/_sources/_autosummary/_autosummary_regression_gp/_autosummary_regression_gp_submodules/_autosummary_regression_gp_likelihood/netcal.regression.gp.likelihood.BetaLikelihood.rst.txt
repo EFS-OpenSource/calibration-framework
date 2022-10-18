@@ -1,0 +1,38 @@
+netcal.regression.gp.likelihood.BetaLikelihood
+==============================================
+
+.. currentmodule:: netcal.regression.gp.likelihood
+
+.. autoclass:: BetaLikelihood
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BetaLikelihood.__init__
+      ~BetaLikelihood.cdf
+      ~BetaLikelihood.conjugate_update
+      ~BetaLikelihood.entropy
+      ~BetaLikelihood.enumerate_support
+      ~BetaLikelihood.expand
+      ~BetaLikelihood.expand_by
+      ~BetaLikelihood.has_rsample_
+      ~BetaLikelihood.icdf
+      ~BetaLikelihood.independent
+      ~BetaLikelihood.infer_shapes
+      ~BetaLikelihood.log_prob
+      ~BetaLikelihood.mask
+      ~BetaLikelihood.perplexity
+      ~BetaLikelihood.reshape
+      ~BetaLikelihood.rsample
+      ~BetaLikelihood.sample
+      ~BetaLikelihood.sample_n
+      ~BetaLikelihood.score_parts
+      ~BetaLikelihood.set_default_validate_args
+      ~BetaLikelihood.shape
+      ~BetaLikelihood.to_event
+   
+   

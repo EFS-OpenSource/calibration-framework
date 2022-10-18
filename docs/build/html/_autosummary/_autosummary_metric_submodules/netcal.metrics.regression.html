@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.metrics.regression &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.metrics" href="../netcal.metrics.html" />
+    <link rel="next" title="netcal.metrics.regression.QuantileLoss" href="_autosummary_metric/netcal.metrics.regression.QuantileLoss.html" />
+    <link rel="prev" title="netcal.metrics.confidence.MMCE" href="_autosummary_metric/netcal.metrics.confidence.MMCE.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.metrics.regression</a><ul>
+<li><a class="reference internal" href="#metrics-for-regression-uncertainty-calibration">Metrics for Regression Uncertainty Calibration</a></li>
+<li><a class="reference internal" href="#available-classes">Available classes</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="_autosummary_metric/netcal.metrics.confidence.MMCE.html" title="netcal.metrics.confidence.MMCE" accesskey="P">previous </a></li>
+              <li><a href="_autosummary_metric/netcal.metrics.regression.QuantileLoss.html" title="netcal.metrics.regression.QuantileLoss" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.metrics.html" accesskey="U">netcal.metrics</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_metric_submodules/netcal.metrics.regression.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.metrics.html#metrics-package-to-measure-miscalibration">Metrics Package to Measure Miscalibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../netcal.metrics.html#available-classes">Available classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.metrics.html#packages">Packages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.confidence.html">netcal.metrics.confidence</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.metrics.regression</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metrics-for-regression-uncertainty-calibration">Metrics for Regression Uncertainty Calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#available-classes">Available classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.QuantileLoss.html">netcal.metrics.regression.QuantileLoss</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.PinballLoss.html">netcal.metrics.regression.PinballLoss</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.ENCE.html">netcal.metrics.regression.ENCE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.UCE.html">netcal.metrics.regression.UCE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.PICP.html">netcal.metrics.regression.PICP</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.QCE.html">netcal.metrics.regression.QCE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.NLL.html">netcal.metrics.regression.NLL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="module-netcal.metrics.regression">
+<span id="netcal-metrics-regression"></span><h1>netcal.metrics.regression<a class="headerlink" href="#module-netcal.metrics.regression" title="Permalink to this heading">¶</a></h1>
+<section id="metrics-for-regression-uncertainty-calibration">
+<h2>Metrics for Regression Uncertainty Calibration<a class="headerlink" href="#metrics-for-regression-uncertainty-calibration" title="Permalink to this heading">¶</a></h2>
+<p>Methods for measuring miscalibration in the context of regression uncertainty calibration for probabilistic
+regression models.</p>
+<p>The common methods for regression uncertainty evaluation are <em>netcal.metrics.regression.PinballLoss</em> (Pinball
+loss), the <em>netcal.metrics.regression.NLL</em> (NLL), and the <em>netcal.metrics.regression.QCE</em> (M-QCE and
+C-QCE). The Pinball loss as well as the Marginal/Conditional Quantile Calibration Error (M-QCE and C-QCE) evaluate
+the quality of the estimated quantiles compared to the observed ground-truth quantile coverage. The NLL is a proper
+scoring rule to measure the overall quality of the predicted probability distributions.</p>
+<p>Further metrics are the <em>netcal.metrics.regression.UCE</em> (UCE) and the <em>netcal.metrics.regression.ENCE</em>
+(ENCE) which both apply a binning scheme over the predicted standard deviation/variance and test for <em>variance
+calibration</em>.</p>
+<p>For a detailed description of the available metrics within regression calibration, see the module doc of
+<em>netcal.regression</em>.</p>
+</section>
+<section id="available-classes">
+<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.QuantileLoss.html#netcal.metrics.regression.QuantileLoss" title="netcal.metrics.regression.QuantileLoss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantileLoss</span></code></a>()</p></td>
+<td><p>Pinball aka quantile loss within regression calibration to test for <em>quantile calibration</em> of a probabilistic regression model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.PinballLoss.html#netcal.metrics.regression.PinballLoss" title="netcal.metrics.regression.PinballLoss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PinballLoss</span></code></a>()</p></td>
+<td><p>Synonym for Quantile loss.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.ENCE.html#netcal.metrics.regression.ENCE" title="netcal.metrics.regression.ENCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENCE</span></code></a>([bins, sample_threshold])</p></td>
+<td><p>Expected Normalized Calibration Error (ENCE) for a regression calibration evaluation to test for <em>variance calibration</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.UCE.html#netcal.metrics.regression.UCE" title="netcal.metrics.regression.UCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UCE</span></code></a>([bins, sample_threshold])</p></td>
+<td><p>Uncertainty Calibration Error (UCE) for a regression calibration evaluation to test for <em>variance calibration</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.PICP.html#netcal.metrics.regression.PICP" title="netcal.metrics.regression.PICP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PICP</span></code></a>([bins, equal_intervals, detection, ...])</p></td>
+<td><p>Compute Prediction Interval Coverage Probability (PICP) and Mean Prediction Interval Width (MPIW).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.QCE.html#netcal.metrics.regression.QCE" title="netcal.metrics.regression.QCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QCE</span></code></a>([bins, marginal, sample_threshold])</p></td>
+<td><p>Marginal Quantile Calibration Error (M-QCE) and Conditional Quantile Calibration Error (C-QCE) which both measure the gap between predicted quantiles and observed quantile coverage also for multivariate distributions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.regression.NLL.html#netcal.metrics.regression.NLL" title="netcal.metrics.regression.NLL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NLL</span></code></a>()</p></td>
+<td><p>Negative log likelihood (NLL) for probabilistic regression models.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="_autosummary_metric/netcal.metrics.confidence.MMCE.html" title="netcal.metrics.confidence.MMCE" >previous</a></li>
+        <li><a href="_autosummary_metric/netcal.metrics.regression.QuantileLoss.html" title="netcal.metrics.regression.QuantileLoss" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.metrics.html" >netcal.metrics</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

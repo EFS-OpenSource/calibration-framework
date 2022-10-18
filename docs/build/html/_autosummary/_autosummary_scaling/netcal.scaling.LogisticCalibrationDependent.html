@@ -1,59 +1,197 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.scaling.LogisticCalibrationDependent &#8212; calibration-framework 1.2.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.scaling.LogisticCalibrationDependent &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
     
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.scaling" href="../netcal.scaling.html" />
     <link rel="next" title="netcal.scaling.TemperatureScaling" href="netcal.scaling.TemperatureScaling.html" />
     <link rel="prev" title="netcal.scaling.LogisticCalibration" href="netcal.scaling.LogisticCalibration.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="netcal.scaling.TemperatureScaling.html" title="netcal.scaling.TemperatureScaling"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="netcal.scaling.LogisticCalibration.html" title="netcal.scaling.LogisticCalibration"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../netcal.scaling.html" accesskey="U">netcal.scaling</a> &#187;</li> 
-      </ul>
-    </div>  
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.scaling.LogisticCalibrationDependent</a><ul>
+<li><a class="reference internal" href="#netcal.scaling.LogisticCalibrationDependent"><code class="docutils literal notranslate"><span class="pre">LogisticCalibrationDependent</span></code></a></li>
+</ul>
+</li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+                </ul>
+              </li>
+
             
-  <div class="section" id="netcal-scaling-logisticcalibrationdependent">
-<h1>netcal.scaling.LogisticCalibrationDependent<a class="headerlink" href="#netcal-scaling-logisticcalibrationdependent" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="netcal.scaling.LogisticCalibrationDependent">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.scaling.</code><code class="sig-name descname">LogisticCalibrationDependent</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.scaling.AbstractLogisticRegression.AbstractLogisticRegression</span></code></p>
-<p>This calibration method is for detection only and uses multivariate normal distributions to obtain a
+              <li><a href="netcal.scaling.LogisticCalibration.html" title="netcal.scaling.LogisticCalibration" accesskey="P">previous </a></li>
+              <li><a href="netcal.scaling.TemperatureScaling.html" title="netcal.scaling.TemperatureScaling" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.scaling.html" accesskey="U">netcal.scaling</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_scaling/netcal.scaling.LogisticCalibrationDependent.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.scaling.html#scaling-methods-for-confidence-calibration">Scaling Methods for Confidence Calibration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.scaling.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="netcal.scaling.AbstractLogisticRegression.html">netcal.scaling.AbstractLogisticRegression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.scaling.LogisticCalibration.html">netcal.scaling.LogisticCalibration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.scaling.LogisticCalibrationDependent</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.scaling.LogisticCalibrationDependent"><code class="docutils literal notranslate"><span class="pre">LogisticCalibrationDependent</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.scaling.TemperatureScaling.html">netcal.scaling.TemperatureScaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.scaling.BetaCalibration.html">netcal.scaling.BetaCalibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.scaling.BetaCalibrationDependent.html">netcal.scaling.BetaCalibrationDependent</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-scaling-logisticcalibrationdependent">
+<h1>netcal.scaling.LogisticCalibrationDependent<a class="headerlink" href="#netcal-scaling-logisticcalibrationdependent" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.scaling.LogisticCalibrationDependent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.scaling.</span></span><span class="sig-name descname"><span class="pre">LogisticCalibrationDependent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calibration method is for detection only and uses multivariate normal distributions to obtain a
 calibration mapping by means of the confidence as well as additional features. This calibration scheme
-tries to model several dependencies in the variables given by the input <code class="docutils literal notranslate"><span class="pre">X</span></code> <a class="footnote-reference brackets" href="#id3" id="id1">1</a>.</p>
+tries to model several dependencies in the variables given by the input <code class="docutils literal notranslate"><span class="pre">X</span></code> <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p>It is necessary to provide all data in input parameter <code class="docutils literal notranslate"><span class="pre">X</span></code> as an NumPy array of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_features)</span></code>,
 whereas the confidence must be the first feature given in the input array. The ground-truth samples <code class="docutils literal notranslate"><span class="pre">y</span></code>
 must be an array of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,)</span></code> consisting of binary labels <span class="math notranslate nohighlight">\(y \in \{0, 1\}\)</span>. Those
@@ -70,7 +208,7 @@ To define a general calibration map for binary problems, we use the logistic fun
 input <span class="math notranslate nohighlight">\(s = (\hat{p}, \hat{r})\)</span> of size K by</p>
 <div class="math notranslate nohighlight">
 \[g(s) = \frac{1}{1 + \exp(-z(s))} ,\]</div>
-<p>According to <a class="footnote-reference brackets" href="#id4" id="id2">2</a>, we can interpret the logit <span class="math notranslate nohighlight">\(z\)</span> as the logarithm of the posterior odds</p>
+<p>According to <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, we can interpret the logit <span class="math notranslate nohighlight">\(z\)</span> as the logarithm of the posterior odds</p>
 <div class="math notranslate nohighlight">
 \[z(s) = \log \frac{f(\text{m}=1 | s)}{f(\text{m}=0 | s)} \approx
 \log \frac{f(s | \text{m}=1)}{f(s | \text{m}=1)} = \ell r(s)\]</div>
@@ -79,16 +217,17 @@ input <span class="math notranslate nohighlight">\(s = (\hat{p}, \hat{r})\)</spa
 as the mean vectors and covariance matrices for <span class="math notranslate nohighlight">\(\text{m}=1\)</span> and
 <span class="math notranslate nohighlight">\(\text{m}=0\)</span>, respectively, we get a likelihood ratio of</p>
 <div class="math notranslate nohighlight">
-\[\ell r(s) = \log \frac{\Sigma^-}{\Sigma^+}
-+ \frac{1}{2} (s_-^T \Sigma_-^{-1}s^-) - (s_+^T \Sigma_+^{-1}s^+),\]</div>
+\[\ell r(s) = \log \frac{|\Sigma^-|}{|\Sigma^+|}
++ \frac{1}{2} \Big[ (s_-^T \Sigma_-^{-1}s^-) - (s_+^T \Sigma_+^{-1}s^+) \Big],\]</div>
 <p>with <span class="math notranslate nohighlight">\(s^+ = s - \mu^+\)</span> and <span class="math notranslate nohighlight">\(s^- = s - \mu^-\)</span>.</p>
 <p>To keep the restrictions to covariance matrices (symmetric and positive semidefinit), we optimize a decomposed
 matrix V as</p>
 <div class="math notranslate nohighlight">
 \[\Sigma = V^T V\]</div>
 <p>instead of estimating <span class="math notranslate nohighlight">\(\Sigma\)</span> directly. This guarantees both requirements.</p>
+<p>Capturing epistemic uncertainty of the calibration method is also able with this implementation <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> (<em>str</em><em>, </em><em>default: &quot;mle&quot;</em>) – Method that is used to obtain a calibration mapping:
 - ‘mle’: Maximum likelihood estimate without uncertainty using a convex optimizer.
@@ -110,30 +249,29 @@ number like ‘cuda:0’, etc.</p></li>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
 “Multivariate Confidence Calibration for Object Detection.”
-The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.</p>
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Kull, Meelis, Telmo Silva Filho, and Peter Flach:
+The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.</p>
+</aside>
+<aside class="footnote brackets" id="id5" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Kull, Meelis, Telmo Silva Filho, and Peter Flach:
 “Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers”
 Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
 <a class="reference external" href="http://proceedings.mlr.press/v54/kull17a/kull17a.pdf">Get source online</a></p>
-</dd>
-<dt class="label" id="id5"><span class="brackets">3</span></dt>
-<dd><p>Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
+</aside>
+<aside class="footnote brackets" id="id6" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
 “Bayesian Confidence Calibration for Epistemic Uncertainty Modelling.”
 2021 IEEE Intelligent Vehicles Symposium (IV), 2021</p>
-</dd>
-</dl>
+</aside>
+</aside>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
 <td><p>Create an instance of <cite>LogisticCalibrationDependent</cite>.</p></td>
@@ -174,417 +312,68 @@ Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code>(X)</p></td>
 <td><p>Preprocessing of input data before called at the beginning of the fit-function.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code>(dtype)</p></td>
 <td><p>Prior definition of the weights used for log regression.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_model</span></code>(filename)</p></td>
-<td><p>Save model instance as with torch’s save function as this is safer for torch tensors.</p></td>
+<td><p>Save model instance as with torch's save function as this is safer for torch tensors.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
-<td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code>(device)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code>(device)</p></td>
 <td><p>Set distribution parameters to the desired device in order to compute either on CPU or GPU.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X[, num_samples, random_state, …])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X[, num_samples, random_state, ...])</p></td>
 <td><p>After model calibration, this function is used to get calibrated outputs of uncalibrated confidence estimates.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">variational</span></code>(data, y, tensorboard, log_dir)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">variational</span></code>(data, y, tensorboard, log_dir)</p></td>
 <td><p>Perform variational inference using the guide.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.clear">
-<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear model parameters.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.convex">
-<code class="sig-name descname">convex</code><span class="sig-paren">(</span><em class="sig-param">data: torch.Tensor</em>, <em class="sig-param">y: torch.Tensor</em>, <em class="sig-param">tensorboard: bool</em>, <em class="sig-param">log_dir: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.convex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convex optimization to find the global optimum of current parameter search.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_input</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – NumPy 2-D array with data input.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>,</em><em>)</em>) – NumPy array with ground truth labels as 1-D vector (binary).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.covariances">
-<em class="property">property </em><code class="sig-name descname">covariances</code><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.covariances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for covariance matrices of dependent logistic calibration.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em>, <em class="sig-param">random_state: int = None</em>, <em class="sig-param">tensorboard: bool = True</em>, <em class="sig-param">log_dir: str = None</em><span class="sig-paren">)</span> &#x2192; AbstractLogisticRegression<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build logitic calibration model either conventional with single MLE estimate or with
-Variational Inference (VI) or Markov-Chain Monte-Carlo (MCMC) algorithm to also obtain uncertainty estimates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
-1-D for binary classification, 2-D for multi class (softmax).
-On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
-Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
-<li><p><strong>random_state</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Fix the random seed for the random number</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Instance of class <a class="reference internal" href="netcal.scaling.AbstractLogisticRegression.html#netcal.scaling.AbstractLogisticRegression" title="netcal.scaling.AbstractLogisticRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLogisticRegression</span></code></a>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="netcal.scaling.AbstractLogisticRegression.html#netcal.scaling.AbstractLogisticRegression" title="netcal.scaling.AbstractLogisticRegression">AbstractLogisticRegression</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.fit_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit to data, then transform it.</p>
-<p>Fits transformer to X and y with optional parameters fit_params
-and returns a transformed version of X.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>, </em><em>n_features</em><em>]</em>) – Training set.</p></li>
-<li><p><strong>y</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>]</em>) – Target values.</p></li>
-<li><p><strong>**fit_params</strong> (<em>dict</em>) – Additional fit parameters.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>X_new</strong> – Transformed array.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>numpy array of shape [n_samples, n_features_new]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.get_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get parameters for this estimator.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If True, will return the parameters for this estimator and
-contained subobjects that are estimators.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mapping of string to any</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.guide">
-<code class="sig-name descname">guide</code><span class="sig-paren">(</span><em class="sig-param">X: torch.Tensor = None</em>, <em class="sig-param">y: torch.Tensor = None</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.guide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Variational substitution definition for each parameter. The signature is the same as for the
-“self.model” function but the variables are not used.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>torch.Tensor</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>n_log_regression_features</em><em>)</em>) – Input data that has been prepared by “self.prepare” function call.</p></li>
-<li><p><strong>y</strong> (<em>torch.Tensor</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – Torch tensor with ground truth labels.
-Either as label vector (1-D) or as one-hot encoded ground truth array (2-D) (for multiclass MLE only).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.intercept">
-<em class="property">property </em><code class="sig-name descname">intercept</code><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.intercept" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for intercept of dependent logistic calibration.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.load_model">
-<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.load_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load model from saved torch dump.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – String with filename.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Instance of a child class of <cite>AbstractCalibration</cite>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html#netcal.AbstractCalibration" title="netcal.AbstractCalibration">AbstractCalibration</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.mask">
-<code class="sig-name descname">mask</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, List]<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.mask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Seek for all relevant weights whose values are negative. Mask those values with optimization constraints
-in the interval [0, 0].
-Constraints on the intercepts might also be set.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Indices of masked values and list of boundary constraints for optimization.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>tuple of (np.ndarray, list)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.mcmc">
-<code class="sig-name descname">mcmc</code><span class="sig-paren">(</span><em class="sig-param">data: torch.Tensor</em>, <em class="sig-param">y: torch.Tensor</em>, <em class="sig-param">tensorboard: bool</em>, <em class="sig-param">log_dir: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.mcmc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform Markov-Chain Monte-Carlo sampling on the (unknown) posterior.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_input</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – NumPy 2-D array with data input.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>,</em><em>)</em>) – NumPy array with ground truth labels as 1-D vector (binary).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.means">
-<em class="property">property </em><code class="sig-name descname">means</code><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.means" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for mean vectors of dependent logistic calibration.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.model">
-<code class="sig-name descname">model</code><span class="sig-paren">(</span><em class="sig-param">X: torch.Tensor = None</em>, <em class="sig-param">y: torch.Tensor = None</em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Definition of the log regression model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>torch.Tensor</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>n_log_regression_features</em><em>)</em>) – Input data that has been prepared by “self.prepare” function call.</p></li>
-<li><p><strong>y</strong> (<em>torch.Tensor</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – Torch tensor with ground truth labels.
-Either as label vector (1-D) or as one-hot encoded ground truth array (2-D) (for multiclass MLE only).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Logit of the log regression model.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>torch.Tensor, shape=(n_samples, [n_classes])</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.momentum">
-<code class="sig-name descname">momentum</code><span class="sig-paren">(</span><em class="sig-param">data: torch.Tensor</em>, <em class="sig-param">y: torch.Tensor</em>, <em class="sig-param">tensorboard: bool</em>, <em class="sig-param">log_dir: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.momentum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Momentum optimization to find the global optimum of current parameter search.
-This method is slow but tends to find the global optimum for non-convex optimization.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_input</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – NumPy 2-D array with data input.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>,</em><em>)</em>) – NumPy array with ground truth labels as 1-D vector (binary).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.prepare">
-<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.prepare" title="Permalink to this definition">¶</a></dt>
-<dd><p>Preprocessing of input data before called at the beginning of the fit-function.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
-1-D for binary classification, 2-D for multi class (softmax).
-On detection, this array must have 2 dimensions with number of additional box features in last dim.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Prepared data vector X as torch tensor.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>torch.Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.prior">
-<code class="sig-name descname">prior</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.prior" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prior definition of the weights used for log regression. This function has to set the
-variables ‘self.weight_prior_dist’, ‘self.weight_mean_init’ and ‘self.weight_stddev_init’.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.save_model">
-<code class="sig-name descname">save_model</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.save_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save model instance as with torch’s save function as this is safer for torch tensors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – String with filename.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; netcal.AbstractCalibration.AbstractCalibration<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.set_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the parameters of this estimator.</p>
-<p>The method works on simple estimators as well as on nested objects
-(such as pipelines). The latter have parameters of the form
-<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
-component of a nested object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>self</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.squeeze_generic">
-<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, Iterable[int]]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.squeeze_generic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
-of size 1.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
-<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Squeezed array.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.to">
-<code class="sig-name descname">to</code><span class="sig-paren">(</span><em class="sig-param">device: torch.device</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.to" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set distribution parameters to the desired device in order to compute either on CPU or GPU.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">num_samples: int = 1000</em>, <em class="sig-param">random_state: int = None</em>, <em class="sig-param">mean_estimate: bool = False</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>After model calibration, this function is used to get calibrated outputs of uncalibrated
-confidence estimates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
-1-D for binary classification, 2-D for multi class (softmax).
-On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
-<li><p><strong>num_samples</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: 1000</em>) – Number of samples generated on MCMC sampling or Variational Inference.</p></li>
-<li><p><strong>random_state</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Fix the random seed for the random number</p></li>
-<li><p><strong>mean_estimate</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, directly return the mean on probabilistic methods like MCMC or VI instead of the full
-distribution. This parameter has no effect on MLE.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>np.ndarray, shape=(n_samples, [n_classes]) on MLE or on MCMC/VI if ‘mean_estimate’ is True</em></p></li>
-<li><p><em>or shape=(n_parameters, n_samples, [n_classes]) on VI, MCMC if ‘mean_estimate’ is False</em> – On MLE without uncertainty, return NumPy array with calibrated confidence estimates.
-1-D for binary classification, 2-D for multi class (softmax).
-On VI or MCMC, return NumPy array with leading dimension as the number of sampled parameters from the
-log regression parameter distribution obtained by VI or MCMC.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.scaling.LogisticCalibrationDependent.variational">
-<code class="sig-name descname">variational</code><span class="sig-paren">(</span><em class="sig-param">data: torch.Tensor</em>, <em class="sig-param">y: torch.Tensor</em>, <em class="sig-param">tensorboard: bool</em>, <em class="sig-param">log_dir: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.scaling.LogisticCalibrationDependent.variational" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform variational inference using the guide.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_input</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – NumPy 2-D array with data input.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>,</em><em>)</em>) – NumPy array with ground truth labels as 1-D vector (binary).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+</section>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="netcal.scaling.LogisticCalibration.html"
-                        title="previous chapter">netcal.scaling.LogisticCalibration</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="netcal.scaling.TemperatureScaling.html"
-                        title="next chapter">netcal.scaling.TemperatureScaling</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/_autosummary/_autosummary_scaling/netcal.scaling.LogisticCalibrationDependent.rst.txt"
-            rel="nofollow">Show Source</a></li>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="netcal.scaling.LogisticCalibration.html" title="netcal.scaling.LogisticCalibration" >previous</a></li>
+        <li><a href="netcal.scaling.TemperatureScaling.html" title="netcal.scaling.TemperatureScaling" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.scaling.html" >netcal.scaling</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="netcal.scaling.TemperatureScaling.html" title="netcal.scaling.TemperatureScaling"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="netcal.scaling.LogisticCalibration.html" title="netcal.scaling.LogisticCalibration"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../netcal.scaling.html" >netcal.scaling</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germany AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
-    </div>
+    <!-- /container -->
+
   </body>
 </html>

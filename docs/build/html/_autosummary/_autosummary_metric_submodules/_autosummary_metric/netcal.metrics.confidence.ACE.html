@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.metrics.confidence.ACE &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../../index.html" />
+    <link rel="up" title="netcal.metrics.confidence" href="../netcal.metrics.confidence.html" />
+    <link rel="next" title="netcal.metrics.confidence.ECE" href="netcal.metrics.confidence.ECE.html" />
+    <link rel="prev" title="netcal.metrics.confidence" href="../netcal.metrics.confidence.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.metrics.confidence.ACE</a><ul>
+<li><a class="reference internal" href="#netcal.metrics.confidence.ACE"><code class="docutils literal notranslate"><span class="pre">ACE</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="../netcal.metrics.confidence.html" title="netcal.metrics.confidence" accesskey="P">previous </a></li>
+              <li><a href="netcal.metrics.confidence.ECE.html" title="netcal.metrics.confidence.ECE" accesskey="N">next </a></li>
+              <li><a href="../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../netcal.metrics.html" >netcal.metrics</a></li>
+              <li><a href="../netcal.metrics.confidence.html" accesskey="U">netcal.metrics.confidence</a></li>
+            
+            <li class="visible-xs"><a href="../../../_sources/_autosummary/_autosummary_metric_submodules/_autosummary_metric/netcal.metrics.confidence.ACE.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../../index.html">
+      <img class="logo" src="../../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../netcal.metrics.html">netcal.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../netcal.metrics.html#metrics-package-to-measure-miscalibration">Metrics Package to Measure Miscalibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../netcal.metrics.html#available-classes">Available classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../netcal.metrics.html#packages">Packages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../netcal.metrics.confidence.html">netcal.metrics.confidence</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../netcal.metrics.confidence.html#metrics-for-confidence-calibration">Metrics for Confidence Calibration</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../netcal.metrics.confidence.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">netcal.metrics.confidence.ACE</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#netcal.metrics.confidence.ACE"><code class="docutils literal notranslate"><span class="pre">ACE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="netcal.metrics.confidence.ECE.html">netcal.metrics.confidence.ECE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="netcal.metrics.confidence.MCE.html">netcal.metrics.confidence.MCE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="netcal.metrics.confidence.MMCE.html">netcal.metrics.confidence.MMCE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../netcal.metrics.regression.html">netcal.metrics.regression</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-metrics-confidence-ace">
+<h1>netcal.metrics.confidence.ACE<a class="headerlink" href="#netcal-metrics-confidence-ace" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.metrics.confidence.ACE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.metrics.confidence.</span></span><span class="sig-name descname"><span class="pre">ACE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_intervals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.confidence.ACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average Calibration Error (ACE) for classification and Detection Average Calibration Error (D-ACE) for
+object detection or segmentation.
+This metric is used on classification <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> or as Detection Average Calibration Error (D-ACE)
+<a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> on object detection tasks. This metrics measures the average difference between accuracy and confidence by
+grouping all samples into <span class="math notranslate nohighlight">\(B\)</span> bins and calculating</p>
+<div class="math notranslate nohighlight">
+\[ACE = \frac{1}{B} \sum_{b=1}^B |\text{acc}(b) - \text{conf}(b)| ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{acc}(b)\)</span> and <span class="math notranslate nohighlight">\(\text{conf}(b)\)</span> denote the accuracy and average confidence in the b-th bin.
+The main difference to <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.regression.confidence.ECE</span></code> is that each bin is weighted equally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the ACE.
+On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>equal_intervals</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: True</em>) – If True, the bins have the same width. If False, the bins are splitted to equalize
+the number of samples in each bin.</p></li>
+<li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
+with shape (n_samples, [n_classes]).
+If True, the input array ‘X’ is treated as a box predictions with several box features (at least
+box confidence must be present) with shape (n_samples, [n_box_features]).</p></li>
+<li><p><strong>sample_threshold</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: 1</em>) – Bins with an amount of samples below this threshold are not included into the miscalibration metrics.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
+“Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection.”
+Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
+<a class="reference external" href="https://openreview.net/pdf?id=S1lG7aTnqQ">Get source online</a></p>
+</aside>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+“Multivariate Confidence Calibration for Object Detection.”
+The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
+<a class="reference external" href="https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf">Get source online</a></p>
+</aside>
+</aside>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, equal_intervals, detection, ...])</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code>(bin_bounds, samples, *values[, nan])</p></td>
+<td><p>Perform binning on value (and all additional values passed) based on samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequency</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Measure the frequency of each point by binning.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y[, batched, uncertainty, ...])</p></td>
+<td><p>Measure calibration by given predictions with confidence and the according ground truth.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Check input data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code>(metric, acc_hist, conf_hist, ...)</p></td>
+<td><p>Determine miscalibration based on passed histograms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce</span></code>(histogram, distribution, axis[, ...])</p></td>
+<td><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../netcal.metrics.confidence.html" title="netcal.metrics.confidence" >previous</a></li>
+        <li><a href="netcal.metrics.confidence.ECE.html" title="netcal.metrics.confidence.ECE" >next</a></li>
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../netcal.metrics.html" >netcal.metrics</a></li>
+        <li><a href="../netcal.metrics.confidence.html" >netcal.metrics.confidence</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

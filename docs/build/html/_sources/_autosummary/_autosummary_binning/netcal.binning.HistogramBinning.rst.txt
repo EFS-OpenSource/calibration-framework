@@ -21,7 +21,6 @@ netcal.binning.HistogramBinning
       ~HistogramBinning.load_model
       ~HistogramBinning.save_model
       ~HistogramBinning.set_params
-      ~HistogramBinning.squeeze_generic
       ~HistogramBinning.transform
    
    

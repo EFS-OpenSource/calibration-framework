@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.regression.IsotonicRegression &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.regression" href="../netcal.regression.html" />
+    <link rel="next" title="netcal.regression.VarianceScaling" href="netcal.regression.VarianceScaling.html" />
+    <link rel="prev" title="netcal.regression" href="../netcal.regression.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.regression.IsotonicRegression</a><ul>
+<li><a class="reference internal" href="#netcal.regression.IsotonicRegression"><code class="docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="../netcal.regression.html" title="netcal.regression" accesskey="P">previous </a></li>
+              <li><a href="netcal.regression.VarianceScaling.html" title="netcal.regression.VarianceScaling" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.regression.html" accesskey="U">netcal.regression</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_regression/netcal.regression.IsotonicRegression.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.regression.html#probabilistic-regression-calibration-package">Probabilistic Regression Calibration Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.regression.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.regression.IsotonicRegression</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.regression.IsotonicRegression"><code class="docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.VarianceScaling.html">netcal.regression.VarianceScaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.GPBeta.html">netcal.regression.GPBeta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.GPNormal.html">netcal.regression.GPNormal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.GPCauchy.html">netcal.regression.GPCauchy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../netcal.regression.html#package-for-gaussian-process-optimization">Package for Gaussian process optimization</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-regression-isotonicregression">
+<h1>netcal.regression.IsotonicRegression<a class="headerlink" href="#netcal-regression-isotonicregression" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.regression.IsotonicRegression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.regression.</span></span><span class="sig-name descname"><span class="pre">IsotonicRegression</span></span><a class="headerlink" href="#netcal.regression.IsotonicRegression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Isotonic regression calibration for probabilistic regression models with multiple independent
+output dimensions (optionally).
+Isotonic regression is a piecewise constant, monotonically increasing mapping function used to recalibrate
+the estimated cumulative density function (CDF) of a probabilistic forecaster <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. The goal of regression
+calibration using Isotonic regression is to achieve quantile calibration.</p>
+<p>On the one hand, this method accepts as input X either a tuple X = (mean, stddev) using two NumPy arrays of
+shape N with N number of samples that express the estimated mean and standard deviation of a probabilistic
+forecaster. On the other hand, a NumPy array of shape (R, N) is also accepted where R denotes the number of
+probabilistic forecasts. For example, if probabilistic outputs are obtained by Monte-Carlo sampling using N samples
+and R stochastic forward passes, it is possible to pass all outputs to the calibration function in a single
+NumPy array.</p>
+<p>This method is capable of multiple independent data dimensions where separate calibration models are fitted for
+each data dimension. This method outputs a tuple consisting of three NumPy arrays:</p>
+<ul class="simple">
+<li><p>1st array: T points where the density/cumulative distribution functions are defined, shape: (T, N, D)</p></li>
+<li><p>2nd array: calibrated probability density function, shape: (T, N, D)</p></li>
+<li><p>3rd array: calibrated cumulative density function, shape: (T, N, D)</p></li>
+</ul>
+<p><strong>Mathematical background:</strong> In <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, regression calibration is defined in terms of <em>quantile calibration</em>.
+A probabilistic forecaster <span class="math notranslate nohighlight">\(h(X)\)</span> outputs for any input <span class="math notranslate nohighlight">\(X \in \mathbb{R}\)</span> a probability density
+distribution <span class="math notranslate nohighlight">\(f_Y(y)\)</span> for the target domain <span class="math notranslate nohighlight">\(Y \in \mathcal{Y} = \mathbb{R}\)</span>. The according
+cumulative density function (CDF) is denoted as <span class="math notranslate nohighlight">\(F_Y(y)\)</span>, the respective (inverse) quantile function
+<span class="math notranslate nohighlight">\(F^{-1}_Y(\tau)\)</span> for a certain confidence level <span class="math notranslate nohighlight">\(\tau \in [0, 1]\)</span>. The quantile function denotes
+the quantile boundaries in <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> given a certain confidence level <span class="math notranslate nohighlight">\(\tau\)</span>.
+Using this notation, <em>quantile calibration</em> <a class="footnote-reference brackets" href="#id4" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{P}(Y \leq F^{-1}_Y(\tau)) = \tau, \quad \forall \tau \in [0, 1] ,\]</div>
+<p>which is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{P}(F^{-1}_Y(\tau_1) \leq Y \leq F^{-1}_Y(\tau_2)) = \tau_2 - \tau_1,
+\quad \forall \tau_1, \tau_2 \in [0, 1] .\]</div>
+<p>In other words, the estimated quantiles should match the observed quantiles. For example, if we inspect the 90%
+quantiles of a forecaster over multiple samples, we would expect that 90% of all ground-truth estimates fall into
+these quantiles.</p>
+<p>The Isotonic Regression consumes the input cumulative distribution function (CDF) and compares it with the
+empirical data CDF. With this comparison, it is possible to map the uncalibrated CDF estimates to calibrated
+ones using a monotonically increasing step function.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>)</span>
+<p>Volodymyr Kuleshov, Nathan Fenner, and Stefano Ermon:
+“Accurate uncertainties for deep learning using calibrated regression.”
+International Conference on Machine Learning. PMLR, 2018.
+<a class="reference external" href="http://proceedings.mlr.press/v80/kuleshov18a/kuleshov18a.pdf">Get source online</a></p>
+</aside>
+</aside>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>()</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
+<td><p>Clear model parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y[, tensorboard])</p></td>
+<td><p>Fit a isotonic regression calibration method to the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_model</span></code>(filename)</p></td>
+<td><p>Load model from saved torch dump.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_model</span></code>(filename)</p></td>
+<td><p>Save model instance as with torch's save function as this is safer for torch tensors.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X[, t])</p></td>
+<td><p>Transform uncalibrated distributional estimates (mean and stddev or stochastic samples) to calibrated ones by applying isotonic regression calibration of quantiles.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../netcal.regression.html" title="netcal.regression" >previous</a></li>
+        <li><a href="netcal.regression.VarianceScaling.html" title="netcal.regression.VarianceScaling" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.regression.html" >netcal.regression</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

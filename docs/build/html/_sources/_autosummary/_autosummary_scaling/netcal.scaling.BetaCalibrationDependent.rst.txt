@@ -28,7 +28,6 @@ netcal.scaling.BetaCalibrationDependent
       ~BetaCalibrationDependent.prior
       ~BetaCalibrationDependent.save_model
       ~BetaCalibrationDependent.set_params
-      ~BetaCalibrationDependent.squeeze_generic
       ~BetaCalibrationDependent.to
       ~BetaCalibrationDependent.transform
       ~BetaCalibrationDependent.variational

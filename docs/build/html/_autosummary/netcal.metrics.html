@@ -1,146 +1,334 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.metrics &#8212; calibration-framework 1.2.1 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.metrics &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
     
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../index.html" />
     <link rel="next" title="netcal.metrics.ACE" href="_autosummary_metric/netcal.metrics.ACE.html" />
     <link rel="prev" title="netcal.regularization.DCAPenalty" href="_autosummary_regularization_func/netcal.regularization.DCAPenalty.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_metric/netcal.metrics.ACE.html" title="netcal.metrics.ACE"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_regularization_func/netcal.regularization.DCAPenalty.html" title="netcal.regularization.DCAPenalty"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="module-netcal.metrics">
-<span id="netcal-metrics"></span><h1>netcal.metrics<a class="headerlink" href="#module-netcal.metrics" title="Permalink to this headline">¶</a></h1>
-<p>Methods for measuring miscalibration. The common methods are given with the
-‘Average Calibration Error (ACE)’, ‘Expected Calibration Error (ECE)’ and ‘Maximum Calibration Error (MCE)’.
-Each methods bins the samples by their confidence and measures the accuracy in each bin. The ECE gives the
-mean gap between confidence and observed accuracy in each bin weighted by the number of samples.
-The MCE returns the highest observed deviation. The ACE is similar to the ECE but weights each bin equally.</p>
-<div class="section" id="available-classes">
-<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this headline">¶</a></h2>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.ACE.html#netcal.metrics.ACE" title="netcal.metrics.ACE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ACE</span></code></a>([bins, equal_intervals, detection, …])</p></td>
-<td><p>Average Calibration Error (ACE).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.ECE.html#netcal.metrics.ECE" title="netcal.metrics.ECE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ECE</span></code></a>([bins, equal_intervals, detection, …])</p></td>
-<td><p>Expected Calibration Error (ECE).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.MCE.html#netcal.metrics.MCE" title="netcal.metrics.MCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MCE</span></code></a>([bins, equal_intervals, detection, …])</p></td>
-<td><p>Maximum Calibration Error (MCE).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.MMCE.html#netcal.metrics.MMCE" title="netcal.metrics.MMCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MMCE</span></code></a>([detection])</p></td>
-<td><p>Maximum Mean Calibration Error (MMCE) <a href="#id4"><span class="problematic" id="id1">[1]_</span></a>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.PICP.html#netcal.metrics.PICP" title="netcal.metrics.PICP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PICP</span></code></a>([bins, equal_intervals, detection, …])</p></td>
-<td><p>Compute Prediction Interval Coverage Probability (PICP) <a href="#id5"><span class="problematic" id="id2">[1]_</span></a>,[2]_ and Mean Prediction Interval Width (MPIW) <a href="#id6"><span class="problematic" id="id3">[2]_</span></a>.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-
-          </div>
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">net:cal API Reference</a>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
 <li><a class="reference internal" href="#">netcal.metrics</a><ul>
+<li><a class="reference internal" href="#metrics-package-to-measure-miscalibration">Metrics Package to Measure Miscalibration</a></li>
 <li><a class="reference internal" href="#available-classes">Available classes</a></li>
+<li><a class="reference internal" href="#packages">Packages</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="_autosummary_regularization_func/netcal.regularization.DCAPenalty.html"
-                        title="previous chapter">netcal.regularization.DCAPenalty</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="_autosummary_metric/netcal.metrics.ACE.html"
-                        title="next chapter">netcal.metrics.ACE</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/_autosummary/netcal.metrics.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+                </ul>
+              </li>
+
+            
+              <li><a href="_autosummary_regularization_func/netcal.regularization.DCAPenalty.html" title="netcal.regularization.DCAPenalty" accesskey="P">previous </a></li>
+              <li><a href="_autosummary_metric/netcal.metrics.ACE.html" title="netcal.metrics.ACE" accesskey="N">next </a></li>
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="../_sources/_autosummary/netcal.metrics.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
         </div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_metric/netcal.metrics.ACE.html" title="netcal.metrics.ACE"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_regularization_func/netcal.regularization.DCAPenalty.html" title="netcal.regularization.DCAPenalty"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li> 
-      </ul>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">netcal.metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#metrics-package-to-measure-miscalibration">Metrics Package to Measure Miscalibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#available-classes">Available classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.ACE.html">netcal.metrics.ACE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.ECE.html">netcal.metrics.ECE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.MCE.html">netcal.metrics.MCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.MMCE.html">netcal.metrics.MMCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.QuantileLoss.html">netcal.metrics.QuantileLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.PinballLoss.html">netcal.metrics.PinballLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.ENCE.html">netcal.metrics.ENCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.UCE.html">netcal.metrics.UCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.PICP.html">netcal.metrics.PICP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.QCE.html">netcal.metrics.QCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric/netcal.metrics.NLL.html">netcal.metrics.NLL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#packages">Packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric_submodules/netcal.metrics.confidence.html">netcal.metrics.confidence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_metric_submodules/netcal.metrics.regression.html">netcal.metrics.regression</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="module-netcal.metrics">
+<span id="netcal-metrics"></span><h1>netcal.metrics<a class="headerlink" href="#module-netcal.metrics" title="Permalink to this heading">¶</a></h1>
+<section id="metrics-package-to-measure-miscalibration">
+<h2>Metrics Package to Measure Miscalibration<a class="headerlink" href="#metrics-package-to-measure-miscalibration" title="Permalink to this heading">¶</a></h2>
+<p>Methods for measuring miscalibration in the context of confidence calibration and regression uncertainty calibration.</p>
+<p>The common methods for confidence calibration evaluation are given with the
+<em>netcal.metrics.confidence.ECE</em> (ECE), <em>netcal.metrics.confidence.MCE</em> (MCE), and
+<em>netcal.metrics.confidence.ACE</em> (ACE). Each method bins the samples by their confidence and measures the
+accuracy in each bin. The ECE gives the mean gap between confidence and observed accuracy in each bin weighted by the
+number of samples. The MCE returns the highest observed deviation. The ACE is similar to the ECE but weights
+each bin equally.</p>
+<p>The common methods for regression uncertainty evaluation are <em>netcal.metrics.regression.PinballLoss</em> (Pinball
+loss), the <em>netcal.metrics.regression.NLL</em> (NLL), and the <em>netcal.metrics.regression.QCE</em> (M-QCE and
+C-QCE). The Pinball loss as well as the Marginal/Conditional Quantile Calibration Error (M-QCE and C-QCE) evaluate
+the quality of the estimated quantiles compared to the observed ground-truth quantile coverage. The NLL is a proper
+scoring rule to measure the overall quality of the predicted probability distributions.</p>
+<p>For a detailed description of the available metrics within regression calibration, see the module doc of
+<em>netcal.regression</em>.</p>
+</section>
+<section id="available-classes">
+<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.ACE.html#netcal.metrics.ACE" title="netcal.metrics.ACE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ACE</span></code></a>([bins, equal_intervals, detection, ...])</p></td>
+<td><p>Average Calibration Error (ACE) for classification and Detection Average Calibration Error (D-ACE) for object detection or segmentation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.ECE.html#netcal.metrics.ECE" title="netcal.metrics.ECE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ECE</span></code></a>([bins, equal_intervals, detection, ...])</p></td>
+<td><p>Expected Calibration Error (ECE) for classification and Detection Expected Calibration Error (D-ECE) for object detection or segmentation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.MCE.html#netcal.metrics.MCE" title="netcal.metrics.MCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MCE</span></code></a>([bins, equal_intervals, detection, ...])</p></td>
+<td><p>Maximum Calibration Error (MCE) for classification and Detection Maximum Calibration Error (D-MCE) for object detection or segmentation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.MMCE.html#netcal.metrics.MMCE" title="netcal.metrics.MMCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MMCE</span></code></a>([detection])</p></td>
+<td><p>Maximum Mean Calibration Error (MMCE).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.QuantileLoss.html#netcal.metrics.QuantileLoss" title="netcal.metrics.QuantileLoss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantileLoss</span></code></a>()</p></td>
+<td><p>Pinball aka quantile loss within regression calibration to test for <em>quantile calibration</em> of a probabilistic regression model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.PinballLoss.html#netcal.metrics.PinballLoss" title="netcal.metrics.PinballLoss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PinballLoss</span></code></a>()</p></td>
+<td><p>Synonym for Quantile loss.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.ENCE.html#netcal.metrics.ENCE" title="netcal.metrics.ENCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENCE</span></code></a>([bins, sample_threshold])</p></td>
+<td><p>Expected Normalized Calibration Error (ENCE) for a regression calibration evaluation to test for <em>variance calibration</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.UCE.html#netcal.metrics.UCE" title="netcal.metrics.UCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UCE</span></code></a>([bins, sample_threshold])</p></td>
+<td><p>Uncertainty Calibration Error (UCE) for a regression calibration evaluation to test for <em>variance calibration</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.PICP.html#netcal.metrics.PICP" title="netcal.metrics.PICP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PICP</span></code></a>([bins, equal_intervals, detection, ...])</p></td>
+<td><p>Compute Prediction Interval Coverage Probability (PICP) and Mean Prediction Interval Width (MPIW).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.QCE.html#netcal.metrics.QCE" title="netcal.metrics.QCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QCE</span></code></a>([bins, marginal, sample_threshold])</p></td>
+<td><p>Marginal Quantile Calibration Error (M-QCE) and Conditional Quantile Calibration Error (C-QCE) which both measure the gap between predicted quantiles and observed quantile coverage also for multivariate distributions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric/netcal.metrics.NLL.html#netcal.metrics.NLL" title="netcal.metrics.NLL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NLL</span></code></a>()</p></td>
+<td><p>Negative log likelihood (NLL) for probabilistic regression models.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="packages">
+<h2>Packages<a class="headerlink" href="#packages" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_metric_submodules/netcal.metrics.confidence.html#module-netcal.metrics.confidence" title="netcal.metrics.confidence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></a></p></td>
+<td><p>Metrics for Confidence Calibration
+
+Methods for measuring miscalibration in the context of confidence calibration.
+
+The common methods for confidence calibration evaluation are given with the
+netcal.metrics.confidence.ECE (ECE), netcal.metrics.confidence.MCE (MCE), and
+netcal.metrics.confidence.ACE (ACE). Each method bins the samples by their confidence and measures the
+accuracy in each bin. The ECE gives the mean gap between confidence and observed accuracy in each bin weighted by the
+number of samples. The MCE returns the highest observed deviation. The ACE is similar to the ECE but weights
+each bin equally.
+
+A further metric is the Maximum Mean Calibration Error (MMCE) which is a differentiable variant of the ECE that
+might also be used as a regularization technique during model training.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_metric_submodules/netcal.metrics.regression.html#module-netcal.metrics.regression" title="netcal.metrics.regression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regression</span></code></a></p></td>
+<td><p>Metrics for Regression Uncertainty Calibration
+
+Methods for measuring miscalibration in the context of regression uncertainty calibration for probabilistic
+regression models.
+
+The common methods for regression uncertainty evaluation are netcal.metrics.regression.PinballLoss (Pinball
+loss), the netcal.metrics.regression.NLL (NLL), and the netcal.metrics.regression.QCE (M-QCE and
+C-QCE). The Pinball loss as well as the Marginal/Conditional Quantile Calibration Error (M-QCE and C-QCE) evaluate
+the quality of the estimated quantiles compared to the observed ground-truth quantile coverage. The NLL is a proper
+scoring rule to measure the overall quality of the predicted probability distributions.
+
+Further metrics are the netcal.metrics.regression.UCE (UCE) and the netcal.metrics.regression.ENCE
+(ENCE) which both apply a binning scheme over the predicted standard deviation/variance and test for variance
+calibration.
+
+For a detailed description of the available metrics within regression calibration, see the module doc of
+netcal.regression.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="_autosummary_regularization_func/netcal.regularization.DCAPenalty.html" title="netcal.regularization.DCAPenalty" >previous</a></li>
+        <li><a href="_autosummary_metric/netcal.metrics.ACE.html" title="netcal.metrics.ACE" >next</a></li>
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germany AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
-    </div>
+    <!-- /container -->
+
   </body>
 </html>

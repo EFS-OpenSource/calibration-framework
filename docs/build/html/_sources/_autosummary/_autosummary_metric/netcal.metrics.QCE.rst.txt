@@ -1,0 +1,23 @@
+netcal.metrics.QCE
+==================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: QCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~QCE.__init__
+      ~QCE.binning
+      ~QCE.frequency
+      ~QCE.measure
+      ~QCE.prepare
+      ~QCE.process
+      ~QCE.reduce
+   
+   

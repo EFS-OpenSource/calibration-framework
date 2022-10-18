@@ -14,10 +14,10 @@ netcal.metrics.MCE
    
       ~MCE.__init__
       ~MCE.binning
+      ~MCE.frequency
       ~MCE.measure
       ~MCE.prepare
       ~MCE.process
       ~MCE.reduce
-      ~MCE.squeeze_generic
    
    

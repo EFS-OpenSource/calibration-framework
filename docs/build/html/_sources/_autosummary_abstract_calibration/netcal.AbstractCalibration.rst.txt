@@ -1,4 +1,4 @@
-netcal.AbstractCalibration
+﻿netcal.AbstractCalibration
 ==========================
 
 .. currentmodule:: netcal
@@ -20,7 +20,6 @@ netcal.AbstractCalibration
       ~AbstractCalibration.load_model
       ~AbstractCalibration.save_model
       ~AbstractCalibration.set_params
-      ~AbstractCalibration.squeeze_generic
       ~AbstractCalibration.transform
    
    

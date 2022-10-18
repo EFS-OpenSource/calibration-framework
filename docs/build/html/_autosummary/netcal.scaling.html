@@ -1,63 +1,202 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.scaling &#8212; calibration-framework 1.2.1 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.scaling &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
     
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../index.html" />
     <link rel="next" title="netcal.scaling.AbstractLogisticRegression" href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" />
     <link rel="prev" title="netcal.binning.ENIR" href="_autosummary_binning/netcal.binning.ENIR.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" title="netcal.scaling.AbstractLogisticRegression"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_binning/netcal.binning.ENIR.html" title="netcal.binning.ENIR"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.scaling</a><ul>
+<li><a class="reference internal" href="#scaling-methods-for-confidence-calibration">Scaling Methods for Confidence Calibration</a></li>
+<li><a class="reference internal" href="#available-classes">Available classes</a></li>
+</ul>
+</li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+                </ul>
+              </li>
+
             
-  <div class="section" id="module-netcal.scaling">
-<span id="netcal-scaling"></span><h1>netcal.scaling<a class="headerlink" href="#module-netcal.scaling" title="Permalink to this headline">¶</a></h1>
-<p>Scaling methods for confidence calibration.
-This package consists of several methods for confidence calibration which use confidence scaling to approximate
-confidence estimates to observed accuracy.</p>
-<div class="section" id="available-classes">
-<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this headline">¶</a></h2>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+              <li><a href="_autosummary_binning/netcal.binning.ENIR.html" title="netcal.binning.ENIR" accesskey="P">previous </a></li>
+              <li><a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" title="netcal.scaling.AbstractLogisticRegression" accesskey="N">next </a></li>
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="../_sources/_autosummary/netcal.scaling.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">netcal.scaling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scaling-methods-for-confidence-calibration">Scaling Methods for Confidence Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#available-classes">Available classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html">netcal.scaling.AbstractLogisticRegression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html">netcal.scaling.LogisticCalibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibrationDependent.html">netcal.scaling.LogisticCalibrationDependent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_scaling/netcal.scaling.TemperatureScaling.html">netcal.scaling.TemperatureScaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibration.html">netcal.scaling.BetaCalibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibrationDependent.html">netcal.scaling.BetaCalibrationDependent</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="module-netcal.scaling">
+<span id="netcal-scaling"></span><h1>netcal.scaling<a class="headerlink" href="#module-netcal.scaling" title="Permalink to this heading">¶</a></h1>
+<section id="scaling-methods-for-confidence-calibration">
+<h2>Scaling Methods for Confidence Calibration<a class="headerlink" href="#scaling-methods-for-confidence-calibration" title="Permalink to this heading">¶</a></h2>
+<p>This package consists of several methods for confidence calibration which use confidence scaling to approximate
+confidence estimates to observed accuracy. The most common scaling methods are
+<em>netcal.scaling.TemperatureScaling</em>, <em>netcal.scaling.LogisticCalibration</em>, and <em>netcal.scaling.BetaCalibration</em>.
+Note that all methods can also be applied to object detection and are capable of additional influenting factors
+such as object position and/or shape.
+The advanced methods <em>netcal.scaling.LogisticCalibrationDependent</em> and <em>netcal.scaling.BetaCalibrationDependent</em>
+are able to better represent possible correlations as the underlying probability distributions are joint
+multivariate distributions with possible correlations.</p>
+</section>
+<section id="available-classes">
+<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html#netcal.scaling.AbstractLogisticRegression" title="netcal.scaling.AbstractLogisticRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractLogisticRegression</span></code></a>([method, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html#netcal.scaling.AbstractLogisticRegression" title="netcal.scaling.AbstractLogisticRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractLogisticRegression</span></code></a>([method, ...])</p></td>
 <td><p>Abstract class for all calibration methods that base on logistic regression.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.LogisticCalibration.html#netcal.scaling.LogisticCalibration" title="netcal.scaling.LogisticCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogisticCalibration</span></code></a>(*args[, temperature_only])</p></td>
@@ -67,7 +206,7 @@ confidence estimates to observed accuracy.</p>
 <td><p>This calibration method is for detection only and uses multivariate normal distributions to obtain a calibration mapping by means of the confidence as well as additional features.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.TemperatureScaling.html#netcal.scaling.TemperatureScaling" title="netcal.scaling.TemperatureScaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TemperatureScaling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>On classification or detection, apply the temperature scaling method described in <a href="#id2"><span class="problematic" id="id1">[1]_</span></a> to obtain a calibration mapping.</p></td>
+<td><p>On classification or detection, apply the temperature scaling method to obtain a calibration mapping.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_scaling/netcal.scaling.BetaCalibration.html#netcal.scaling.BetaCalibration" title="netcal.scaling.BetaCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BetaCalibration</span></code></a>(*args, **kwargs)</p></td>
 <td><p>On classification, apply the beta calibration method to obtain a calibration mapping.</p></td>
@@ -77,71 +216,46 @@ confidence estimates to observed accuracy.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">netcal.scaling</a><ul>
-<li><a class="reference internal" href="#available-classes">Available classes</a></li>
-</ul>
-</li>
-</ul>
+        
+        
+      </div><!-- /row -->
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="_autosummary_binning/netcal.binning.ENIR.html"
-                        title="previous chapter">netcal.binning.ENIR</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html"
-                        title="next chapter">netcal.scaling.AbstractLogisticRegression</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/_autosummary/netcal.scaling.rst.txt"
-            rel="nofollow">Show Source</a></li>
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">net:cal API Reference</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="_autosummary_binning/netcal.binning.ENIR.html" title="netcal.binning.ENIR" >previous</a></li>
+        <li><a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" title="netcal.scaling.AbstractLogisticRegression" >next</a></li>
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_scaling/netcal.scaling.AbstractLogisticRegression.html" title="netcal.scaling.AbstractLogisticRegression"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="_autosummary_binning/netcal.binning.ENIR.html" title="netcal.binning.ENIR"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germany AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
-    </div>
+    <!-- /container -->
+
   </body>
 </html>

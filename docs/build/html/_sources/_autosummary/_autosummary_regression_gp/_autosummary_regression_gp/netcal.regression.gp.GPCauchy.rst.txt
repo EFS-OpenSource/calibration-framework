@@ -1,0 +1,95 @@
+netcal.regression.gp.GPCauchy
+=============================
+
+.. currentmodule:: netcal.regression.gp
+
+.. autoclass:: GPCauchy
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GPCauchy.__init__
+      ~GPCauchy.add_module
+      ~GPCauchy.added_loss_terms
+      ~GPCauchy.apply
+      ~GPCauchy.bfloat16
+      ~GPCauchy.buffers
+      ~GPCauchy.children
+      ~GPCauchy.clear
+      ~GPCauchy.constraint_for_parameter_name
+      ~GPCauchy.constraints
+      ~GPCauchy.cpu
+      ~GPCauchy.cuda
+      ~GPCauchy.double
+      ~GPCauchy.eval
+      ~GPCauchy.extra_repr
+      ~GPCauchy.fit
+      ~GPCauchy.fit_transform
+      ~GPCauchy.float
+      ~GPCauchy.forward
+      ~GPCauchy.get_buffer
+      ~GPCauchy.get_extra_state
+      ~GPCauchy.get_fantasy_model
+      ~GPCauchy.get_parameter
+      ~GPCauchy.get_params
+      ~GPCauchy.get_submodule
+      ~GPCauchy.guide
+      ~GPCauchy.half
+      ~GPCauchy.hyperparameters
+      ~GPCauchy.initialize
+      ~GPCauchy.ipu
+      ~GPCauchy.load_model
+      ~GPCauchy.load_state_dict
+      ~GPCauchy.load_strict_shapes
+      ~GPCauchy.local_load_samples
+      ~GPCauchy.model
+      ~GPCauchy.modules
+      ~GPCauchy.named_added_loss_terms
+      ~GPCauchy.named_buffers
+      ~GPCauchy.named_children
+      ~GPCauchy.named_constraints
+      ~GPCauchy.named_hyperparameters
+      ~GPCauchy.named_modules
+      ~GPCauchy.named_parameters
+      ~GPCauchy.named_parameters_and_constraints
+      ~GPCauchy.named_priors
+      ~GPCauchy.named_variational_parameters
+      ~GPCauchy.parameters
+      ~GPCauchy.pyro_guide
+      ~GPCauchy.pyro_load_from_samples
+      ~GPCauchy.pyro_model
+      ~GPCauchy.pyro_sample_from_prior
+      ~GPCauchy.register_added_loss_term
+      ~GPCauchy.register_backward_hook
+      ~GPCauchy.register_buffer
+      ~GPCauchy.register_constraint
+      ~GPCauchy.register_forward_hook
+      ~GPCauchy.register_forward_pre_hook
+      ~GPCauchy.register_full_backward_hook
+      ~GPCauchy.register_load_state_dict_post_hook
+      ~GPCauchy.register_module
+      ~GPCauchy.register_parameter
+      ~GPCauchy.register_prior
+      ~GPCauchy.requires_grad_
+      ~GPCauchy.sample_from_prior
+      ~GPCauchy.save_model
+      ~GPCauchy.set_extra_state
+      ~GPCauchy.set_params
+      ~GPCauchy.share_memory
+      ~GPCauchy.state_dict
+      ~GPCauchy.to
+      ~GPCauchy.to_empty
+      ~GPCauchy.to_pyro_random_module
+      ~GPCauchy.train
+      ~GPCauchy.transform
+      ~GPCauchy.type
+      ~GPCauchy.update_added_loss_term
+      ~GPCauchy.variational_parameters
+      ~GPCauchy.xpu
+      ~GPCauchy.zero_grad
+   
+   

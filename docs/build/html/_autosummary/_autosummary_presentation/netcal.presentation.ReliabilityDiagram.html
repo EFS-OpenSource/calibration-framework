@@ -1,62 +1,197 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.presentation.ReliabilityDiagram &#8212; calibration-framework 1.2.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.presentation.ReliabilityDiagram &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
     
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="netcal.AbstractCalibration" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.presentation" href="../netcal.presentation.html" />
+    <link rel="next" title="netcal.presentation.ReliabilityRegression" href="netcal.presentation.ReliabilityRegression.html" />
     <link rel="prev" title="netcal.presentation" href="../netcal.presentation.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html" title="netcal.AbstractCalibration"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../netcal.presentation.html" title="netcal.presentation"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../netcal.presentation.html" accesskey="U">netcal.presentation</a> &#187;</li> 
-      </ul>
-    </div>  
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.presentation.ReliabilityDiagram</a><ul>
+<li><a class="reference internal" href="#netcal.presentation.ReliabilityDiagram"><code class="docutils literal notranslate"><span class="pre">ReliabilityDiagram</span></code></a></li>
+</ul>
+</li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+                </ul>
+              </li>
+
             
-  <div class="section" id="netcal-presentation-reliabilitydiagram">
-<h1>netcal.presentation.ReliabilityDiagram<a class="headerlink" href="#netcal-presentation-reliabilitydiagram" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="netcal.presentation.ReliabilityDiagram">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.presentation.</code><code class="sig-name descname">ReliabilityDiagram</code><span class="sig-paren">(</span><em class="sig-param">bins: Union[int</em>, <em class="sig-param">Iterable[int]] = 10</em>, <em class="sig-param">equal_intervals: bool = True</em>, <em class="sig-param">detection: bool = False</em>, <em class="sig-param">sample_threshold: int = 1</em>, <em class="sig-param">fmin: float = None</em>, <em class="sig-param">fmax: float = None</em>, <em class="sig-param">metric: str = 'ECE'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.presentation.ReliabilityDiagram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Plot Confidence Histogram and Reliability Diagram to visualize miscalibration.
+              <li><a href="../netcal.presentation.html" title="netcal.presentation" accesskey="P">previous </a></li>
+              <li><a href="netcal.presentation.ReliabilityRegression.html" title="netcal.presentation.ReliabilityRegression" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.presentation.html" accesskey="U">netcal.presentation</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_presentation/netcal.presentation.ReliabilityDiagram.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.presentation.html#visualization-package">Visualization Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.presentation.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.presentation.ReliabilityDiagram</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.presentation.ReliabilityDiagram"><code class="docutils literal notranslate"><span class="pre">ReliabilityDiagram</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.presentation.ReliabilityRegression.html">netcal.presentation.ReliabilityRegression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.presentation.ReliabilityQCE.html">netcal.presentation.ReliabilityQCE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-presentation-reliabilitydiagram">
+<h1>netcal.presentation.ReliabilityDiagram<a class="headerlink" href="#netcal-presentation-reliabilitydiagram" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.presentation.ReliabilityDiagram">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.presentation.</span></span><span class="sig-name descname"><span class="pre">ReliabilityDiagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_intervals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ECE'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.presentation.ReliabilityDiagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot Confidence Histogram and Reliability Diagram to visualize miscalibration in the context of
+confidence calibration.
 On classification, plot the gaps between average confidence and observed accuracy bin-wise over the confidence
-space <a class="footnote-reference brackets" href="#id4" id="id1">1</a>, <a class="footnote-reference brackets" href="#id5" id="id2">2</a>.
-On detection, plot the miscalibration w.r.t. the additional regression information provided (1-D or 2-D) <a class="footnote-reference brackets" href="#id7" id="id3">3</a>.</p>
+space <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+On detection, plot the miscalibration w.r.t. the additional regression information provided (1-D or 2-D) <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the ACE/ECE/MCE.
 On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = … = bins).
@@ -74,167 +209,82 @@ box confidence must be present) with shape (n_samples, [n_box_features]).</p></l
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
 “On Calibration of Modern Neural Networks.”
 Proceedings of the 34th International Conference on Machine Learning-Volume 70. JMLR. org, 2017.
 <a class="reference external" href="https://arxiv.org/abs/1706.04599">Get source online</a></p>
-</dd>
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>A. Niculescu-Mizil and R. Caruana:
+</aside>
+<aside class="footnote brackets" id="id5" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>A. Niculescu-Mizil and R. Caruana:
 “Predicting good probabilities with supervised learning.”
 Proceedings of the 22nd International Conference on Machine Learning, 2005, pp. 625–632.
 <a class="reference external" href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf">Get source online</a></p>
-</dd>
-<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
-<dd><p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
+</aside>
+<aside class="footnote brackets" id="id6" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
 “Multivariate Confidence Calibration for Object Detection.”
 The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
 <a class="reference external" href="https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf">Get source online</a></p>
-</dd>
-</dl>
+</aside>
+</aside>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, equal_intervals, detection, …])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, equal_intervals, detection, ...])</p></td>
 <td><p>Constructor.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>(X, y[, batched, uncertainty, filename, …])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>(X, y, *[, batched, uncertainty, ...])</p></td>
 <td><p>Reliability diagram to visualize miscalibration.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="netcal.presentation.ReliabilityDiagram.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">X: Union[Iterable[numpy.ndarray], numpy.ndarray], y: Union[Iterable[numpy.ndarray], numpy.ndarray], batched: bool = False, uncertainty: str = None, filename: str = None, tikz: bool = False, title_suffix: str = None, feature_names: List[str] = None, **save_args</em><span class="sig-paren">)</span> &#x2192; Union[matplotlib.figure.Figure, str]<a class="headerlink" href="#netcal.presentation.ReliabilityDiagram.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reliability diagram to visualize miscalibration. This could be either in classical way for confidences only
-or w.r.t. additional properties (like x/y-coordinates of detection boxes, width, height, etc.). The additional
-properties get binned. Afterwards, the miscalibration will be calculated for each bin. This is
-visualized as a 2-D plots.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>iterable of np.ndarray</em><em>, or </em><em>np.ndarray of shape=</em><em>(</em><em>[</em><em>n_bayes</em><em>]</em><em>, </em><em>n_samples</em><em>, </em><em>[</em><em>n_classes/n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
-1-D for binary classification, 2-D for multi class (softmax).
-If 3-D, interpret first dimension as samples from an Bayesian estimator with mulitple data points
-for a single sample (e.g. variational inference or MC dropout samples).
-If this is an iterable over multiple instances of np.ndarray and parameter batched=True,
-interpret this parameter as multiple predictions that should be averaged.
-On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
-<li><p><strong>y</strong> (<em>iterable of np.ndarray with same length as X</em><em> or </em><em>np.ndarray of shape=</em><em>(</em><em>[</em><em>n_bayes</em><em>]</em><em>, </em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
-Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).
-If 3-D, interpret first dimension as samples from an Bayesian estimator with mulitple data points
-for a single sample (e.g. variational inference or MC dropout samples).
-If iterable over multiple instances of np.ndarray and parameter batched=True,
-interpret this parameter as multiple predictions that should be averaged.</p></li>
-<li><p><strong>batched</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – Multiple predictions can be evaluated at once (e.g. cross-validation examinations) using batched-mode.
-All predictions given by X and y are separately evaluated and their results are averaged afterwards
-for visualization.</p></li>
-<li><p><strong>uncertainty</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – <p>Define uncertainty handling if input X has been sampled e.g. by Monte-Carlo dropout or similar methods
-that output an ensemble of predictions per sample. Choose one of the following options:
-- flatten:  treat everything as a separate prediction - this option will yield into a slightly better</p>
-<blockquote>
-<div><p>calibration performance but without the visualization of a prediction interval.</p>
-</div></blockquote>
-<ul>
-<li><dl class="simple">
-<dt>mean:     compute Monte-Carlo integration to obtain a simple confidence estimate for a sample</dt><dd><p>(mean) with a standard deviation that is visualized.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Optional filename to save the plotted figure.</p></li>
-<li><p><strong>tikz</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default: False</em>) – If True, use ‘tikzplotlib’ package to return tikz-code for Latex rather than a Matplotlib figure.</p></li>
-<li><p><strong>title_suffix</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Suffix for plot title.</p></li>
-<li><p><strong>feature_names</strong> (<em>list</em><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Names of the additional features that are attached to the axes of a reliability diagram.</p></li>
-<li><p><strong>**save_args</strong> (<em>args</em>) – Additional arguments passed to ‘matplotlib.pyplot.Figure.savefig’ function if ‘tikz’ is False.
-If ‘tikz’ is True, the argument are passed to ‘tikzplotlib.get_tikz_code’ function.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib.pyplot.Figure if ‘tikz’ is False else str with tikz code.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>AttributeError</strong> – <ul class="simple">
-<li><p>If parameter metric is not string or string is not ‘ACE’, ‘ECE’ or ‘MCE’
-    - If parameter ‘feature_names’ is set but length does not fit to second dim of X
-    - If no ground truth samples are provided
-    - If length of bins parameter does not match the number of features given by X
-    - If more than 3 feature dimensions (including confidence) are provided</p></li>
-</ul>
-</p>
-</dd>
-</dl>
 </dd></dl>
 
-</dd></dl>
-
-</div>
+</section>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="../netcal.presentation.html"
-                        title="previous chapter">netcal.presentation</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html"
-                        title="next chapter">netcal.AbstractCalibration</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/_autosummary/_autosummary_presentation/netcal.presentation.ReliabilityDiagram.rst.txt"
-            rel="nofollow">Show Source</a></li>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../netcal.presentation.html" title="netcal.presentation" >previous</a></li>
+        <li><a href="netcal.presentation.ReliabilityRegression.html" title="netcal.presentation.ReliabilityRegression" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.presentation.html" >netcal.presentation</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html" title="netcal.AbstractCalibration"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../netcal.presentation.html" title="netcal.presentation"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../netcal.presentation.html" >netcal.presentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germany AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
-    </div>
+    <!-- /container -->
+
   </body>
 </html>

@@ -1,61 +1,198 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>netcal.binning.IsotonicRegression &#8212; calibration-framework 1.2.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.binning.IsotonicRegression &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
     
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.binning" href="../netcal.binning.html" />
     <link rel="next" title="netcal.binning.BBQ" href="netcal.binning.BBQ.html" />
     <link rel="prev" title="netcal.binning.HistogramBinning" href="netcal.binning.HistogramBinning.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="netcal.binning.BBQ.html" title="netcal.binning.BBQ"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="netcal.binning.HistogramBinning.html" title="netcal.binning.HistogramBinning"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../netcal.binning.html" accesskey="U">netcal.binning</a> &#187;</li> 
-      </ul>
-    </div>  
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.binning.IsotonicRegression</a><ul>
+<li><a class="reference internal" href="#netcal.binning.IsotonicRegression"><code class="docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a></li>
+</ul>
+</li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+                </ul>
+              </li>
+
             
-  <div class="section" id="netcal-binning-isotonicregression">
-<h1>netcal.binning.IsotonicRegression<a class="headerlink" href="#netcal-binning-isotonicregression" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="netcal.binning.IsotonicRegression">
-<em class="property">class </em><code class="sig-prename descclassname">netcal.binning.</code><code class="sig-name descname">IsotonicRegression</code><span class="sig-paren">(</span><em class="sig-param">detection: bool = False</em>, <em class="sig-param">independent_probabilities: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.AbstractCalibration.AbstractCalibration</span></code></p>
-<p>Isotonic Regression method <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. This method is similar to <a class="reference internal" href="netcal.binning.HistogramBinning.html#netcal.binning.HistogramBinning" title="netcal.binning.HistogramBinning"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramBinning</span></code></a> but with dynamic bin sizes
+              <li><a href="netcal.binning.HistogramBinning.html" title="netcal.binning.HistogramBinning" accesskey="P">previous </a></li>
+              <li><a href="netcal.binning.BBQ.html" title="netcal.binning.BBQ" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.binning.html" accesskey="U">netcal.binning</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_binning/netcal.binning.IsotonicRegression.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.binning.html#binning-methods-for-confidence-calibration">Binning Methods for Confidence Calibration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.binning.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="netcal.binning.HistogramBinning.html">netcal.binning.HistogramBinning</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.binning.IsotonicRegression</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.binning.IsotonicRegression"><code class="docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.binning.BBQ.html">netcal.binning.BBQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.binning.ENIR.html">netcal.binning.ENIR</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-binning-isotonicregression">
+<h1>netcal.binning.IsotonicRegression<a class="headerlink" href="#netcal-binning-isotonicregression" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.binning.IsotonicRegression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.binning.</span></span><span class="sig-name descname"><span class="pre">IsotonicRegression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent_probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Isotonic Regression method.
+This method has initially been proposed by <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+This method is similar to <a class="reference internal" href="netcal.binning.HistogramBinning.html#netcal.binning.HistogramBinning" title="netcal.binning.HistogramBinning"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramBinning</span></code></a> but with dynamic bin sizes
 and boundaries. A piecewise constant function gets fit to ground truth labels sorted by
 given confidence estimates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>detection</strong> (<em>bool</em><em>, </em><em>default: False</em>) – If False, the input array ‘X’ is treated as multi-class confidence input (softmax)
 with shape (n_samples, [n_classes]).
@@ -68,20 +205,17 @@ class are treated as independent of each other (sigmoid).</p></li>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Zadrozny, Bianca and Elkan, Charles:
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Zadrozny, Bianca and Elkan, Charles:
 “Transforming classifier scores into accurate multiclass probability estimates.”
 In KDD, pp. 694–699, 2002.
 <a class="reference external" href="https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf">Get source online</a></p>
-</dd>
-</dl>
+</aside>
+</aside>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([detection, independent_probabilities])</p></td>
 <td><p>Create an instance of <cite>IsotonicRegression</cite>.</p></td>
@@ -102,235 +236,58 @@ In KDD, pp. 694–699, 2002.
 <td><p>Load model from saved torch dump.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_model</span></code>(filename)</p></td>
-<td><p>Save model instance as with torch’s save function as this is safer for torch tensors.</p></td>
+<td><p>Save model instance as with torch's save function as this is safer for torch tensors.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze_generic</span></code>(a, axes_to_keep)</p></td>
-<td><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is of size 1.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
 <td><p>After model calibration, this function is used to get calibrated outputs of uncalibrated confidence estimates.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.clear">
-<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear model parameters.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; IsotonicRegression<a class="headerlink" href="#netcal.binning.IsotonicRegression.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build Isotonic Regression model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_box_features</em><em>]</em><em>)</em>) – NumPy array with confidence values for each prediction on classification with shapes
-1-D for binary classification, 2-D for multi class (softmax).
-On detection, this array must have 2 dimensions with number of additional box features in last dim.</p></li>
-<li><p><strong>y</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with ground truth labels.
-Either as label vector (1-D) or as one-hot encoded ground truth array (2-D).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Instance of class <a class="reference internal" href="#netcal.binning.IsotonicRegression" title="netcal.binning.IsotonicRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#netcal.binning.IsotonicRegression" title="netcal.binning.IsotonicRegression">IsotonicRegression</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression.fit_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit to data, then transform it.</p>
-<p>Fits transformer to X and y with optional parameters fit_params
-and returns a transformed version of X.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>, </em><em>n_features</em><em>]</em>) – Training set.</p></li>
-<li><p><strong>y</strong> (<em>numpy array of shape</em><em> [</em><em>n_samples</em><em>]</em>) – Target values.</p></li>
-<li><p><strong>**fit_params</strong> (<em>dict</em>) – Additional fit parameters.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>X_new</strong> – Transformed array.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>numpy array of shape [n_samples, n_features_new]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression.get_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get parameters for this estimator.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If True, will return the parameters for this estimator and
-contained subobjects that are estimators.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mapping of string to any</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.load_model">
-<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression.load_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load model from saved torch dump.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – String with filename.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Instance of a child class of <cite>AbstractCalibration</cite>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html#netcal.AbstractCalibration" title="netcal.AbstractCalibration">AbstractCalibration</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.save_model">
-<code class="sig-name descname">save_model</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression.save_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save model instance as with torch’s save function as this is safer for torch tensors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – String with filename.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; netcal.AbstractCalibration.AbstractCalibration<a class="headerlink" href="#netcal.binning.IsotonicRegression.set_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the parameters of this estimator.</p>
-<p>The method works on simple estimators as well as on nested objects
-(such as pipelines). The latter have parameters of the form
-<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
-component of a nested object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>self</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.squeeze_generic">
-<em class="property">classmethod </em><code class="sig-name descname">squeeze_generic</code><span class="sig-paren">(</span><em class="sig-param">a: numpy.ndarray, axes_to_keep: Union[int, Iterable[int]]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#netcal.binning.IsotonicRegression.squeeze_generic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Squeeze input array a but keep axes defined by parameter ‘axes_to_keep’ even if the dimension is
-of size 1.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>np.ndarray</em>) – NumPy array that should be squeezed.</p></li>
-<li><p><strong>axes_to_keep</strong> (<em>int</em><em> or </em><em>iterable</em>) – Axes that should be kept even if they have a size of 1.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Squeezed array.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="netcal.binning.IsotonicRegression.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.binning.IsotonicRegression.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>After model calibration, this function is used to get calibrated outputs of uncalibrated
-confidence estimates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em>, </em><em>shape=</em><em>(</em><em>n_samples</em><em>, </em><em>[</em><em>n_classes</em><em>]</em><em>)</em>) – NumPy array with uncalibrated confidence estimates.
-1-D for binary classification, 2-D for multi class (softmax).</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>NumPy array with calibrated confidence estimates.
-1-D for binary classification, 2-D for multi class (softmax).</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray, shape=(n_samples, [n_classes])</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+</section>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="netcal.binning.HistogramBinning.html"
-                        title="previous chapter">netcal.binning.HistogramBinning</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="netcal.binning.BBQ.html"
-                        title="next chapter">netcal.binning.BBQ</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/_autosummary/_autosummary_binning/netcal.binning.IsotonicRegression.rst.txt"
-            rel="nofollow">Show Source</a></li>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="netcal.binning.HistogramBinning.html" title="netcal.binning.HistogramBinning" >previous</a></li>
+        <li><a href="netcal.binning.BBQ.html" title="netcal.binning.BBQ" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.binning.html" >netcal.binning</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="netcal.binning.BBQ.html" title="netcal.binning.BBQ"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="netcal.binning.HistogramBinning.html" title="netcal.binning.HistogramBinning"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">calibration-framework 1.2.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../netcal.binning.html" >netcal.binning</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Ruhr West University of Applied Sciences, Bottrop, Germany AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
-    </div>
+    <!-- /container -->
+
   </body>
 </html>

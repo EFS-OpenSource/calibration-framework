@@ -14,10 +14,10 @@ netcal.metrics.ECE
    
       ~ECE.__init__
       ~ECE.binning
+      ~ECE.frequency
       ~ECE.measure
       ~ECE.prepare
       ~ECE.process
       ~ECE.reduce
-      ~ECE.squeeze_generic
    
    

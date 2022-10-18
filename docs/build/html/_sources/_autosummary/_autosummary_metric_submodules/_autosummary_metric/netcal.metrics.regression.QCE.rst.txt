@@ -1,0 +1,23 @@
+netcal.metrics.regression.QCE
+=============================
+
+.. currentmodule:: netcal.metrics.regression
+
+.. autoclass:: QCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~QCE.__init__
+      ~QCE.binning
+      ~QCE.frequency
+      ~QCE.measure
+      ~QCE.prepare
+      ~QCE.process
+      ~QCE.reduce
+   
+   

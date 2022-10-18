@@ -1,0 +1,87 @@
+netcal.regression.gp.kernel.GaussianRBFKernel
+=============================================
+
+.. currentmodule:: netcal.regression.gp.kernel
+
+.. autoclass:: GaussianRBFKernel
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GaussianRBFKernel.__init__
+      ~GaussianRBFKernel.add_module
+      ~GaussianRBFKernel.added_loss_terms
+      ~GaussianRBFKernel.apply
+      ~GaussianRBFKernel.bfloat16
+      ~GaussianRBFKernel.buffers
+      ~GaussianRBFKernel.children
+      ~GaussianRBFKernel.constraint_for_parameter_name
+      ~GaussianRBFKernel.constraints
+      ~GaussianRBFKernel.covar_dist
+      ~GaussianRBFKernel.cpu
+      ~GaussianRBFKernel.cuda
+      ~GaussianRBFKernel.double
+      ~GaussianRBFKernel.eval
+      ~GaussianRBFKernel.extra_repr
+      ~GaussianRBFKernel.float
+      ~GaussianRBFKernel.forward
+      ~GaussianRBFKernel.get_buffer
+      ~GaussianRBFKernel.get_extra_state
+      ~GaussianRBFKernel.get_parameter
+      ~GaussianRBFKernel.get_submodule
+      ~GaussianRBFKernel.half
+      ~GaussianRBFKernel.hyperparameters
+      ~GaussianRBFKernel.initialize
+      ~GaussianRBFKernel.ipu
+      ~GaussianRBFKernel.load_state_dict
+      ~GaussianRBFKernel.load_strict_shapes
+      ~GaussianRBFKernel.local_load_samples
+      ~GaussianRBFKernel.modules
+      ~GaussianRBFKernel.named_added_loss_terms
+      ~GaussianRBFKernel.named_buffers
+      ~GaussianRBFKernel.named_children
+      ~GaussianRBFKernel.named_constraints
+      ~GaussianRBFKernel.named_hyperparameters
+      ~GaussianRBFKernel.named_modules
+      ~GaussianRBFKernel.named_parameters
+      ~GaussianRBFKernel.named_parameters_and_constraints
+      ~GaussianRBFKernel.named_priors
+      ~GaussianRBFKernel.named_sub_kernels
+      ~GaussianRBFKernel.named_variational_parameters
+      ~GaussianRBFKernel.num_outputs_per_input
+      ~GaussianRBFKernel.parameters
+      ~GaussianRBFKernel.prediction_strategy
+      ~GaussianRBFKernel.pyro_load_from_samples
+      ~GaussianRBFKernel.pyro_sample_from_prior
+      ~GaussianRBFKernel.register_added_loss_term
+      ~GaussianRBFKernel.register_backward_hook
+      ~GaussianRBFKernel.register_buffer
+      ~GaussianRBFKernel.register_constraint
+      ~GaussianRBFKernel.register_forward_hook
+      ~GaussianRBFKernel.register_forward_pre_hook
+      ~GaussianRBFKernel.register_full_backward_hook
+      ~GaussianRBFKernel.register_load_state_dict_post_hook
+      ~GaussianRBFKernel.register_module
+      ~GaussianRBFKernel.register_parameter
+      ~GaussianRBFKernel.register_prior
+      ~GaussianRBFKernel.requires_grad_
+      ~GaussianRBFKernel.sample_from_prior
+      ~GaussianRBFKernel.set_extra_state
+      ~GaussianRBFKernel.share_memory
+      ~GaussianRBFKernel.state_dict
+      ~GaussianRBFKernel.sub_kernels
+      ~GaussianRBFKernel.to
+      ~GaussianRBFKernel.to_empty
+      ~GaussianRBFKernel.to_pyro_random_module
+      ~GaussianRBFKernel.train
+      ~GaussianRBFKernel.type
+      ~GaussianRBFKernel.update_added_loss_term
+      ~GaussianRBFKernel.variational_parameters
+      ~GaussianRBFKernel.xpu
+      ~GaussianRBFKernel.zero_grad
+   
+   

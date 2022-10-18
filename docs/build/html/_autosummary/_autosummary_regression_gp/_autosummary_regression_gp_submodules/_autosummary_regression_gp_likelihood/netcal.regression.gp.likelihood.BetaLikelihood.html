@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.regression.gp.likelihood.BetaLikelihood &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../../../index.html" />
+    <link rel="up" title="netcal.regression.gp.likelihood" href="../netcal.regression.gp.likelihood.html" />
+    <link rel="next" title="netcal.regression.gp.likelihood.CauchyLikelihood" href="netcal.regression.gp.likelihood.CauchyLikelihood.html" />
+    <link rel="prev" title="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood" href="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.regression.gp.likelihood.BetaLikelihood</a><ul>
+<li><a class="reference internal" href="#netcal.regression.gp.likelihood.BetaLikelihood"><code class="docutils literal notranslate"><span class="pre">BetaLikelihood</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood.html" title="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood" accesskey="P">previous </a></li>
+              <li><a href="netcal.regression.gp.likelihood.CauchyLikelihood.html" title="netcal.regression.gp.likelihood.CauchyLikelihood" accesskey="N">next </a></li>
+              <li><a href="../../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../../netcal.regression.html" >netcal.regression</a></li>
+              <li><a href="../../netcal.regression.gp.html" >netcal.regression.gp</a></li>
+              <li><a href="../netcal.regression.gp.likelihood.html" accesskey="U">netcal.regression.gp.likelihood</a></li>
+            
+            <li class="visible-xs"><a href="../../../../_sources/_autosummary/_autosummary_regression_gp/_autosummary_regression_gp_submodules/_autosummary_regression_gp_likelihood/netcal.regression.gp.likelihood.BetaLikelihood.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../../../index.html">
+      <img class="logo" src="../../../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../netcal.regression.html">netcal.regression</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../netcal.regression.html#probabilistic-regression-calibration-package">Probabilistic Regression Calibration Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../netcal.regression.html#available-classes">Available classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../netcal.regression.html#package-for-gaussian-process-optimization">Package for Gaussian process optimization</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../netcal.regression.gp.html">netcal.regression.gp</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../netcal.regression.gp.html#regression-gp-calibration-package">Regression GP Calibration Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../netcal.regression.gp.html#available-classes">Available classes</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../netcal.regression.gp.html#packages">Packages</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../netcal.regression.gp.kernel.html">netcal.regression.gp.kernel</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="../netcal.regression.gp.likelihood.html">netcal.regression.gp.likelihood</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../netcal.regression.gp.likelihood.html#likelihoods-for-gp">Likelihoods for GP</a></li>
+<li class="toctree-l6 current"><a class="reference internal" href="../netcal.regression.gp.likelihood.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l7"><a class="reference internal" href="netcal.regression.gp.likelihood.ScaledNormalLikelihood.html">netcal.regression.gp.likelihood.ScaledNormalLikelihood</a></li>
+<li class="toctree-l7"><a class="reference internal" href="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood.html">netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood</a></li>
+<li class="toctree-l7 current"><a class="current reference internal" href="#">netcal.regression.gp.likelihood.BetaLikelihood</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#netcal.regression.gp.likelihood.BetaLikelihood"><code class="docutils literal notranslate"><span class="pre">BetaLikelihood</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="netcal.regression.gp.likelihood.CauchyLikelihood.html">netcal.regression.gp.likelihood.CauchyLikelihood</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-regression-gp-likelihood-betalikelihood">
+<h1>netcal.regression.gp.likelihood.BetaLikelihood<a class="headerlink" href="#netcal-regression-gp-likelihood-betalikelihood" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.regression.gp.likelihood.BetaLikelihood">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.regression.gp.likelihood.</span></span><span class="sig-name descname"><span class="pre">BetaLikelihood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logvar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.regression.gp.likelihood.BetaLikelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Beta likelihood used to implement the basic functionality of the <a class="reference internal" href="../../_autosummary_regression_gp/netcal.regression.gp.GPBeta.html#netcal.regression.gp.GPBeta" title="netcal.regression.gp.GPBeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.regression.gp.GPBeta</span></code></a>
+recalibration method.
+This function serves the standard beta calibration mapping for the cumulative distribution function (CDF) as well
+as the derived beta link function for the recalibration of the probability density function (PDF).
+Since the likelihood of the Gaussian process is calculated during model training using the PDF, this method
+is required not only for the inference but also for the training of the <a class="reference internal" href="../../_autosummary_regression_gp/netcal.regression.gp.GPBeta.html#netcal.regression.gp.GPBeta" title="netcal.regression.gp.GPBeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.regression.gp.GPBeta</span></code></a> method
+<a class="footnote-reference brackets" href="#id6" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><strong>Mathematical background:</strong> From the docstring of <a class="reference internal" href="../../_autosummary_regression_gp/netcal.regression.gp.GPBeta.html#netcal.regression.gp.GPBeta" title="netcal.regression.gp.GPBeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.regression.gp.GPBeta</span></code></a>, we know that the GP-Beta
+utilizes the beta calibration method <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> from confidence calibration (cf. <a class="reference internal" href="../../../_autosummary_scaling/netcal.scaling.BetaCalibration.html#netcal.scaling.BetaCalibration" title="netcal.scaling.BetaCalibration"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.scaling.BetaCalibration</span></code></a>)
+for the recalibration of the CDF.
+Let <span class="math notranslate nohighlight">\(f_Y(y)\)</span> denote the uncalibrated probability density function (PDF), targeting the probability
+distribution for <span class="math notranslate nohighlight">\(Y\)</span>. Let <span class="math notranslate nohighlight">\(\tau_y \in [0, 1]\)</span> denote a certain quantile on the uncalibrated CDF which
+is denoted by <span class="math notranslate nohighlight">\(\tau_y = F_Y(y)\)</span>.
+Furthermore, let <span class="math notranslate nohighlight">\(g_Y(y)\)</span> and <span class="math notranslate nohighlight">\(G_Y(y)\)</span> denote the recalibrated PDF and CDF, respectively.
+The Beta calibration function <span class="math notranslate nohighlight">\(\mathbf{c}_\beta(\tau_y)\)</span> known from <a class="footnote-reference brackets" href="#id7" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{c}_\beta(\tau_y) &amp;= \phi\big( a \log(\tau_y) - b \log(1-\tau_y) + c \big) \\
+&amp;= \phi\big( z(\tau_y) \big) ,\end{split}\]</div>
+<p>with recalibration parameters <span class="math notranslate nohighlight">\(a,b \in \mathbb{R}_{&gt;0}\)</span> and <span class="math notranslate nohighlight">\(c \in \mathbb{R}\)</span>, and
+<span class="math notranslate nohighlight">\(\phi(\cdot)\)</span> as the sigmoid function <a class="footnote-reference brackets" href="#id7" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+In this case, we denote the logit of the beta calibration function <span class="math notranslate nohighlight">\(\mathbf{c}_\beta(\tau_y)\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[z(\tau_y) = a \log(\tau_y) - b \log(1-\tau_y) + c .\]</div>
+<p>The beta calibration method serves as a mapping from the uncalibrated CDF to the calibrated one, so that</p>
+<div class="math notranslate nohighlight">
+\[G_Y(y) = \mathbf{c}_\beta\big( F_Y(y) \big)\]</div>
+<p>holds. The PDF is recalibrated using the beta link function <span class="math notranslate nohighlight">\(\mathbf{r}_\beta(\tau_y)\)</span> <a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> by</p>
+<div class="math notranslate nohighlight">
+\[g_Y(y) = \frac{\partial \mathbf{c}_\beta}{\partial y}
+= \frac{\partial \mathbf{c}_\beta}{\partial \tau_y} \frac{\partial \tau_y}{\partial y}
+= \mathbf{r}_\beta(\tau_y) f_Y(y) ,\]</div>
+<p>where the beta link function is given by</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{r}_\beta(\tau_y) = \Bigg(\frac{a}{\tau_y} + \frac{b}{1-\tau_y} \Bigg)
+\mathbf{c}_\beta(\tau_y) \big(1 - \mathbf{c}_\beta(\tau_y)\big) .\]</div>
+<p>The recalibration parameters <span class="math notranslate nohighlight">\(a,b\)</span> and <span class="math notranslate nohighlight">\(c\)</span> are not directly infered by the GP but rather use the
+underlying function parameters <span class="math notranslate nohighlight">\(w_a, w_b, w_c \in \mathbb{R}\)</span>, so that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}a &amp;= \exp(\gamma_a^{-1} w_a + \delta_a) \\
+b &amp;= \exp(\gamma_b^{-1} w_b + \delta_b) \\
+c &amp;= \gamma_c^{-1} w_c + \delta_c\end{split}\]</div>
+<p>are given as the beta distribution parameters to guarantee <span class="math notranslate nohighlight">\(a, b &gt; 0\)</span>.
+During optimization, we need the log of the link function. We use a numerical more stable version:</p>
+<div class="math notranslate nohighlight">
+\[\log\big(\mathbf{r}_\beta(\tau_y)\big) = \log \Bigg(\frac{a}{\tau_y} + \frac{b}{1-\tau_y} \Bigg) +
+\log \Big( \mathbf{c}_\beta(\tau_y) \big(1 - \mathbf{c}_\beta(\tau_y)\big) \Big)\]</div>
+<p>The first part can be rewritten as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; \log \Bigg(\frac{a}{\tau_y} + \frac{b}{1-\tau_y} \Bigg) \\
+&amp;= \log \Bigg( \exp \Big( \log(a) - \log(\tau_y) \Big) + \exp \Big( \log(b) - \log(1-\tau_y) \Big) \Bigg) \\
+&amp;= \log \Bigg( \exp \Big( \gamma_a^{-1} w_a + \delta_a - \log(\tau_y) \Big) + \exp \Big( \gamma_b^{-1} w_b + \delta_b - \log(1-\tau_y) \Big) \Bigg) \\
+&amp;= \text{logsumexp} \Bigg[ \Big( \gamma_a^{-1} w_a + \delta_a - \log(\tau_y) \Big), \Big( \gamma_b^{-1} w_b + \delta_b - \log(1-\tau_y) \Big) \Bigg]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{logsumexp}\)</span> is a numerical stable version of <span class="math notranslate nohighlight">\(\log \Big( \sum_x \exp(x) \Big)\)</span> in PyTorch.
+In addition, we can also simplify the expression for the log of the sigmoid functions that are used within
+the computation of <span class="math notranslate nohighlight">\(\mathbf{c}_\beta(\tau_y)\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\log(\phi(x)) &amp;= -\log \Big( \exp(-x) + 1 \Big), \\
+\log(1-\phi(x)) &amp;= -\log \Big( \exp(x) + 1 \Big)\end{split}\]</div>
+<p>which can also be expressed in terms of PyTorch’s numerical more stable <span class="math notranslate nohighlight">\(\text{softplus}\)</span>
+function <span class="math notranslate nohighlight">\(\log \Big( \exp(x) + 1 \Big)\)</span>. Thus, the log of the link function can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\log(r_\beta(\tau_y)) = &amp;\text{logsumexp} \Bigg[ \Big( \gamma_a^{-1} w_a + \delta_a - \log(\tau_y) \Big),
+\Big( \gamma_b^{-1} w_b + \delta_b - \log(1-\tau_y) \Big) \Bigg] \\
+&amp;- \Big(\text{softplus}\big(-z(x)\big) + \text{softplus}\big(z(x)\big)\Big)\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc</strong> (<em>torch.Tensor</em><em>, </em><em>shape:</em><em> (</em><em>[</em><em>[</em><em>1</em><em>]</em><em>, </em><em>1</em><em>]</em><em>, </em><em>n</em><em>, </em><em>d</em><em>)</em>) – Mean vector of the uncalibrated (Gaussian) probability distribution with n samples and d dimensions.
+This class also supports broadcasting of the calculations to t sampling points (defining the non-parametric
+PDF/CDF, first dim) and r random samples (second dim).</p></li>
+<li><p><strong>logvar</strong> (<em>torch.Tensor</em><em>, </em><em>shape:</em><em> (</em><em>[</em><em>[</em><em>1</em><em>]</em><em>, </em><em>1</em><em>]</em><em>, </em><em>n</em><em>, </em><em>d</em><em>)</em>) – Log of the variance vector of the uncalibrated (Gaussian) probability distribution with n samples and d
+dimensions. This class also supports broadcasting of the calculations to t sampling points (defining the
+non-parametric PDF/CDF, first dim) and r random samples (second dim).</p></li>
+<li><p><strong>parameters</strong> (<em>torch.Tensor</em><em>, </em><em>shape:</em><em> (</em><em>[</em><em>[</em><em>1</em><em>]</em><em>, </em><em>r</em><em>]</em><em>, </em><em>n</em><em>, </em><em>p*d</em><em>)</em>) – Rescaling parameters of the beta link function <strong>before applying the exponential</strong> (for parameters <span class="math notranslate nohighlight">\(a, b\)</span>)
+with n samples d dimensions, r random samples and p as the number of parameters (p=3 in this case).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
+<p>Hao Song, Tom Diethe, Meelis Kull and Peter Flach:
+“Distribution calibration for regression.”
+International Conference on Machine Learning (pp. 5897-5906), 2019.
+<a class="reference external" href="http://proceedings.mlr.press/v97/song19a/song19a.pdf">Get source online</a></p>
+</aside>
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>)</span>
+<p>Kull, Meelis, Telmo Silva Filho, and Peter Flach:
+“Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers”
+Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
+<a class="reference external" href="http://proceedings.mlr.press/v54/kull17a/kull17a.pdf">Get source online</a></p>
+</aside>
+</aside>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(loc, logvar, parameters)</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cdf</span></code>(t)</p></td>
+<td><p>Calculate cumulative distribution function (CDF) at the points given by 't' using the underlying uncalibrated cumulative <span class="math notranslate nohighlight">\(F_Y(y)\)</span> that is rescaled by the calibration parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate_update</span></code>(other)</p></td>
+<td><p>EXPERIMENTAL Creates an updated distribution fusing information from another compatible distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">entropy</span></code>()</p></td>
+<td><p>Returns entropy of distribution, batched over batch_shape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">enumerate_support</span></code>([expand])</p></td>
+<td><p>Returns tensor containing all values supported by a discrete distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code>(batch_shape[, _instance])</p></td>
+<td><p>Returns a new <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpandedDistribution</span></code> instance with batch dimensions expanded to <cite>batch_shape</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand_by</span></code>(sample_shape)</p></td>
+<td><p>Expands a distribution by adding <code class="docutils literal notranslate"><span class="pre">sample_shape</span></code> to the left side of its <code class="xref py py-attr docutils literal notranslate"><span class="pre">batch_shape</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_rsample_</span></code>(value)</p></td>
+<td><p>Force reparameterized or detached sampling on a single distribution instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">icdf</span></code>(value)</p></td>
+<td><p>Returns the inverse cumulative density/mass function evaluated at <cite>value</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">independent</span></code>([reinterpreted_batch_ndims])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">infer_shapes</span></code>(**arg_shapes)</p></td>
+<td><p>Infers <code class="docutils literal notranslate"><span class="pre">batch_shape</span></code> and <code class="docutils literal notranslate"><span class="pre">event_shape</span></code> given shapes of args to <code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_prob</span></code>(value)</p></td>
+<td><p>Calculate the log-density at the points given by 'value' using the underlying uncalibrated distribution <span class="math notranslate nohighlight">\(f_Y(y)\)</span> that is rescaled by the calibration parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask</span></code>(mask)</p></td>
+<td><p>Masks a distribution by a boolean or boolean-valued tensor that is broadcastable to the distributions <code class="xref py py-attr docutils literal notranslate"><span class="pre">batch_shape</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">perplexity</span></code>()</p></td>
+<td><p>Returns perplexity of distribution, batched over batch_shape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code>([sample_shape, extra_event_dims])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rsample</span></code>([sample_shape])</p></td>
+<td><p>Generates a sample_shape shaped reparameterized sample or sample_shape shaped batch of reparameterized samples if the distribution parameters are batched.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code>([sample_shape])</p></td>
+<td><p>Generates a sample_shape shaped sample or sample_shape shaped batch of samples if the distribution parameters are batched.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_n</span></code>(n)</p></td>
+<td><p>Generates n samples or n batches of samples if the distribution parameters are batched.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score_parts</span></code>(x, *args, **kwargs)</p></td>
+<td><p>Computes ingredients for stochastic gradient estimators of ELBO.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_default_validate_args</span></code>(value)</p></td>
+<td><p>Sets whether validation is enabled or disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code>([sample_shape])</p></td>
+<td><p>The tensor shape of samples from this distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_event</span></code>([reinterpreted_batch_ndims])</p></td>
+<td><p>Reinterprets the <code class="docutils literal notranslate"><span class="pre">n</span></code> rightmost dimensions of this distributions <code class="xref py py-attr docutils literal notranslate"><span class="pre">batch_shape</span></code> as event dims, adding them to the left side of <code class="xref py py-attr docutils literal notranslate"><span class="pre">event_shape</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood.html" title="netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood" >previous</a></li>
+        <li><a href="netcal.regression.gp.likelihood.CauchyLikelihood.html" title="netcal.regression.gp.likelihood.CauchyLikelihood" >next</a></li>
+        <li><a href="../../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../../netcal.regression.html" >netcal.regression</a></li>
+        <li><a href="../../netcal.regression.gp.html" >netcal.regression.gp</a></li>
+        <li><a href="../netcal.regression.gp.likelihood.html" >netcal.regression.gp.likelihood</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

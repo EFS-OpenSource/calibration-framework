@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.regression &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../index.html" />
+    <link rel="next" title="netcal.regression.IsotonicRegression" href="_autosummary_regression/netcal.regression.IsotonicRegression.html" />
+    <link rel="prev" title="netcal.presentation.ReliabilityQCE" href="_autosummary_presentation/netcal.presentation.ReliabilityQCE.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.regression</a><ul>
+<li><a class="reference internal" href="#probabilistic-regression-calibration-package">Probabilistic Regression Calibration Package</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#available-classes">Available classes</a></li>
+<li><a class="reference internal" href="#package-for-gaussian-process-optimization">Package for Gaussian process optimization</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="_autosummary_presentation/netcal.presentation.ReliabilityQCE.html" title="netcal.presentation.ReliabilityQCE" accesskey="P">previous </a></li>
+              <li><a href="_autosummary_regression/netcal.regression.IsotonicRegression.html" title="netcal.regression.IsotonicRegression" accesskey="N">next </a></li>
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="../_sources/_autosummary/netcal.regression.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">netcal.regression</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#probabilistic-regression-calibration-package">Probabilistic Regression Calibration Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#available-classes">Available classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_regression/netcal.regression.IsotonicRegression.html">netcal.regression.IsotonicRegression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_regression/netcal.regression.VarianceScaling.html">netcal.regression.VarianceScaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_regression/netcal.regression.GPBeta.html">netcal.regression.GPBeta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_regression/netcal.regression.GPNormal.html">netcal.regression.GPNormal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_regression/netcal.regression.GPCauchy.html">netcal.regression.GPCauchy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#package-for-gaussian-process-optimization">Package for Gaussian process optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary_regression_gp/netcal.regression.gp.html">netcal.regression.gp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="module-netcal.regression">
+<span id="netcal-regression"></span><h1>netcal.regression<a class="headerlink" href="#module-netcal.regression" title="Permalink to this heading">¶</a></h1>
+<section id="probabilistic-regression-calibration-package">
+<h2>Probabilistic Regression Calibration Package<a class="headerlink" href="#probabilistic-regression-calibration-package" title="Permalink to this heading">¶</a></h2>
+<p>Methods for uncertainty calibration of probabilistic regression tasks.
+A probabilistic regression model does not only provide a continuous estimate but also an according uncertainty
+(commonly a Gaussian standard deviation/variance).
+The methods within this package are able to recalibrate this uncertainty by means of <em>quantile calibration</em> [1],
+<em>distribution calibration</em> [2], or <em>variance calibration</em> [3], [4].</p>
+<p><em>Quantile calibration</em> [1] requires that a predicted quantile for a quantile level <em>t</em> covers
+approx. <em>100t%</em> of the ground-truth samples.</p>
+<p>Methods for <em>quantile calibration</em>:</p>
+<ul class="simple">
+<li><p><em>IsotonicRegression</em> [1].</p></li>
+</ul>
+<p><em>Distribution calibration</em> [2] requires that a predicted probability distribution should be equal to the observed
+error distribution. This must hold for all statistical moments.</p>
+<p>Methods for <em>distribution calibration</em>:</p>
+<ul class="simple">
+<li><p><em>GPBeta</em> [2].</p></li>
+<li><p><em>GPNormal</em> [5].</p></li>
+<li><p><em>GPCauchy</em> [5].</p></li>
+</ul>
+<p><em>Variance calibration</em> [3], [4] requires that the predicted variance of a Gaussian distribution should match the
+observed error variance which is equivalent to the root mean squared error.</p>
+<p>Methods for <em>variance calibration</em>:</p>
+<ul class="simple">
+<li><p><em>VarianceScaling</em> [3], [4].</p></li>
+<li><p><em>GPNormal</em> [5].</p></li>
+</ul>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h3>
+<p>[1] Volodymyr Kuleshov, Nathan Fenner, and Stefano Ermon:
+“Accurate uncertainties for deep learning using calibrated regression.”
+International Conference on Machine Learning. PMLR, 2018.
+<a class="reference external" href="http://proceedings.mlr.press/v80/kuleshov18a/kuleshov18a.pdf">Get source online</a></p>
+<p>[2] Hao Song, Tom Diethe, Meelis Kull and Peter Flach:
+“Distribution calibration for regression.”
+International Conference on Machine Learning. PMLR, 2019.
+<a class="reference external" href="http://proceedings.mlr.press/v97/song19a/song19a.pdf">Get source online</a></p>
+<p>[3] Levi, Dan, et al.:
+“Evaluating and calibrating uncertainty prediction in regression tasks.”
+arXiv preprint arXiv:1905.11659 (2019).
+<a class="reference external" href="https://arxiv.org/pdf/1905.11659.pdf">Get source online</a></p>
+<p>[4] Laves, Max-Heinrich, et al.:
+“Well-calibrated regression uncertainty in medical imaging with deep learning.”
+Medical Imaging with Deep Learning. PMLR, 2020.
+<a class="reference external" href="http://proceedings.mlr.press/v121/laves20a/laves20a.pdf">Get source online</a></p>
+<p>[5] Küppers, Fabian, Schneider, Jonas, and Haselhoff, Anselm:
+“Parametric and Multivariate Uncertainty Calibration for Regression and Object Detection.”
+ArXiv preprint arXiv:2207.01242, 2022.
+<a class="reference external" href="https://arxiv.org/pdf/2207.01242.pdf">Get source online</a></p>
+</section>
+</section>
+<section id="available-classes">
+<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_regression/netcal.regression.IsotonicRegression.html#netcal.regression.IsotonicRegression" title="netcal.regression.IsotonicRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IsotonicRegression</span></code></a>()</p></td>
+<td><p>Isotonic regression calibration for probabilistic regression models with multiple independent output dimensions (optionally).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_regression/netcal.regression.VarianceScaling.html#netcal.regression.VarianceScaling" title="netcal.regression.VarianceScaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VarianceScaling</span></code></a>()</p></td>
+<td><p>Variance recalibration using maximum likelihood estimation for multiple independent dimensions (optionally).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_regression/netcal.regression.GPBeta.html#netcal.regression.GPBeta" title="netcal.regression.GPBeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPBeta</span></code></a>([n_inducing_points, ...])</p></td>
+<td><p>GP-Beta recalibration method for regression uncertainty calibration using the well-known Beta calibration method from  classification calibration in combination with a Gaussian process (GP) parameter estimation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary_regression/netcal.regression.GPNormal.html#netcal.regression.GPNormal" title="netcal.regression.GPNormal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPNormal</span></code></a>([n_inducing_points, ...])</p></td>
+<td><p>GP-Normal recalibration method for regression uncertainty calibration using a temperature scaling for the variance of a normal distribution but using the Gaussian process (GP) parameter estimation to adaptively obtain the scaling parameter for each input individually.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_regression/netcal.regression.GPCauchy.html#netcal.regression.GPCauchy" title="netcal.regression.GPCauchy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPCauchy</span></code></a>([n_inducing_points, ...])</p></td>
+<td><p>GP-Cauchy recalibration method for regression uncertainty calibration that consumes an uncalibrated Gaussian distribution but converts it to a calibrated Cauchy distribution.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-for-gaussian-process-optimization">
+<h2>Package for Gaussian process optimization<a class="headerlink" href="#package-for-gaussian-process-optimization" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_regression_gp/netcal.regression.gp.html#module-netcal.regression.gp" title="netcal.regression.gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gp</span></code></a></p></td>
+<td><p>Regression GP Calibration Package
+
+This package provides the framework for all Gaussian Process (GP) recalibration schemes.
+These are GP-Beta [2], GP-Normal [3], and GP-Cauchy [3]. The goal of regression calibration using a GP scheme is to achieve
+distribution calibration, i.e., to match the predicted moments (mean, variance) to the true observed ones.
+In contrast to quantile calibration [1], where only the marginal calibration is of interest, the distribution calibration [2] is more
+restrictive. It requires that the predicted moments should match the observed ones given a certain probability
+distribution. Therefore, the authors in [2] propose to use Gaussian process to estimate the recalibration
+parameters of a Beta calibration function locally (i.e., matching the observed moments of neighboring samples).
+The GP-Normal and the GP-Cauchy follow the same principle but return parametric output distributions after calibration.
+
+References
+
+[1] Volodymyr Kuleshov, Nathan Fenner, and Stefano Ermon:
+&quot;Accurate uncertainties for deep learning using calibrated regression.&quot;
+International Conference on Machine Learning. PMLR, 2018.
+Get source online
+
+[2] Hao Song, Tom Diethe, Meelis Kull and Peter Flach:
+&quot;Distribution calibration for regression.&quot;
+International Conference on Machine Learning. PMLR, 2019.
+Get source online
+
+[3] Küppers, Fabian, Schneider, Jonas, and Haselhoff, Anselm:
+&quot;Parametric and Multivariate Uncertainty Calibration for Regression and Object Detection.&quot;
+ArXiv preprint arXiv:2207.01242, 2022.
+Get source online</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="_autosummary_presentation/netcal.presentation.ReliabilityQCE.html" title="netcal.presentation.ReliabilityQCE" >previous</a></li>
+        <li><a href="_autosummary_regression/netcal.regression.IsotonicRegression.html" title="netcal.regression.IsotonicRegression" >next</a></li>
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
