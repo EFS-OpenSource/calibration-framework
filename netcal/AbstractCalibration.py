@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -7,13 +7,14 @@
 
 import abc, os
 import numpy as np
-from typing import Union, Tuple, Iterable, List
+from typing import Tuple, List, Dict
 from sklearn.base import BaseEstimator, TransformerMixin
 
 import torch
 import torch.nn.functional as F
 
 from netcal import __version__ as version
+from .Helper import squeeze_generic
 from .Decorator import accepts, dimensions
 
 
@@ -68,7 +69,8 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             class are treated as independent of each other (sigmoid).
         """
 
-        super().__init__()
+        BaseEstimator.__init__(self)
+        TransformerMixin.__init__(self)
 
         self.detection = detection
         self.num_classes = None
@@ -124,7 +126,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # preprocessing of confidence values given with X
 
         # remove single-dimensional entries if present
-        X = self.squeeze_generic(X, axes_to_keep=0)
+        X = squeeze_generic(X, axes_to_keep=0)
 
         # check shape of input array X and determine number of classes
         # first case: confidence array is 1-D: binary classification problem
@@ -169,7 +171,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # preprocessing of ground truth values given with y
 
         # remove single-dimensional entries if present
-        y = self.squeeze_generic(y, axes_to_keep=0)
+        y = squeeze_generic(y, axes_to_keep=0)
 
         # check shape of ground truth array y
         # array is 2-D: assume one-hot encoded
@@ -244,7 +246,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # preprocessing of confidence values given with X
 
         # remove single-dimensional entries if present
-        X = self.squeeze_generic(X, axes_to_keep=0)
+        X = squeeze_generic(X, axes_to_keep=0)
 
         # got only 1-D array but model was fit for more than 2 classes?
         if len(X.shape) == 1:
@@ -283,7 +285,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         self.num_classes = 2 if self.detection else None
         self.independent_probabilities = self._default_independent_probabilities
 
-    def get_params(self, deep=True):
+    def get_params(self, deep=True) -> Dict:
         """
         Get parameters for this estimator.
 
@@ -385,34 +387,6 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         self.set_params(**params)
         return self
-
-    @classmethod
-    def squeeze_generic(cls, a: np.ndarray, axes_to_keep: Union[int, Iterable[int]]) -> np.ndarray:
-        """
-        Squeeze input array a but keep axes defined by parameter 'axes_to_keep' even if the dimension is
-        of size 1.
-
-        Parameters
-        ----------
-        a : np.ndarray
-            NumPy array that should be squeezed.
-        axes_to_keep : int or iterable
-            Axes that should be kept even if they have a size of 1.
-
-        Returns
-        -------
-        np.ndarray
-            Squeezed array.
-
-        """
-
-        # if type is int, convert to iterable
-        if type(axes_to_keep) == int:
-            axes_to_keep = (axes_to_keep, )
-
-        # iterate over all axes in a and check if dimension is in 'axes_to_keep' or of size 1
-        out_s = [s for i, s in enumerate(a.shape) if i in axes_to_keep or s != 1]
-        return a.reshape(out_s)
 
     @accepts(np.ndarray, np.ndarray, list, str)
     def _calc_model_scores(self, confidences: np.ndarray, ground_truth: np.ndarray,
