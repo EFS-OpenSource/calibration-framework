@@ -174,6 +174,8 @@ def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bo
     else:
         n_classes = 2
 
+    os.makedirs(os.path.join(domain, "results"), exist_ok=True)
+
     # initialize error metrics
     ace = ACE(bins)
     ece = ECE(bins)

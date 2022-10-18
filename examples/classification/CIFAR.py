@@ -30,10 +30,10 @@ def example_calibration(datafile: str, domain: str = ".") -> int:
 
     # kwargs for uncertainty mode. Those can also be safely set on MLE
     uncertainty_kwargs = {'mcmc_chains': 1,
-                          'mcmc_samples': 300,
-                          'mcmc_warmup_steps': 50,
+                          'mcmc_samples': 100,
+                          'mcmc_warmup_steps': 10,
                           'vi_samples': 300,
-                          'vi_epochs': 3000}
+                          'vi_epochs': 100}
 
     if domain == 'examination-mcmc':
         method = 'mcmc'
@@ -96,10 +96,10 @@ def cross_validation(datafile: str, use_cuda: Union[bool, str] = False, domain: 
 
     # kwargs for uncertainty mode. Those can also be safely set on MLE
     uncertainty_kwargs = {'mcmc_chains': 1,
-                          'mcmc_samples': 300,
-                          'mcmc_warmup_steps': 50,
+                          'mcmc_samples': 100,
+                          'mcmc_warmup_steps': 10,
                           'vi_samples': 300,
-                          'vi_epochs': 3000}
+                          'vi_epochs': 100}
 
     hist_bins = 20
     bins = 15
@@ -139,11 +139,11 @@ def cross_validation(datafile: str, use_cuda: Union[bool, str] = False, domain: 
 
 if __name__ == '__main__':
 
-    use_cuda = 'cuda:0'
+    use_cuda = False
 
-    # domain = "examination-map"
+    domain = "examination-mle"
     # domain = "examination-mcmc"
-    domain = "examination-variational"
+    # domain = "examination-variational"
 
     # example on CIFAR-10 with LeNet-5 and WideResnet-16-4
     lenet = "records/cifar10/lenet-5-cifar-10.npz"
@@ -153,8 +153,8 @@ if __name__ == '__main__':
 
     # for each model, perform a single example and a 5x2 cross validation
     for model in cifar10:
-       example_calibration(model)
-       cross_validation(model)
+       example_calibration(model, domain=domain)
+       cross_validation(model, use_cuda=use_cuda, domain=domain)
 
     # example on CIFAR-100 with LeNet-5, DenseNet-BC-100 and WideResnet-16-4
     lenet = "records/cifar100/lenet-5-cifar-100.npz"
@@ -165,5 +165,5 @@ if __name__ == '__main__':
 
     # for each model, perform a single example and a 5x2 cross validation
     for model in cifar100:
-        example_calibration(model)
+        example_calibration(model, domain=domain)
         cross_validation(model, use_cuda=use_cuda, domain=domain)
