@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -10,8 +10,10 @@ from netcal.scaling import LogisticCalibration
 
 class TemperatureScaling(LogisticCalibration):
     """
-    On classification or detection, apply the temperature scaling method described in [1]_ to obtain a
-    calibration mapping. For confidence calibration in classification tasks, a
+    On classification or detection, apply the temperature scaling method to obtain a
+    calibration mapping.
+    This method has been proposed by [1]_.
+    For confidence calibration in classification tasks, a
     confidence mapping :math:`g` is applied on top of a miscalibrated scoring classifier :math:`\\hat{p} = h(x)` to
     deliver a calibrated confidence score :math:`\\hat{q} = g(h(x))`.
 
@@ -31,6 +33,7 @@ class TemperatureScaling(LogisticCalibration):
     softmax operator (multiclass classification).
 
     We utilize standard optimization methods to determine the calibration mapping :math:`g(s)`.
+    Capturing epistemic uncertainty of the calibration method is also able with this implementation [2]_.
 
     Parameters
     ----------
@@ -69,13 +72,9 @@ class TemperatureScaling(LogisticCalibration):
     .. [1] Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
        "On Calibration of Modern Neural Networks."
        Proceedings of the 34th International Conference on Machine Learning-Volume 70. JMLR. org, 2017.
-       `Get source online <https://arxiv.org/abs/1706.04599>`_
+       `Get source online <https://arxiv.org/abs/1706.04599>`__
 
-    .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
-       "Multivariate Confidence Calibration for Object Detection."
-       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
-
-    .. [3] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
+    .. [2] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
        "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
        2021 IEEE Intelligent Vehicles Symposium (IV), 2021
     """

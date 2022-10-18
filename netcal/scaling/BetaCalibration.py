@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -78,6 +78,8 @@ class BetaCalibration(AbstractLogisticRegression):
     :math:`c=\\sum_k \\log B(\\alpha_k^-, \\beta_k^-) - \\log B(\\alpha_k^+, \\beta_k^+)`.
     We utilize standard optimization methods to determine the calibration mapping :math:`g(s)`.
 
+    Capturing epistemic uncertainty of the calibration method is also able with this implementation [3]_.
+
     Parameters
     ----------
     method : str, default: "mle"
@@ -115,11 +117,11 @@ class BetaCalibration(AbstractLogisticRegression):
     .. [1] Kull, Meelis, Telmo Silva Filho, and Peter Flach:
        "Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers"
        Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
-       `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`_
+       `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`__
 
     .. [2] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
 
     .. [3] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
        "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
@@ -200,12 +202,17 @@ class BetaCalibration(AbstractLogisticRegression):
             data_input = np.log(data_input)
             data_input[..., 1] *= -1
 
-        return torch.tensor(data_input)
+        return torch.from_numpy(data_input)
 
-    def prior(self):
+    def prior(self, dtype: torch.dtype):
         """
         Prior definition of the weights used for log regression. This function has to set the
         variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
+
+        Parameters
+        ----------
+        dtype: torch.dtype
+            Data type of the input data so that the priors are initialized with the same precision.
         """
 
         self._sites = OrderedDict()
@@ -224,10 +231,10 @@ class BetaCalibration(AbstractLogisticRegression):
                     'values': None,
                     'constraint': constraints.real,
                     'init': {
-                        'mean': torch.ones(feature_weights),
-                        'scale': torch.ones(feature_weights)
+                        'mean': torch.ones(feature_weights, dtype=dtype),
+                        'scale': torch.ones(feature_weights, dtype=dtype)
                     },
-                    'prior': dist.Normal(torch.ones(feature_weights), 10 * torch.ones(feature_weights), validate_args=True),
+                    'prior': dist.Normal(torch.ones(feature_weights, dtype=dtype), 10 * torch.ones(feature_weights, dtype=dtype), validate_args=True),
                 }
 
         # on multiclass classification, we have one weight and one bias for each class separately
@@ -236,8 +243,8 @@ class BetaCalibration(AbstractLogisticRegression):
             num_weights = 2*self.num_classes
 
         # initialize weight mean by ones and set prior distribution
-        init_mean = torch.ones(num_weights)
-        init_scale = torch.ones(num_weights)
+        init_mean = torch.ones(num_weights, dtype=dtype)
+        init_scale = torch.ones(num_weights, dtype=dtype)
         prior = dist.Normal(init_mean, 10 * init_scale, validate_args=True)
 
         # we have constraints on the weights for the confidence
@@ -266,10 +273,10 @@ class BetaCalibration(AbstractLogisticRegression):
             'values': None,
             'constraint': constraints.real,
             'init': {
-                'mean': torch.zeros(num_bias),
-                'scale': torch.ones(num_bias)
+                'mean': torch.zeros(num_bias, dtype=dtype),
+                'scale': torch.ones(num_bias, dtype=dtype)
             },
-            'prior': dist.Normal(torch.zeros(num_bias), 10 * torch.ones(num_bias), validate_args=True)
+            'prior': dist.Normal(torch.zeros(num_bias, dtype=dtype), 10 * torch.ones(num_bias, dtype=dtype), validate_args=True)
         }
 
     def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
@@ -302,7 +309,13 @@ class BetaCalibration(AbstractLogisticRegression):
 
             # on MCMC sampling, extreme values might occur and can cause an 'inf'
             # this will result in invalid prob values - catch infs and set to log of max value
-            weights[torch.isinf(weights)] = torch.log(torch.tensor(torch.finfo(weights.dtype).max))
+            weights[torch.isinf(weights)] = torch.log(
+                torch.tensor(
+                    torch.finfo(weights.dtype).max,
+                    dtype=weights.dtype,
+                    device=weights.device
+                )
+            )
 
         # additional weights are extra weights for extra features (on detection mode)
         if "feature_weights" in self._sites.keys():
@@ -316,7 +329,7 @@ class BetaCalibration(AbstractLogisticRegression):
                 weights = torch.reshape(weights, (-1, 1))
 
                 # compute logits and remove unnecessary dimensions
-                logit = torch.squeeze(torch.matmul(X, weights) + bias)
+                logit = torch.squeeze(torch.matmul(X, weights) + bias, dim=1)
                 probs = torch.sigmoid(logit)
                 dist_op = dist.Bernoulli
 

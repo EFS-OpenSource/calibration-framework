@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -28,7 +28,7 @@ from pyro.infer import SVI, Trace_ELBO, Predictive, MCMC, NUTS
 from pyro.optim import Adam, SGD
 import pyro.distributions as dist
 
-from netcal import AbstractCalibration, dimensions, accepts, manual_seed
+from netcal import AbstractCalibration, dimensions, accepts, manual_seed, squeeze_generic
 
 
 class AbstractLogisticRegression(AbstractCalibration):
@@ -209,10 +209,15 @@ class AbstractLogisticRegression(AbstractCalibration):
         return torch.Tensor(X).to(self._device)
 
     @abc.abstractmethod
-    def prior(self):
+    def prior(self, dtype: torch.dtype):
         """
         Prior definition of the weights and intercept used for log regression. This function has to set the
         sites at least for "weights" and "bias".
+
+        Parameters
+        ----------
+        dtype: torch.dtype
+            Data type of the input data so that the priors are initialized with the same precision.
         """
 
         raise NotImplementedError()
@@ -361,7 +366,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         self.num_features = X.shape[1] if self.detection else 1
 
         # initialize priors
-        self.prior()
+        self.prior(dtype=data.dtype)
 
         # mark first dimension as independent
         for site in self._sites.values():
@@ -447,7 +452,7 @@ class AbstractLogisticRegression(AbstractCalibration):
                     warmup_steps=self.mcmc_warmup,
                     num_chains=self.mcmc_chains,
                     hook_fn=log)
-        mcmc.run(data.float(), y.float())
+        mcmc.run(data, y.to(dtype=data.dtype))
 
         # get samples from MCMC chains and store weights
         samples = mcmc.get_samples()
@@ -468,14 +473,10 @@ class AbstractLogisticRegression(AbstractCalibration):
             NumPy array with ground truth labels as 1-D vector (binary).
         """
 
-        # explicitly define datatype
-        data = data.float()
-        y = y.float()
-
         num_samples = data.shape[0]
 
         # create dataset
-        lr_dataset = torch.utils.data.TensorDataset(data, y)
+        lr_dataset = torch.utils.data.TensorDataset(data, y.to(dtype=data.dtype))
         data_loader = DataLoader(dataset=lr_dataset, batch_size=1024, pin_memory=False)
 
         # define optimizer
@@ -553,7 +554,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         # this might be necessary for the optimizer
         data = data.double()
         initial_weights = np.concatenate(
-            [site['init']['mean'].cpu().numpy().astype(np.float64) for site in self._sites.values()]
+            [site['init']['mean'].cpu().numpy() for site in self._sites.values()]
         )
 
         # on detection or binary classification, use binary cross entropy loss and convert target vector to double
@@ -581,7 +582,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         start = 0
         for name, site in self._sites.items():
             num_weights = len(site['init']['mean'])
-            site['values'] = result.x[start:start + num_weights].astype(np.float32)
+            site['values'] = result.x[start:start + num_weights]
             start += num_weights
 
         # on some methods like Beta calibration, it is necessary to repeat the optimization
@@ -599,7 +600,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         start = 0
         for name, site in self._sites.items():
             num_weights = len(site['init']['mean'])
-            site['values'] = result.x[start:start + num_weights].astype(np.float32)
+            site['values'] = result.x[start:start + num_weights]
             start += num_weights
 
     def momentum(self, data: torch.Tensor, y: torch.Tensor, tensorboard: bool, log_dir: str):
@@ -624,7 +625,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         criterion = nn.BCEWithLogitsLoss(reduction='mean')
 
         # create dataset
-        lr_dataset = torch.utils.data.TensorDataset(data.double(), y.double())
+        lr_dataset = torch.utils.data.TensorDataset(data, y.to(dtype=data.dtype))
         data_loader = DataLoader(dataset=lr_dataset, batch_size=batch_size, pin_memory=False)
 
         # init model and optimizer
@@ -739,7 +740,8 @@ class AbstractLogisticRegression(AbstractCalibration):
         self.to(self._device)
 
         # convert input data and weights to torch (and possibly to CUDA)
-        data = self.prepare(X).float().to(self._device)
+        data = self.prepare(X).to(self._device)
+        num_data = data.shape[0]
 
         # if weights is 2-D matrix, we are in sampling mode
         # treat each row as a separate weights vector
@@ -766,7 +768,7 @@ class AbstractLogisticRegression(AbstractCalibration):
 
                 # on MLE without uncertainty, only return the single model estimate
                 calibrated = process_model(weights).cpu().numpy()
-                calibrated = self.squeeze_generic(calibrated, axes_to_keep=0)
+                calibrated = squeeze_generic(calibrated, axes_to_keep=0)
             else:
 
                 parameter = []
@@ -791,7 +793,7 @@ class AbstractLogisticRegression(AbstractCalibration):
                     raise ValueError("Internal error: neither MCMC nor variational model given.")
 
                 # remove unnecessary dims that possibly occur on MCMC or VI
-                samples = {k: torch.reshape(v, (num_samples, -1)) for k, v in samples.items()}
+                samples = {k: torch.squeeze(v, dim=1) for k, v in samples.items()}
 
                 # iterate over all parameter sets
                 for i in range(num_samples):
@@ -812,7 +814,7 @@ class AbstractLogisticRegression(AbstractCalibration):
 
                 # stack all calibrated estimates along axis 0 and calculate stddev as well as mean
                 calibrated = torch.stack(calibrated, dim=0).cpu().numpy()
-                calibrated = self.squeeze_generic(calibrated, axes_to_keep=(0, 1))
+                calibrated = squeeze_generic(calibrated, axes_to_keep=(0, 1))
         else:
 
             # extract all weight values of sites and store into single dict
@@ -822,7 +824,7 @@ class AbstractLogisticRegression(AbstractCalibration):
 
             # on MLE without uncertainty, only return the single model estimate
             calibrated = process_model(weights).cpu().numpy()
-            calibrated = self.squeeze_generic(calibrated, axes_to_keep=0)
+            calibrated = squeeze_generic(calibrated, axes_to_keep=0)
 
         # delete torch data tensor
         del data
