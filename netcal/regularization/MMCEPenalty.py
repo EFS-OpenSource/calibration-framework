@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -10,8 +10,8 @@ from torch.nn.modules.loss import _Loss
 
 class MMCEPenalty(_Loss):
     """
-    Maximum mean calibration error (MMCE) [1]_. This term can be used for online confidence calibration directly
-    during model training.
+    Maximum mean calibration error (MMCE). This technique has been proposed by [1]_ and can be used for online
+    confidence calibration directly during model training.
 
     Parameters
     ----------
@@ -23,7 +23,7 @@ class MMCEPenalty(_Loss):
     .. [1] Kumar, Aviral, Sunita Sarawagi, and Ujjwal Jain:
        "Trainable calibration measures for neural networks from kernel mean embeddings."
        International Conference on Machine Learning. PMLR, 2018.
-       `Get source online: <http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf>`_
+       `Get source online: <http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf>`__
     """
 
     epsilon = 1e-12
@@ -40,7 +40,7 @@ class MMCEPenalty(_Loss):
         diff = c1[:, None] - c2
         return torch.exp(-2.5 * torch.abs(diff))
 
-    def forward(self, input: torch.Tensor, target: torch.Tensor):
+    def forward(self, input: torch.Tensor, target: torch.Tensor, **ig_kwargs):
         """ Forward call of module. Returns a single scalar indicating the MMCE for the current batch. """
 
         # assume logits as input

@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -39,7 +39,7 @@ def confidence_penalty(X: np.ndarray, weight: float, threshold: float = None, ba
     .. [1] G. Pereyra, G. Tucker, J. Chorowski, Lukasz Kaiser, and G. Hinton:
        “Regularizing neural networks by penalizing confident output distributions.”
        CoRR, 2017.
-       `Get source online <https://arxiv.org/pdf/1701.06548>`_
+       `Get source online <https://arxiv.org/pdf/1701.06548>`__
     """
 
     epsilon = np.finfo(np.float32).eps
@@ -79,7 +79,7 @@ class ConfidencePenalty(_Loss):
     .. [1] G. Pereyra, G. Tucker, J. Chorowski, Lukasz Kaiser, and G. Hinton:
        “Regularizing neural networks by penalizing confident output distributions.”
        CoRR, 2017.
-       `Get source online <https://arxiv.org/pdf/1701.06548>`_
+       `Get source online <https://arxiv.org/pdf/1701.06548>`__
     """
 
     epsilon = 1e-12
@@ -91,7 +91,13 @@ class ConfidencePenalty(_Loss):
         self.weight = weight
         self.threshold = threshold
 
-    def forward(self, input: torch.Tensor):
+    @staticmethod
+    def entropy(input: torch.Tensor, calibrated: torch.Tensor) -> torch.Tensor:
+        """ Cross entropy between input tensor and calibrated counter part """
+
+        return -calibrated * torch.log(input)
+
+    def forward(self, input: torch.Tensor, *ig_args, **ig_kwargs):
         """ Forward call. Additional arguments and keyword-arguments are ignored. """
 
         probs = torch.clamp(torch.softmax(input, dim=1), self.epsilon, 1.-self.epsilon)

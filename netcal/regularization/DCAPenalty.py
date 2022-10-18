@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -11,8 +11,8 @@ from torch.nn.modules.loss import _Loss
 
 class DCAPenalty(_Loss):
     """
-    Difference between Confidence and Accuracy (DCA) [1]_. This regularization returns a single scalar indicating
-    the difference between mean confidence and accuracy within a single batch.
+    Difference between Confidence and Accuracy (DCA). This regularization has been proposed by [1]_ and
+    returns a single scalar indicating the difference between mean confidence and accuracy within a single batch.
 
     Parameters
     ----------
@@ -32,7 +32,7 @@ class DCAPenalty(_Loss):
         super().__init__()
         self.weight = weight
 
-    def forward(self, input: torch.Tensor, target: torch.Tensor):
+    def forward(self, input: torch.Tensor, target: torch.Tensor, **ig_kwargs):
         """ Forward call of module. Providing the target scores is mandatory. """
 
         # assume logits as input
