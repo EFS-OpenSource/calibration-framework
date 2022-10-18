@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -22,7 +22,7 @@ except ImportError:
     raise ImportError("Need detectron2 to evaluate object detection calibration. You can get the latest version at https://github.com/facebookresearch/detectron2")
 
 
-def calibrate(frames: List[Dict], dataset: str, network: str, subset: List[str], ious: List[float], train_ids: List):
+def calibrate(frames: List[Dict], dataset: str, network: str, subset: List[str], ious: List[float], train_ids: List, bayesian: bool):
     """
     Perform calibration of the given frames (as list of dicts) for a dedicated dataset with dedicated train_ids.
     The trained models are stored at "calibration/<network>/models/".
@@ -48,7 +48,7 @@ def calibrate(frames: List[Dict], dataset: str, network: str, subset: List[str],
     """
 
     meta = MetadataCatalog.get(dataset)
-    model_dir = os.path.join("calibration", network, "models")
+    model_dir = os.path.join("calibration" if not bayesian else "bayesian_calibration", network, "models")
     os.makedirs(model_dir, exist_ok=True)
 
     # reverse mapping of category ids to network class ids (e.g. for COCO dataset)
@@ -80,13 +80,6 @@ def calibrate(frames: List[Dict], dataset: str, network: str, subset: List[str],
         print("Training: category %d: %d samples" % (category_id, features.shape[0]))
         for iou, m in zip(ious, matched):
 
-            # initialize calibration methods
-            histogram = HistogramBinning(bins=bins, detection=True)
-            lr = LogisticCalibration(detection=True)
-            lr_dependent = LogisticCalibrationDependent()
-            betacal = BetaCalibration(detection=True)
-            betacal_dependent = BetaCalibrationDependent(momentum_epochs=500)
-
             # if only negative (or positive) examples are given, calibration is not applicable
             unique = np.unique(m)
             print("Different labels:", unique)
@@ -94,24 +87,30 @@ def calibrate(frames: List[Dict], dataset: str, network: str, subset: List[str],
                 print("Calibration failed for cls %d as there are only negative samples" % i)
                 continue
 
-            # fit and save calibration models
-            print("Fit and save histogram binning")
-            histogram.fit(features, m)
-            histogram.save_model(os.path.join(model_dir, "histogram_%s_iou%.2f_cls-%02d.pkl" % (''.join(subset), iou, i)))
+            if not bayesian:
+                # fit and save calibration models
+                print("Fit and save histogram binning")
+                histogram = HistogramBinning(bins=bins, detection=True)
+                histogram.fit(features, m)
+                histogram.save_model(os.path.join(model_dir, "histogram_%s_iou%.2f_cls-%02d.pkl" % (''.join(subset), iou, i)))
 
             print("Fit independent logistic calibration")
+            lr = LogisticCalibration(detection=True, method="variational" if bayesian else "mle", vi_epochs=1000, use_cuda=True)
             lr.fit(features, m)
             lr.save_model(os.path.join(model_dir, "lr_%s_iou%.2f_cls-%02d.pkl" % (''.join(subset), iou, i)))
 
             print("Fit dependent logistic calibration")
+            lr_dependent = LogisticCalibrationDependent(method="variational" if bayesian else "mle", vi_epochs=1000, use_cuda=True)
             lr_dependent.fit(features, m)
             lr_dependent.save_model(os.path.join(model_dir, "lr_dependent_%s_iou%.2f_cls-%02d.pkl" % (''.join(subset), iou, i)))
 
             print("Fit independent beta calibration")
+            betacal = BetaCalibration(detection=True, method="variational" if bayesian else "mle", vi_epochs=1000, use_cuda=True)
             betacal.fit(features, m)
             betacal.save_model(os.path.join(model_dir, "betacal_%s_iou%.2f_cls-%02d.pkl" % (''.join(subset), iou, i)))
 
             print("Fit dependent beta calibration")
+            betacal_dependent = BetaCalibrationDependent(method="variational" if bayesian else "momentum", momentum_epochs=500, vi_epochs=1000, use_cuda=True)
             betacal_dependent.fit(features, m)
             betacal_dependent.save_model(os.path.join(model_dir, "betacal_dependent_%s_iou%.2f_cls-%02d.pkl" % (''.join(subset), iou, i)))
 
@@ -121,22 +120,25 @@ if __name__ == '__main__':
     # to use this script, perform inference of neural network using Detectron2 first. The predictions are stored as
     # a JSON file in COCO annotations format. This JSON file is understood by the methods in this script.
 
+    # set 'bayesian' to true if you want to use stochastic variational inference for calibration training
+    bayesian = True
+
     # COCO data - Faster RCNN
-    filename = "./data/faster-rcnn-coco/inference/coco_instances_results.json"
-    network = "COCO-faster-rcnn-threshold-%.f"
+    # filename = "./data/faster-rcnn-coco/inference/coco_instances_results.json"
+    # network = "COCO-faster-rcnn-threshold-%.2f"
 
     # COCO data - RetinaNet
     # filename = "./data/retinanet-coco/inference/coco_instances_results.json"
-    # network = "COCO-retinanet-threshold-%.f"
+    # network = "COCO-retinanet-threshold-%.2f"
 
-    dataset = "coco_2017_val"
-    train_ids, val_ids = read_image_ids("image_ids_coco.json")
+    # dataset = "coco_2017_val"
+    # train_ids, val_ids = read_image_ids("image_ids_coco.json")
 
     # Cityscapes data
-    # filename = "./data/mask-rcnn-cityscapes/inference/coco_instances_results.json"
-    # dataset = "cityscapes_fine_instance_seg_val"
-    # network = "Cityscapes-mask-rcnn-threshold-%.f"
-    # train_ids, val_ids = read_image_ids("image_ids_cityscapes.json")
+    filename = "./data/mask-rcnn-cityscapes/inference/coco_instances_results.json"
+    dataset = "cityscapes_fine_instance_seg_val"
+    network = "Cityscapes-mask-rcnn-threshold-%.2f"
+    train_ids, val_ids = read_image_ids("image_ids_cityscapes.json")
 
     # score threshold used for calibration
     score_threshold = 0.3
@@ -145,7 +147,8 @@ if __name__ == '__main__':
     network = network % score_threshold
 
     # define different subsets and IoUs that are used for evaluation
-    subsets = [[], ['cx', 'cy'], ['w', 'h'], ['cx', 'cy', 'w', 'h']]
+    # subsets = [[], ['cx', 'cy'], ['w', 'h'], ['cx', 'cy', 'w', 'h']]
+    subsets = [[], ['cx', 'cy', 'w', 'h']]
     ious = [0.5, 0.75]
 
     print("Load dataset")
@@ -157,4 +160,4 @@ if __name__ == '__main__':
 
     # perform confidence calibration for each subset
     for subset in subsets:
-        calibrate(frames, dataset, network, subset, ious, train_ids)
+        calibrate(frames, dataset, network, subset, ious, train_ids, bayesian)
