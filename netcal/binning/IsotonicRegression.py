@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -12,7 +12,9 @@ from sklearn.isotonic import IsotonicRegression as sklearn_iso
 
 class IsotonicRegression(AbstractCalibration):
     """
-    Isotonic Regression method [1]_. This method is similar to :class:`HistogramBinning` but with dynamic bin sizes
+    Isotonic Regression method.
+    This method has initially been proposed by [1]_.
+    This method is similar to :class:`HistogramBinning` but with dynamic bin sizes
     and boundaries. A piecewise constant function gets fit to ground truth labels sorted by
     given confidence estimates.
 
@@ -33,7 +35,7 @@ class IsotonicRegression(AbstractCalibration):
     .. [1] Zadrozny, Bianca and Elkan, Charles:
        "Transforming classifier scores into accurate multiclass probability estimates."
        In KDD, pp. 694–699, 2002.
-       `Get source online <https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf>`_
+       `Get source online <https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf>`__
     """
 
     @accepts(bool, bool)

@@ -26,7 +26,12 @@ netcal.regularization.MMCEPenalty
       ~MMCEPenalty.extra_repr
       ~MMCEPenalty.float
       ~MMCEPenalty.forward
+      ~MMCEPenalty.get_buffer
+      ~MMCEPenalty.get_extra_state
+      ~MMCEPenalty.get_parameter
+      ~MMCEPenalty.get_submodule
       ~MMCEPenalty.half
+      ~MMCEPenalty.ipu
       ~MMCEPenalty.kernel
       ~MMCEPenalty.load_state_dict
       ~MMCEPenalty.modules
@@ -39,13 +44,19 @@ netcal.regularization.MMCEPenalty
       ~MMCEPenalty.register_buffer
       ~MMCEPenalty.register_forward_hook
       ~MMCEPenalty.register_forward_pre_hook
+      ~MMCEPenalty.register_full_backward_hook
+      ~MMCEPenalty.register_load_state_dict_post_hook
+      ~MMCEPenalty.register_module
       ~MMCEPenalty.register_parameter
       ~MMCEPenalty.requires_grad_
+      ~MMCEPenalty.set_extra_state
       ~MMCEPenalty.share_memory
       ~MMCEPenalty.state_dict
       ~MMCEPenalty.to
+      ~MMCEPenalty.to_empty
       ~MMCEPenalty.train
       ~MMCEPenalty.type
+      ~MMCEPenalty.xpu
       ~MMCEPenalty.zero_grad
    
    
@@ -56,7 +67,10 @@ netcal.regularization.MMCEPenalty
 
    .. autosummary::
    
+      ~MMCEPenalty.T_destination
       ~MMCEPenalty.dump_patches
       ~MMCEPenalty.epsilon
+      ~MMCEPenalty.reduction
+      ~MMCEPenalty.training
    
    

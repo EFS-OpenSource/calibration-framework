@@ -13,12 +13,11 @@ netcal.metrics.PICP
    .. autosummary::
    
       ~PICP.__init__
-      ~PICP.accuracy
       ~PICP.binning
+      ~PICP.frequency
       ~PICP.measure
       ~PICP.prepare
       ~PICP.process
       ~PICP.reduce
-      ~PICP.squeeze_generic
    
    

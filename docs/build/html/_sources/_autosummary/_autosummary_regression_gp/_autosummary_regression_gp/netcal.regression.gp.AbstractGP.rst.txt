@@ -1,0 +1,95 @@
+netcal.regression.gp.AbstractGP
+===============================
+
+.. currentmodule:: netcal.regression.gp
+
+.. autoclass:: AbstractGP
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AbstractGP.__init__
+      ~AbstractGP.add_module
+      ~AbstractGP.added_loss_terms
+      ~AbstractGP.apply
+      ~AbstractGP.bfloat16
+      ~AbstractGP.buffers
+      ~AbstractGP.children
+      ~AbstractGP.clear
+      ~AbstractGP.constraint_for_parameter_name
+      ~AbstractGP.constraints
+      ~AbstractGP.cpu
+      ~AbstractGP.cuda
+      ~AbstractGP.double
+      ~AbstractGP.eval
+      ~AbstractGP.extra_repr
+      ~AbstractGP.fit
+      ~AbstractGP.fit_transform
+      ~AbstractGP.float
+      ~AbstractGP.forward
+      ~AbstractGP.get_buffer
+      ~AbstractGP.get_extra_state
+      ~AbstractGP.get_fantasy_model
+      ~AbstractGP.get_parameter
+      ~AbstractGP.get_params
+      ~AbstractGP.get_submodule
+      ~AbstractGP.guide
+      ~AbstractGP.half
+      ~AbstractGP.hyperparameters
+      ~AbstractGP.initialize
+      ~AbstractGP.ipu
+      ~AbstractGP.load_model
+      ~AbstractGP.load_state_dict
+      ~AbstractGP.load_strict_shapes
+      ~AbstractGP.local_load_samples
+      ~AbstractGP.model
+      ~AbstractGP.modules
+      ~AbstractGP.named_added_loss_terms
+      ~AbstractGP.named_buffers
+      ~AbstractGP.named_children
+      ~AbstractGP.named_constraints
+      ~AbstractGP.named_hyperparameters
+      ~AbstractGP.named_modules
+      ~AbstractGP.named_parameters
+      ~AbstractGP.named_parameters_and_constraints
+      ~AbstractGP.named_priors
+      ~AbstractGP.named_variational_parameters
+      ~AbstractGP.parameters
+      ~AbstractGP.pyro_guide
+      ~AbstractGP.pyro_load_from_samples
+      ~AbstractGP.pyro_model
+      ~AbstractGP.pyro_sample_from_prior
+      ~AbstractGP.register_added_loss_term
+      ~AbstractGP.register_backward_hook
+      ~AbstractGP.register_buffer
+      ~AbstractGP.register_constraint
+      ~AbstractGP.register_forward_hook
+      ~AbstractGP.register_forward_pre_hook
+      ~AbstractGP.register_full_backward_hook
+      ~AbstractGP.register_load_state_dict_post_hook
+      ~AbstractGP.register_module
+      ~AbstractGP.register_parameter
+      ~AbstractGP.register_prior
+      ~AbstractGP.requires_grad_
+      ~AbstractGP.sample_from_prior
+      ~AbstractGP.save_model
+      ~AbstractGP.set_extra_state
+      ~AbstractGP.set_params
+      ~AbstractGP.share_memory
+      ~AbstractGP.state_dict
+      ~AbstractGP.to
+      ~AbstractGP.to_empty
+      ~AbstractGP.to_pyro_random_module
+      ~AbstractGP.train
+      ~AbstractGP.transform
+      ~AbstractGP.type
+      ~AbstractGP.update_added_loss_term
+      ~AbstractGP.variational_parameters
+      ~AbstractGP.xpu
+      ~AbstractGP.zero_grad
+   
+   

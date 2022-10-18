@@ -1,0 +1,25 @@
+netcal.regression.VarianceScaling
+=================================
+
+.. currentmodule:: netcal.regression
+
+.. autoclass:: VarianceScaling
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~VarianceScaling.__init__
+      ~VarianceScaling.clear
+      ~VarianceScaling.fit
+      ~VarianceScaling.fit_transform
+      ~VarianceScaling.get_params
+      ~VarianceScaling.load_model
+      ~VarianceScaling.save_model
+      ~VarianceScaling.set_params
+      ~VarianceScaling.transform
+   
+   

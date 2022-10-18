@@ -1,0 +1,38 @@
+netcal.regression.gp.likelihood.CauchyLikelihood
+================================================
+
+.. currentmodule:: netcal.regression.gp.likelihood
+
+.. autoclass:: CauchyLikelihood
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CauchyLikelihood.__init__
+      ~CauchyLikelihood.cdf
+      ~CauchyLikelihood.conjugate_update
+      ~CauchyLikelihood.entropy
+      ~CauchyLikelihood.enumerate_support
+      ~CauchyLikelihood.expand
+      ~CauchyLikelihood.expand_by
+      ~CauchyLikelihood.has_rsample_
+      ~CauchyLikelihood.icdf
+      ~CauchyLikelihood.independent
+      ~CauchyLikelihood.infer_shapes
+      ~CauchyLikelihood.log_prob
+      ~CauchyLikelihood.mask
+      ~CauchyLikelihood.perplexity
+      ~CauchyLikelihood.reshape
+      ~CauchyLikelihood.rsample
+      ~CauchyLikelihood.sample
+      ~CauchyLikelihood.sample_n
+      ~CauchyLikelihood.score_parts
+      ~CauchyLikelihood.set_default_validate_args
+      ~CauchyLikelihood.shape
+      ~CauchyLikelihood.to_event
+   
+   

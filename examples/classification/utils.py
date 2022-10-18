@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -173,6 +173,8 @@ def cross_validation_5_2(models: list, datafile: str, bins: int, save_models: bo
         n_classes = predictions.shape[1]
     else:
         n_classes = 2
+
+    os.makedirs(os.path.join(domain, "results"), exist_ok=True)
 
     # initialize error metrics
     ace = ACE(bins)

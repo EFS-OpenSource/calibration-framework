@@ -26,7 +26,12 @@ netcal.regularization.DCAPenalty
       ~DCAPenalty.extra_repr
       ~DCAPenalty.float
       ~DCAPenalty.forward
+      ~DCAPenalty.get_buffer
+      ~DCAPenalty.get_extra_state
+      ~DCAPenalty.get_parameter
+      ~DCAPenalty.get_submodule
       ~DCAPenalty.half
+      ~DCAPenalty.ipu
       ~DCAPenalty.load_state_dict
       ~DCAPenalty.modules
       ~DCAPenalty.named_buffers
@@ -38,13 +43,19 @@ netcal.regularization.DCAPenalty
       ~DCAPenalty.register_buffer
       ~DCAPenalty.register_forward_hook
       ~DCAPenalty.register_forward_pre_hook
+      ~DCAPenalty.register_full_backward_hook
+      ~DCAPenalty.register_load_state_dict_post_hook
+      ~DCAPenalty.register_module
       ~DCAPenalty.register_parameter
       ~DCAPenalty.requires_grad_
+      ~DCAPenalty.set_extra_state
       ~DCAPenalty.share_memory
       ~DCAPenalty.state_dict
       ~DCAPenalty.to
+      ~DCAPenalty.to_empty
       ~DCAPenalty.train
       ~DCAPenalty.type
+      ~DCAPenalty.xpu
       ~DCAPenalty.zero_grad
    
    
@@ -55,6 +66,9 @@ netcal.regularization.DCAPenalty
 
    .. autosummary::
    
+      ~DCAPenalty.T_destination
       ~DCAPenalty.dump_patches
+      ~DCAPenalty.reduction
+      ~DCAPenalty.training
    
    

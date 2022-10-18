@@ -1,0 +1,18 @@
+netcal.metrics.confidence.MMCE
+==============================
+
+.. currentmodule:: netcal.metrics.confidence
+
+.. autoclass:: MMCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MMCE.__init__
+      ~MMCE.measure
+   
+   

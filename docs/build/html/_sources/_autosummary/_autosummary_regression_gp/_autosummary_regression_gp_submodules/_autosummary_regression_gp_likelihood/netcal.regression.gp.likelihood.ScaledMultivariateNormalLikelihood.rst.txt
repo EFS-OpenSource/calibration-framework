@@ -1,0 +1,40 @@
+netcal.regression.gp.likelihood.ScaledMultivariateNormalLikelihood
+==================================================================
+
+.. currentmodule:: netcal.regression.gp.likelihood
+
+.. autoclass:: ScaledMultivariateNormalLikelihood
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ScaledMultivariateNormalLikelihood.__init__
+      ~ScaledMultivariateNormalLikelihood.cdf
+      ~ScaledMultivariateNormalLikelihood.conjugate_update
+      ~ScaledMultivariateNormalLikelihood.entropy
+      ~ScaledMultivariateNormalLikelihood.enumerate_support
+      ~ScaledMultivariateNormalLikelihood.expand
+      ~ScaledMultivariateNormalLikelihood.expand_by
+      ~ScaledMultivariateNormalLikelihood.has_rsample_
+      ~ScaledMultivariateNormalLikelihood.icdf
+      ~ScaledMultivariateNormalLikelihood.independent
+      ~ScaledMultivariateNormalLikelihood.infer_shapes
+      ~ScaledMultivariateNormalLikelihood.log_prob
+      ~ScaledMultivariateNormalLikelihood.mask
+      ~ScaledMultivariateNormalLikelihood.perplexity
+      ~ScaledMultivariateNormalLikelihood.reconstruct
+      ~ScaledMultivariateNormalLikelihood.rescale
+      ~ScaledMultivariateNormalLikelihood.reshape
+      ~ScaledMultivariateNormalLikelihood.rsample
+      ~ScaledMultivariateNormalLikelihood.sample
+      ~ScaledMultivariateNormalLikelihood.sample_n
+      ~ScaledMultivariateNormalLikelihood.score_parts
+      ~ScaledMultivariateNormalLikelihood.set_default_validate_args
+      ~ScaledMultivariateNormalLikelihood.shape
+      ~ScaledMultivariateNormalLikelihood.to_event
+   
+   

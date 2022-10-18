@@ -1,0 +1,18 @@
+netcal.metrics.NLL
+==================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: NLL
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NLL.__init__
+      ~NLL.measure
+   
+   

@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -63,7 +63,7 @@ def measure(key: str, ground_truth: List, data: List, uncertainty: str, bins: in
 
 
 def measure_miscalibration(bins: int, methods: List, uncertainty: str,
-                           map_data: List = None, mcmc_data: List = None, vi_data: List = None):
+                           mle_data: List = None, mcmc_data: List = None, vi_data: List = None):
     """
     Measure miscalibration and write to stdout.
 
@@ -79,11 +79,11 @@ def measure_miscalibration(bins: int, methods: List, uncertainty: str,
         Type how to handle uncertainty quantification. Must be either 'mean' or 'flatten'.
     """
 
-    map_gt = [x['test_gt'] for x in map_data]
+    mle_gt = [x['test_gt'] for x in mle_data]
     mcmc_gt = [x['test_gt'] for x in mcmc_data]
     vi_gt = [x['test_gt'] for x in vi_data]
 
-    map_kwargs = {'data': map_data, 'ground_truth': map_gt, 'uncertainty': uncertainty, 'bins': bins}
+    mle_kwargs = {'data': mle_data, 'ground_truth': mle_gt, 'uncertainty': uncertainty, 'bins': bins}
     mcmc_kwargs = {'data': mcmc_data, 'ground_truth': mcmc_gt, 'uncertainty': uncertainty, 'bins': bins}
     vi_kwargs = {'data': vi_data, 'ground_truth': vi_gt, 'uncertainty': uncertainty, 'bins': bins}
 
@@ -92,12 +92,12 @@ def measure_miscalibration(bins: int, methods: List, uncertainty: str,
     column_baseline = []
     columns_methods = [[] for _ in methods]
 
-    if map_data is not None:
+    if mle_data is not None:
         types.append('MLE')
-        column_baseline.append(measure('test_scores', **map_kwargs))
+        column_baseline.append(measure('test_scores', **mle_kwargs))
 
         for i, method in enumerate(methods):
-            columns_methods[i].append(measure(method, **map_kwargs))
+            columns_methods[i].append(measure(method, **mle_kwargs))
 
     if mcmc_data is not None:
         types.append('MCMC')
@@ -130,16 +130,16 @@ if __name__ == '__main__':
     # network = "wideresnet-16-4-cifar-100"
     network = "densenet-bc-100-cifar-100"
 
-    base_dir_map = "examination-map/results/"
+    base_dir_mle = "examination-mle/results/"
     base_dir_mcmc = "examination-mcmc/results/"
     base_dir_vi = "examination-variational/results/"
 
-    map_data = read(base_dir_map, network)
+    mle_data = read(base_dir_mle, network)
     mcmc_data = read(base_dir_mcmc, network)
     vi_data = read(base_dir_vi, network)
 
     # mcmc_data = None
     # vi_data = None
 
-    df = measure_miscalibration(bins, methods, uncertainty, map_data, mcmc_data, vi_data)
+    df = measure_miscalibration(bins, methods, uncertainty, mle_data, mcmc_data, vi_data)
     df.to_excel("evaluation-%s-%s.xlsx" % (uncertainty, network))

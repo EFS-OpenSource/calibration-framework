@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -84,6 +84,7 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
     This is optimized by an Adam optimizer with a learning rate of 1e-3 and a batch size of 256 for
     1000 iterations (default).
 
+    Capturing epistemic uncertainty of the calibration method is also able with this implementation [3]_.
 
     Parameters
     ----------
@@ -116,7 +117,7 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
     ----------
     .. [1] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
 
     .. [2] Libby, David L., and Melvin R. Novick:
        "Multivariate generalized beta distributions with applications to utility assessment"
@@ -197,12 +198,17 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
 
         # clip seperately due to numerical stability
         data = np.clip(X, self.epsilon, 1. - self.epsilon) / np.clip((1. - X), self.epsilon, 1. - self.epsilon)
-        return torch.tensor(data)
+        return torch.from_numpy(data)
 
-    def prior(self):
+    def prior(self, dtype: torch.dtype):
         """
         Prior definition of the weights used for log regression. This function has to set the
         variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
+
+        Parameters
+        ----------
+        dtype: torch.dtype
+            Data type of the input data so that the priors are initialized with the same precision.
         """
 
         # number of weights
@@ -210,8 +216,8 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
         self._sites = OrderedDict()
 
         # initial values for mean, scale and prior dist
-        init_mean = torch.ones(num_weights).uniform_(1. + self.epsilon, 2.)
-        init_scale = torch.ones(num_weights)
+        init_mean = torch.ones(num_weights, dtype=dtype).uniform_(1. + self.epsilon, 2.)
+        init_scale = torch.ones(num_weights, dtype=dtype)
         prior = dist.Normal(init_mean, 10 * init_scale, validate_args=True)
 
         # we have constraints on the weights to be positive
@@ -242,10 +248,10 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
             'values': None,
             'constraint': constraints.real,
             'init': {
-                'mean': torch.ones(1) * self.epsilon,
-                'scale': torch.ones(1)
+                'mean': torch.ones(1, dtype=dtype) * self.epsilon,
+                'scale': torch.ones(1, dtype=dtype)
             },
-            'prior': dist.Normal(torch.zeros(1), 10 * torch.ones(1), validate_args=True),
+            'prior': dist.Normal(torch.zeros(1, dtype=dtype), 10 * torch.ones(1, dtype=dtype), validate_args=True),
         }
 
     def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
@@ -283,7 +289,13 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
 
             # on MCMC sampling, extreme values might occur and can cause an 'inf'
             # this will result in invalid prob values - catch infs and set to log of max value
-            weights[torch.isinf(weights)] = torch.log(torch.tensor(torch.finfo(weights.dtype).max))
+            weights[torch.isinf(weights)] = torch.log(
+                torch.tensor(
+                    torch.finfo(weights.dtype).max,
+                    dtype=weights.dtype,
+                    device=weights.device
+                )
+            )
 
         # the first dimension of the given input data is the "independent" sample dimension
         with pyro.plate("data", X.shape[0]):
@@ -315,8 +327,8 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
             log_sum_lower_neg = torch.log(1. + torch.sum(lambda_neg * X, dim=1))
             lower_part = (sum_alpha_neg * log_sum_lower_neg) - (sum_alpha_pos * log_sum_lower_pos)
 
-            # combine both parts and bias to logits
-            logit = torch.squeeze(bias + upper_part + lower_part)
+            # combine both parts and bias to logitsŝ
+            logit = bias + upper_part + lower_part
 
             # if MLE, (slow) sampling is not necessary. However, this is needed for 'variational' and 'mcmc'
             if self.method in ['variational', 'mcmc']:

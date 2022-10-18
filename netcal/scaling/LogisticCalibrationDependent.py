@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -58,8 +58,8 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
 
     .. math::
 
-       \\ell r(s) = \\log \\frac{\\Sigma^-}{\\Sigma^+}
-       + \\frac{1}{2} (s_-^T \\Sigma_-^{-1}s^-) - (s_+^T \\Sigma_+^{-1}s^+),
+       \\ell r(s) = \\log \\frac{|\\Sigma^-|}{|\\Sigma^+|}
+       + \\frac{1}{2} \\Big[ (s_-^T \\Sigma_-^{-1}s^-) - (s_+^T \\Sigma_+^{-1}s^+) \\Big],
 
     with :math:`s^+ = s - \\mu^+` and :math:`s^- = s - \\mu^-`.
 
@@ -70,6 +70,8 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
        \\Sigma = V^T V
 
     instead of estimating :math:`\\Sigma` directly. This guarantees both requirements.
+
+    Capturing epistemic uncertainty of the calibration method is also able with this implementation [3]_.
 
     Parameters
     ----------
@@ -102,12 +104,12 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
     ----------
     .. [1] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
 
     .. [2] Kull, Meelis, Telmo Silva Filho, and Peter Flach:
        "Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers"
        Artificial Intelligence and Statistics, PMLR 54:623-631, 2017
-       `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`_
+       `Get source online <http://proceedings.mlr.press/v54/kull17a/kull17a.pdf>`__
 
     .. [3] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
        "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
@@ -194,20 +196,25 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
 
         # on detection mode, convert confidence to sigmoid and append the remaining features
         data_input = np.concatenate((self._inverse_sigmoid(X[:, 0]).reshape(-1, 1), X[:, 1:]), axis=1)
-        return torch.Tensor(data_input)
+        return torch.from_numpy(data_input)
 
-    def prior(self):
+    def prior(self, dtype: torch.dtype):
         """
         Prior definition of the weights used for log regression. This function has to set the
         variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
+
+        Parameters
+        ----------
+        dtype: torch.dtype
+            Data type of the input data so that the priors are initialized with the same precision.
         """
 
         # number of weights
         num_weights = 2 * (self.num_features ** 2 + self.num_features)
 
         # prior estimates for decomposed inverse covariance matrices and mean vectors
-        decomposed_inv_cov_prior = torch.diag(torch.ones(self.num_features))
-        mean_mean_prior = torch.ones(self.num_features)
+        decomposed_inv_cov_prior = torch.diag(torch.ones(self.num_features, dtype=dtype))
+        mean_mean_prior = torch.ones(self.num_features, dtype=dtype)
 
         # initial stddev for all weights is always the same
         weights_mean_prior = torch.cat((decomposed_inv_cov_prior.flatten(),
@@ -223,9 +230,9 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
             'constraint': constraints.real,
             'init': {
                 'mean': weights_mean_prior,
-                'scale': torch.ones(num_weights)
+                'scale': torch.ones(num_weights, dtype=dtype)
             },
-            'prior': dist.Normal(weights_mean_prior, 10 * torch.ones(num_weights), validate_args=True),
+            'prior': dist.Normal(weights_mean_prior, 10 * torch.ones(num_weights, dtype=dtype), validate_args=True),
         }
 
         # set properties for "bias"
@@ -233,10 +240,10 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
             'values': None,
             'constraint': constraints.real,
             'init': {
-                'mean': torch.zeros(1),
-                'scale': torch.ones(1)
+                'mean': torch.zeros(1, dtype=dtype),
+                'scale': torch.ones(1, dtype=dtype)
             },
-            'prior': dist.Normal(torch.zeros(1), 10 * torch.ones(1), validate_args=True),
+            'prior': dist.Normal(torch.zeros(1, dtype=dtype), 10 * torch.ones(1, dtype=dtype), validate_args=True),
         }
 
     def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
@@ -279,28 +286,27 @@ class LogisticCalibrationDependent(AbstractLogisticRegression):
             # get logits by calculating gaussian ratio between both distributions
             # calculate covariance matrices
             # COV^(-1) = V^(-1) * V^(-1,T)
-            inverse_cov_pos = torch.matmul(decomposed_inv_cov_pos, decomposed_inv_cov_pos.transpose(1, 0))
-            inverse_cov_neg = torch.matmul(decomposed_inv_cov_neg, decomposed_inv_cov_neg.transpose(1, 0))
+            inverse_cov_pos = torch.matmul(decomposed_inv_cov_pos, decomposed_inv_cov_pos.transpose(1, 0))  # (d, d)
+            inverse_cov_neg = torch.matmul(decomposed_inv_cov_neg, decomposed_inv_cov_neg.transpose(1, 0))  # (d, d)
 
             # calculate data without means
             difference_pos = X - mean_pos
             difference_neg = X - mean_neg
 
             # add a new dimensions. This is necessary for torch to distribute dot product
-            difference_pos = torch.unsqueeze(difference_pos, 2)
-            difference_neg = torch.unsqueeze(difference_neg, 2)
+            difference_pos = torch.unsqueeze(difference_pos, 2)  # (n, d, 1)
+            difference_neg = torch.unsqueeze(difference_neg, 2)  # (n, d, 1)
 
-            logit = 0.5 * (torch.matmul(difference_neg.transpose(2, 1),
-                                        torch.matmul(inverse_cov_neg, difference_neg)) -
-                           torch.matmul(difference_pos.transpose(2, 1),
-                                        torch.matmul(inverse_cov_pos, difference_pos))
-                           )
-
-            # remove unnecessary dimensions
-            logit = torch.squeeze(logit)
+            logit = 0.5 * (torch.matmul(
+                difference_neg.transpose(2, 1),
+                torch.matmul(inverse_cov_neg, difference_neg)
+            ) - torch.matmul(
+                difference_pos.transpose(2, 1),
+                torch.matmul(inverse_cov_pos, difference_pos)
+            ))  # (n, 1, 1)
 
             # add bias ratio to logit
-            logit = bias + logit
+            logit = bias + logit[:, 0, 0]
 
             # if MLE, (slow) sampling is not necessary. However, this is needed for 'variational' and 'mcmc'
             if self.method in ['variational', 'mcmc']:

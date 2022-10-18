@@ -1,0 +1,23 @@
+netcal.regression.gp.kernel
+===========================
+
+.. automodule:: netcal.regression.gp.kernel
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

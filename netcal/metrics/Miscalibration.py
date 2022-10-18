@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -9,19 +9,17 @@ from typing import Union, Iterable, Tuple, List
 
 import numpy as np
 from scipy.stats import binned_statistic_dd
-from netcal import accepts, hpdi
+from netcal import accepts, hpdi, squeeze_generic
 
 
 class _Miscalibration(object):
     """
-    Generic base class to calculate Average/Expected/Maximum Calibration Error.
-    ACE [1]_, ECE [2]_ and MCE [2]_ are used for measuring miscalibration on classification.
-    The according variants D-ACE/D-ECE/D-MCE are used for object detection [3]_.
+    Generic base class for binning-based miscalibration metrics.
 
     Parameters
     ----------
     bins : int or iterable, default: 10
-        Number of bins used by the Histogram Binning.
+        Number of bins used for the internal binning.
         On detection mode: if int, use same amount of bins for each dimension (nx1 = nx2 = ... = bins).
         If iterable, use different amount of bins for each dimension (nx1, nx2, ... = bins).
     equal_intervals : bool, optional, default: True
@@ -40,24 +38,29 @@ class _Miscalibration(object):
     .. [1] Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht:
        "Obtaining well calibrated probabilities using bayesian binning."
        Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.
-       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`_
+       `Get source online <https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9667/9958>`__
 
     .. [2] Neumann, Lukas, Andrew Zisserman, and Andrea Vedaldi:
        "Relaxed Softmax: Efficient Confidence Auto-Calibration for Safe Pedestrian Detection."
        Conference on Neural Information Processing Systems (NIPS) Workshop MLITS, 2018.
-       `Get source online <https://openreview.net/pdf?id=S1lG7aTnqQ>`_
+       `Get source online <https://openreview.net/pdf?id=S1lG7aTnqQ>`__
 
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
-       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`_
+       `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`__
     """
 
     epsilon = np.finfo(np.float).eps
 
     @accepts((int, tuple, list), bool, bool, int)
-    def __init__(self, bins: Union[int, Iterable[int]] = 10, equal_intervals: bool = True,
-                 detection: bool = False, sample_threshold: int = 1):
+    def __init__(
+            self,
+            bins: Union[int, Iterable[int]] = 10,
+            equal_intervals: bool = True,
+            detection: bool = False,
+            sample_threshold: int = 1
+    ):
         """ Constructor. For parameter doc see class doc. """
 
         self.bins = bins
@@ -65,18 +68,36 @@ class _Miscalibration(object):
         self.sample_threshold = sample_threshold
         self.equal_intervals = equal_intervals
 
-    @classmethod
-    def squeeze_generic(cls, a: np.ndarray, axes_to_keep: Union[Iterable[int], int]) -> np.ndarray:
-        """ Squeeze input array a but keep axes defined by parameter
-        'axes_to_keep' even if the dimension is of size 1. """
+    def frequency(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            batched: bool = False,
+            uncertainty: str = 'mean'
+    ) -> Tuple[List[np.ndarray], List[np.ndarray], List[np.ndarray], List[np.ndarray], List, int]:
+        """ Measure the frequency of each point by binning. """
 
-        # if type is int, convert to iterable
-        if type(axes_to_keep) == int:
-            axes_to_keep = (axes_to_keep,)
+        # prepare data - first, use "mean" to obtain the mean prediction of the posterior predictive
+        # use flattened confidence estimates in order to get a better evaluation of the accuracy within each bin
+        X_mean, _, sample_uncertainty, bin_bounds, num_features = self.prepare(X, y, batched, uncertainty=uncertainty)
 
-        # iterate over all axes in a and check if dimension is in 'axes_to_keep' or of size 1
-        out_s = [s for i, s in enumerate(a.shape) if i in axes_to_keep or s != 1]
-        return a.reshape(out_s)
+        # convert mean variance to mean std deviation
+        uncertainty = [np.sqrt(var) for var in sample_uncertainty]
+        sample_frequency, num_samples = [], []
+
+        # for batch in zip(X_mean, X_flatten, matched_flatten, bin_bounds):
+        for batch_X_mean, bounds in zip(X_mean, bin_bounds):
+
+            # perform binning
+            # acc_hist, _, _ = self.binning(bounds, batch_X_flatten, batch_matched_flatten)
+            (freq_hist, ), num_samples_hist, _, idx_mean = self.binning(bounds, batch_X_mean, batch_X_mean[:, 0], nan=np.nan)
+
+            # use accuracy histogram from flattened estimates
+            # and assign to "mean" values
+            sample_frequency.append(freq_hist[idx_mean])
+            num_samples.append(num_samples_hist)
+
+        return X_mean, sample_frequency, uncertainty, num_samples, bin_bounds, num_features
 
     def reduce(self, histogram: np.ndarray, distribution: np.ndarray, axis: int, reduce_result: Tuple = None):
         """
@@ -106,10 +127,11 @@ class _Miscalibration(object):
 
             # get the relative amount of samples according to a certain bin combination over all confidence bins
             # leave out empty bin combinations
-            rel_samples_hist_reduced_conf = np.divide(distribution,
-                                                      extended_hist,
-                                                      out=np.zeros_like(distribution),
-                                                      where=extended_hist != 0)
+            rel_samples_hist_reduced_conf = np.divide(
+                distribution, extended_hist,
+                out=np.zeros_like(distribution),
+                where=extended_hist != 0
+            )
         else:
             # reuse reduced data distribution from a previous call
             rel_samples_hist_reduced_conf = reduce_result[1]
@@ -119,8 +141,13 @@ class _Miscalibration(object):
 
         return weighted_mean, rel_samples_hist_reduced_conf
 
-    def prepare(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray],
-                batched: bool = False, uncertainty: str = None) -> Tuple[List[np.ndarray], List[np.ndarray], List[np.ndarray], List, int]:
+    def prepare(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            batched: bool = False,
+            uncertainty: str = None
+    ) -> Tuple[List[np.ndarray], List[np.ndarray], List[np.ndarray], List, int]:
         """ Check input data. For detailed documentation of the input parameters, check "_measure" method. """
 
         # batched: interpret X and y as multiple predictions
@@ -225,8 +252,7 @@ class _Miscalibration(object):
 
             binning_schemes.append(hist)
 
-        binning_schemes.append(num_samples_hist)
-        _, _, idx = binning_result
+        _, edges, idx = binning_result
 
         # first step: expand bin numbers
         # correct bin number afterwards as this variable has offset of 1
@@ -235,16 +261,17 @@ class _Miscalibration(object):
 
         # convert to tuple as this can be used for array indexing
         idx = tuple([dim for dim in idx])
-        binning_schemes.append(idx)
 
-        return tuple(binning_schemes)
+        return tuple(binning_schemes), num_samples_hist, edges, idx
 
-    def process(self,
-                metric: str,
-                acc_hist: np.ndarray,
-                conf_hist: np.ndarray,
-                variance_hist: np.ndarray,
-                num_samples_hist: np.ndarray) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def process(
+            self,
+            metric: str,
+            acc_hist: np.ndarray,
+            conf_hist: np.ndarray,
+            variance_hist: np.ndarray,
+            num_samples_hist: np.ndarray
+    ) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Determine miscalibration based on passed histograms.
 
@@ -291,8 +318,11 @@ class _Miscalibration(object):
             non_empty_bins = np.count_nonzero(num_samples_hist, axis=0)
 
             # divide by leaving out empty bins (those are initialized to 0)
-            bin_map = np.divide(reduced_deviation_map, non_empty_bins,
-                                out=np.zeros_like(reduced_deviation_map), where=non_empty_bins != 0)
+            bin_map = np.divide(
+                reduced_deviation_map, non_empty_bins,
+                out=np.zeros_like(reduced_deviation_map),
+                where=non_empty_bins != 0
+            )
 
             miscalibration = np.sum(bin_map / np.count_nonzero(np.sum(num_samples_hist, axis=0)))
 
@@ -316,7 +346,13 @@ class _Miscalibration(object):
 
         return miscalibration, bin_map, acc_hist, conf_hist, variance_hist, samples_map
     
-    def _prepare_bins(self, X: List[np.ndarray], num_features: int) -> List[List[np.ndarray]]:
+    def _prepare_bins(
+            self,
+            X: List[np.ndarray],
+            num_features: int,
+            min_: Union[float, List[float]] = 0.0,
+            max_: Union[float, List[float]] = 1.0
+    ) -> List[List[np.ndarray]]:
         """ Prepare number of bins for binning scheme. """
 
         # check bins parameter
@@ -333,8 +369,16 @@ class _Miscalibration(object):
         else:
             raise AttributeError("Unknown type of parameter \'bins\'.")
 
+        # distribute min_ to all dims
+        if isinstance(min_, (int, float, np.floating, np.integer)):
+            min_ = [min_, ] * num_features
+
+        # distribute min_ to all dims
+        if isinstance(max_, (int, float, np.floating, np.integer)):
+            max_ = [max_, ] * num_features
+
         # create an own set of bin boundaries for each batch in X
-        bin_bounds = [[np.linspace(0.0, 1.0, bins + 1) for bins in bins] for _ in X]
+        bin_bounds = [[np.linspace(min_[dim], max_[dim], b + 1) for dim, b in enumerate(bins)] for _ in X]
 
         # on equal_intervals=True, simply use linspace
         # if the goal is to equalize the amount of samples in each bin, use np.quantile
@@ -349,12 +393,34 @@ class _Miscalibration(object):
                     bin_bounds[i][dim] = quantile
 
         return bin_bounds
+
+    def _prepare_bins_regression(self, var: np.ndarray, n_dims: int, range_: Union[List[Tuple[float, float]], None]):
+        """ Prepare the bin boundaries for regression tasks where explicit bin boundaries can be passed through. """
+
+        # extract range parameter if given
+        if range_ is not None:
+            assert len(range_) == n_dims, "Parameter \'range_\' must have the same length as number of dimensions."
+            assert all([isinstance(x, (tuple, list)) for x in range_]), "Binning range_ must be passed as tuple/list of length 2."
+
+            min_ = [x[0] for x in range_]
+            max_ = [x[1] for x in range_]
+
+        # if not explicitly given, use min_ and max_ scores in variance
+        else:
+            min_ = np.min(var, axis=0)  # (d,)
+            max_ = np.max(var, axis=0)  # (d,)
+
+        # use the _prepare_bins function to initialize the binning scheme
+        # the function is designed to handle a batch of data - thus, we only need to access the first element
+        bin_bounds = self._prepare_bins([var], num_features=n_dims, min_=min_, max_=max_)[0]
+
+        return bin_bounds
     
     def _prepare_input(self, X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """ Prepare structure of input data (number of dimensions, etc.) """
 
         # remove unnecessary dims if given
-        y = self.squeeze_generic(y, axes_to_keep=0)
+        y = squeeze_generic(y, axes_to_keep=0)
 
         # after processing uncertainty, we expect batch_X to be only 2-D afterwards (but probably with more samples)
         # if we had no uncertainty, we expect that anyway
@@ -514,11 +580,17 @@ class _Miscalibration(object):
 
         return np.stack(ret, axis=1), np.var(X, axis=0)
 
-    def _measure(self, X: Union[Iterable[np.ndarray], np.ndarray], y: Union[Iterable[np.ndarray], np.ndarray],
-                 metric: str, batched: bool = False, uncertainty: str = None,
-                 return_map: bool = False,
-                 return_num_samples: bool = False,
-                 return_uncertainty_map: bool = False) -> Union[float, Tuple]:
+    def _measure(
+            self,
+            X: Union[Iterable[np.ndarray], np.ndarray],
+            y: Union[Iterable[np.ndarray], np.ndarray],
+            metric: str,
+            batched: bool = False,
+            uncertainty: str = None,
+            return_map: bool = False,
+            return_num_samples: bool = False,
+            return_uncertainty_map: bool = False
+    ) -> Union[float, Tuple]:
         """
         Measure calibration by given predictions with confidence and the according ground truth.
         Assume binary predictions with y=1.
@@ -585,10 +657,9 @@ class _Miscalibration(object):
         for batch_X, batch_matched, batch_uncertainty, bounds in zip(X, matched, sample_uncertainty, bin_bounds):
 
             # perform binning on input arrays and drop last outcome (idx bin indices are not needed here)
-            histograms = self.binning(bounds, batch_X, batch_matched, batch_X[:, 0], batch_uncertainty[:, 0])
-            histograms = histograms[:-1]
+            histograms, num_samples_hist, _, _ = self.binning(bounds, batch_X, batch_matched, batch_X[:, 0], batch_uncertainty[:, 0])
 
-            result = self.process(metric, *histograms)
+            result = self.process(metric, *histograms, num_samples_hist=num_samples_hist)
             results.append(result)
 
         # finally, average over all batches

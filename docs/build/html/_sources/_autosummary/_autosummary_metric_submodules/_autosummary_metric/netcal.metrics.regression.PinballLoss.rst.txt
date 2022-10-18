@@ -1,0 +1,18 @@
+netcal.metrics.regression.PinballLoss
+=====================================
+
+.. currentmodule:: netcal.metrics.regression
+
+.. autoclass:: PinballLoss
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PinballLoss.__init__
+      ~PinballLoss.measure
+   
+   

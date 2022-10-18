@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -13,7 +13,9 @@ from netcal import AbstractCalibration, dimensions, accepts
 
 class HistogramBinning(AbstractCalibration):
     """
-    Simple Histogram Binning calibration method [1]_. Each prediction is sorted into a bin
+    Simple Histogram Binning calibration method.
+    This method has been proposed by [1]_.
+    Each prediction is sorted into a bin
     and assigned its calibrated confidence estimate. This method normally works for binary
     classification. For multiclass classification, this method is applied into a 1-vs-all manner [2]_.
 
@@ -46,16 +48,16 @@ class HistogramBinning(AbstractCalibration):
     .. [1] Zadrozny, Bianca and Elkan, Charles:
        "Obtaining calibrated probability estimates from decision trees and naive bayesian classifiers."
        In ICML, pp. 609–616, 2001.
-       `Get source online <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.3039&rep=rep1&type=pdf>`_
+       `Get source online <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.3039&rep=rep1&type=pdf>`__
 
     .. [2] Zadrozny, Bianca and Elkan, Charles:
        "Transforming classifier scores into accurate multiclass probability estimates."
        In KDD, pp. 694–699, 2002.
-       `Get source online <https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf>`_
+       `Get source online <https://www.researchgate.net/profile/Charles_Elkan/publication/2571315_Transforming_Classifier_Scores_into_Accurate_Multiclass_Probability_Estimates/links/0fcfd509ae852a8bb9000000.pdf>`__
 
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
     """
 
     @accepts((int, tuple, list), bool, bool, bool)
@@ -93,6 +95,7 @@ class HistogramBinning(AbstractCalibration):
         self._multiclass_instances = []
 
         # holds the multi-dimensional bin map with calibrated confidence estimates
+        self._bins_internal = None
         self._bin_map = None
         self._bin_bounds = None
 
@@ -104,6 +107,7 @@ class HistogramBinning(AbstractCalibration):
         """
 
         super().clear()
+        self._bins_internal = None
         self._bin_map = None
         self._bin_bounds = None
 
@@ -181,12 +185,14 @@ class HistogramBinning(AbstractCalibration):
             # check bins parameter
             # is int? distribute to all dimensions
             if isinstance(self.bins, int):
-                self.bins = [self.bins, ] * num_features
+                self._bins_internal = [self.bins, ] * num_features
 
             # is iterable? check for compatibility with all properties found
             elif isinstance(self.bins, (tuple, list)):
                 if len(self.bins) != num_features:
                     raise AttributeError("Length of \'bins\' parameter must match number of features.")
+                else:
+                    self._bins_internal = self.bins
             else:
                 raise AttributeError("Unknown type of parameter \'bins\'.")
         else:
@@ -194,11 +200,11 @@ class HistogramBinning(AbstractCalibration):
             if not isinstance(self.bins, int):
                 raise AttributeError("Parameter \'bins\' must be int for classification mode.")
 
-            self.bins = [self.bins]
+            self._bins_internal = [self.bins]
 
         # ---------------------------------------
         # get bin bounds
-        self._bin_bounds = [np.linspace(0.0, 1.0, bin + 1) for bin in self.bins]
+        self._bin_bounds = [np.linspace(0.0, 1.0, bin + 1) for bin in self._bins_internal]
 
         # on equal_intervals=True, simply use linspace
         # if the goal is to equalize the amount of samples in each bin, use np.quantile
@@ -296,7 +302,7 @@ class HistogramBinning(AbstractCalibration):
 
                     # if an index is out of bounds (e.g. 0), sort into first bin
                     indices[indices == -1] = 0
-                    indices[indices == self.bins[i]] = self.bins[i] - 1
+                    indices[indices == self._bins_internal[i]] = self._bins_internal[i] - 1
                     bin_indices.append(indices)
             else:
                 # TODO: implement equal intervals
@@ -317,7 +323,7 @@ class HistogramBinning(AbstractCalibration):
             Integer with degree of freedom.
         """
 
-        return int(np.prod(self.bins))
+        return int(np.prod(self._bins_internal))
 
     @property
     def ndim(self):

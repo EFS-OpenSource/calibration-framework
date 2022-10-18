@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.regression.gp.kernel &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../../index.html" />
+    <link rel="up" title="netcal.regression.gp" href="../netcal.regression.gp.html" />
+    <link rel="next" title="netcal.regression.gp.kernel.GaussianRBFKernel" href="_autosummary_regression_gp_kernel/netcal.regression.gp.kernel.GaussianRBFKernel.html" />
+    <link rel="prev" title="netcal.regression.gp.GPCauchy" href="../_autosummary_regression_gp/netcal.regression.gp.GPCauchy.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.regression.gp.kernel</a><ul>
+<li><a class="reference internal" href="#kernels-for-gp">Kernels for GP</a></li>
+<li><a class="reference internal" href="#available-classes">Available classes</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="../_autosummary_regression_gp/netcal.regression.gp.GPCauchy.html" title="netcal.regression.gp.GPCauchy" accesskey="P">previous </a></li>
+              <li><a href="_autosummary_regression_gp_kernel/netcal.regression.gp.kernel.GaussianRBFKernel.html" title="netcal.regression.gp.kernel.GaussianRBFKernel" accesskey="N">next </a></li>
+              <li><a href="../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../netcal.regression.html" >netcal.regression</a></li>
+              <li><a href="../netcal.regression.gp.html" accesskey="U">netcal.regression.gp</a></li>
+            
+            <li class="visible-xs"><a href="../../../_sources/_autosummary/_autosummary_regression_gp/_autosummary_regression_gp_submodules/netcal.regression.gp.kernel.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../../index.html">
+      <img class="logo" src="../../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../netcal.regression.html">netcal.regression</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../netcal.regression.html#probabilistic-regression-calibration-package">Probabilistic Regression Calibration Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../netcal.regression.html#available-classes">Available classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../netcal.regression.html#package-for-gaussian-process-optimization">Package for Gaussian process optimization</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../netcal.regression.gp.html">netcal.regression.gp</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../netcal.regression.gp.html#regression-gp-calibration-package">Regression GP Calibration Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../netcal.regression.gp.html#available-classes">Available classes</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../netcal.regression.gp.html#packages">Packages</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">netcal.regression.gp.kernel</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#kernels-for-gp">Kernels for GP</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#available-classes">Available classes</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="_autosummary_regression_gp_kernel/netcal.regression.gp.kernel.GaussianRBFKernel.html">netcal.regression.gp.kernel.GaussianRBFKernel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="netcal.regression.gp.likelihood.html">netcal.regression.gp.likelihood</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="module-netcal.regression.gp.kernel">
+<span id="netcal-regression-gp-kernel"></span><h1>netcal.regression.gp.kernel<a class="headerlink" href="#module-netcal.regression.gp.kernel" title="Permalink to this heading">¶</a></h1>
+<section id="kernels-for-gp">
+<h2>Kernels for GP<a class="headerlink" href="#kernels-for-gp" title="Permalink to this heading">¶</a></h2>
+<p>Package with all custom definitions for the kernel functions that are used by the Gaussian process (GP) framework.</p>
+</section>
+<section id="available-classes">
+<h2>Available classes<a class="headerlink" href="#available-classes" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_regression_gp_kernel/netcal.regression.gp.kernel.GaussianRBFKernel.html#netcal.regression.gp.kernel.GaussianRBFKernel" title="netcal.regression.gp.kernel.GaussianRBFKernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussianRBFKernel</span></code></a>(*args, cov, **kwargs)</p></td>
+<td><p>Computes the Gaussian RBF kernel using input points defined as Gaussians.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../_autosummary_regression_gp/netcal.regression.gp.GPCauchy.html" title="netcal.regression.gp.GPCauchy" >previous</a></li>
+        <li><a href="_autosummary_regression_gp_kernel/netcal.regression.gp.kernel.GaussianRBFKernel.html" title="netcal.regression.gp.kernel.GaussianRBFKernel" >next</a></li>
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../netcal.regression.html" >netcal.regression</a></li>
+        <li><a href="../netcal.regression.gp.html" >netcal.regression.gp</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

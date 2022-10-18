@@ -1,0 +1,23 @@
+netcal.metrics.regression.PICP
+==============================
+
+.. currentmodule:: netcal.metrics.regression
+
+.. autoclass:: PICP
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PICP.__init__
+      ~PICP.binning
+      ~PICP.frequency
+      ~PICP.measure
+      ~PICP.prepare
+      ~PICP.process
+      ~PICP.reduce
+   
+   

@@ -1,0 +1,18 @@
+netcal.metrics.regression.NLL
+=============================
+
+.. currentmodule:: netcal.metrics.regression
+
+.. autoclass:: NLL
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NLL.__init__
+      ~NLL.measure
+   
+   

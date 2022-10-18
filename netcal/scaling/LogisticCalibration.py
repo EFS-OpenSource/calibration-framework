@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -69,6 +69,9 @@ class LogisticCalibration(AbstractLogisticRegression):
     with bias :math:`c \\in \\mathbb{R}`.
     We utilize standard optimization methods to determine the calibration mapping :math:`g(s)`.
 
+    Capturing epistemic uncertainty of the calibration method is also able with this implementation [4]_.
+
+
     Parameters
     ----------
     temperature_only : bool, default: False
@@ -108,16 +111,16 @@ class LogisticCalibration(AbstractLogisticRegression):
     .. [1] Platt, John:
        "Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods."
        Advances in large margin classifiers 10.3: 61-74, 1999
-       `Get source online <https://www.researchgate.net/profile/John_Platt/publication/2594015_Probabilistic_Outputs_for_Support_Vector_Machines_and_Comparisons_to_Regularized_Likelihood_Methods/links/004635154cff5262d6000000.pdf>`_
+       `Get source online <https://www.researchgate.net/profile/John_Platt/publication/2594015_Probabilistic_Outputs_for_Support_Vector_Machines_and_Comparisons_to_Regularized_Likelihood_Methods/links/004635154cff5262d6000000.pdf>`__
 
     .. [2] Chuan Guo, Geoff Pleiss, Yu Sun and Kilian Q. Weinberger:
        "On Calibration of Modern Neural Networks."
        Proceedings of the 34th International Conference on Machine Learning-Volume 70. JMLR. org, 2017.
-       `Get source online <https://arxiv.org/abs/1706.04599>`_
+       `Get source online <https://arxiv.org/abs/1706.04599>`__
 
     .. [3] Fabian Küppers, Jan Kronenberger, Amirhossein Shantia and Anselm Haselhoff:
        "Multivariate Confidence Calibration for Object Detection."
-       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops.
+       The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
 
     .. [4] Fabian Küppers, Jan Kronenberger, Jonas Schneider  and Anselm Haselhoff:
        "Bayesian Confidence Calibration for Epistemic Uncertainty Modelling."
@@ -185,12 +188,17 @@ class LogisticCalibration(AbstractLogisticRegression):
         else:
             data_input = self._inverse_softmax(X)
 
-        return torch.Tensor(data_input)
+        return torch.from_numpy(data_input)
 
-    def prior(self):
+    def prior(self, dtype: torch.dtype):
         """
         Prior definition of the weights used for log regression. This function has to set the
         variables 'self.weight_prior_dist', 'self.weight_mean_init' and 'self.weight_stddev_init'.
+
+        Parameters
+        ----------
+        dtype: torch.dtype
+            Data type of the input data so that the priors are initialized with the same precision.
         """
 
         self._sites = OrderedDict()
@@ -201,10 +209,10 @@ class LogisticCalibration(AbstractLogisticRegression):
                 'values': None,
                 'constraint': constraints.real,
                 'init': {
-                    'mean': torch.ones(1),
-                    'scale': torch.ones(1)
+                    'mean': torch.ones(1, dtype=dtype),
+                    'scale': torch.ones(1, dtype=dtype)
                     },
-                'prior': dist.Normal(torch.ones(1), 10 * torch.ones(1), validate_args=True)
+                'prior': dist.Normal(torch.ones(1, dtype=dtype), 10 * torch.ones(1, dtype=dtype), validate_args=True)
             }
 
         else:
@@ -225,10 +233,10 @@ class LogisticCalibration(AbstractLogisticRegression):
                 'values': None,
                 'constraint': constraints.real,
                 'init': {
-                    'mean': torch.ones(num_weights),
-                    'scale': torch.ones(num_weights)
+                    'mean': torch.ones(num_weights, dtype=dtype),
+                    'scale': torch.ones(num_weights, dtype=dtype)
                 },
-                'prior': dist.Normal(torch.ones(num_weights), 10 * torch.ones(num_weights), validate_args=True),
+                'prior': dist.Normal(torch.ones(num_weights, dtype=dtype), 10 * torch.ones(num_weights, dtype=dtype), validate_args=True),
             }
 
             # set properties for "bias"
@@ -236,10 +244,10 @@ class LogisticCalibration(AbstractLogisticRegression):
                 'values': None,
                 'constraint': constraints.real,
                 'init': {
-                    'mean': torch.zeros(num_bias),
-                    'scale': torch.ones(num_bias)
+                    'mean': torch.zeros(num_bias, dtype=dtype),
+                    'scale': torch.ones(num_bias, dtype=dtype)
                 },
-                'prior': dist.Normal(torch.zeros(num_bias), 10 * torch.ones(num_bias), validate_args=True),
+                'prior': dist.Normal(torch.zeros(num_bias, dtype=dtype), 10 * torch.ones(num_bias, dtype=dtype), validate_args=True),
             }
 
     def model(self, X: torch.Tensor = None, y: torch.Tensor = None) -> torch.Tensor:
@@ -279,7 +287,7 @@ class LogisticCalibration(AbstractLogisticRegression):
             # platt scaling: one weight for each feature given
             else:
                 weights = torch.reshape(weights, (-1, 1))
-                def logit_op(x, w, b): return torch.squeeze(torch.matmul(x, w) + b)
+                def logit_op(x, w, b): return torch.squeeze(torch.matmul(x, w) + b, dim=1)
 
             # define as probabilistic output the sigmoid and a bernoulli distribution
             prob_op = torch.sigmoid

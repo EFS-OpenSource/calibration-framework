@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -12,7 +12,9 @@ from .NearIsotonicRegression import NearIsotonicRegression
 
 class ENIR(AbstractCalibration):
     """
-    Ensemble of Near Isotonic Regression (ENIR) models [1]_. These models allow - in contrast to standard
+    Ensemble of Near Isotonic Regression (ENIR) models.
+    This method has initially been proposed by [1]_.
+    These models allow - in contrast to standard
     :class:`IsotonicRegression` method - a violation of the monotony restrictions. Using the *modified
     Pool-Adjacent-Violators Algorithm (mPAVA)*, this method build multiple Near Isotonic Regression models
     and weights them by a certain score function.
@@ -74,7 +76,7 @@ class ENIR(AbstractCalibration):
     .. [1] Naeini, Mahdi Pakdaman, and Gregory F. Cooper:
        "Binary classifier calibration using an ensemble of near isotonic regression models."
        2016 IEEE 16th International Conference on Data Mining (ICDM). IEEE, 2016.
-       `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`_
+       `Get source online <https://ieeexplore.ieee.org/iel7/7837023/7837813/07837860.pdf>`__
     """
 
     @accepts(str, bool, bool, bool)

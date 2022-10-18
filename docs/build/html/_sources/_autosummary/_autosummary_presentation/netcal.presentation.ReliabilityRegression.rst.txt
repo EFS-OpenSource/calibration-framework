@@ -1,0 +1,18 @@
+netcal.presentation.ReliabilityRegression
+=========================================
+
+.. currentmodule:: netcal.presentation
+
+.. autoclass:: ReliabilityRegression
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ReliabilityRegression.__init__
+      ~ReliabilityRegression.plot
+   
+   

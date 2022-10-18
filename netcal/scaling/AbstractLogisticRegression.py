@@ -1,5 +1,5 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerkssysteme, Gaimersheim, Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
@@ -28,7 +28,7 @@ from pyro.infer import SVI, Trace_ELBO, Predictive, MCMC, NUTS
 from pyro.optim import Adam, SGD
 import pyro.distributions as dist
 
-from netcal import AbstractCalibration, dimensions, accepts, manual_seed
+from netcal import AbstractCalibration, dimensions, accepts, manual_seed, squeeze_generic
 
 
 class AbstractLogisticRegression(AbstractCalibration):
@@ -103,6 +103,16 @@ class AbstractLogisticRegression(AbstractCalibration):
     .. [2] Michael I Jordan, Zoubin Ghahramani, Tommi S Jaakkola, and Lawrence K Saul:
        "An introduction to variational methods for graphical models." Machine learning, 37(2): 183–233, 1999.
     """
+
+    dtypes = {
+        torch.float16: np.float16,
+        torch.float32: np.float32,
+        torch.float64: np.float64,
+        torch.int8: np.int8,
+        torch.int16: np.int16,
+        torch.int32: np.int32,
+        torch.int64: np.int64,
+    }
 
     @accepts(str, int, int, int, int, int, bool, bool, (str, bool))
     def __init__(self,
@@ -209,10 +219,15 @@ class AbstractLogisticRegression(AbstractCalibration):
         return torch.Tensor(X).to(self._device)
 
     @abc.abstractmethod
-    def prior(self):
+    def prior(self, dtype: torch.dtype):
         """
         Prior definition of the weights and intercept used for log regression. This function has to set the
         sites at least for "weights" and "bias".
+
+        Parameters
+        ----------
+        dtype: torch.dtype
+            Data type of the input data so that the priors are initialized with the same precision.
         """
 
         raise NotImplementedError()
@@ -353,6 +368,10 @@ class AbstractLogisticRegression(AbstractCalibration):
         # prepare data input for algorithm
         data = self.prepare(X).to(self._device)
 
+        # check if input data type is known
+        if data.dtype not in self.dtypes:
+            raise RuntimeError("Unsupported input data type: ", data.dtype)
+
         # if y is given as one-hot, convert back to categorical encoding
         if y.ndim == 2:
             y = np.argmax(y, axis=1)
@@ -361,7 +380,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         self.num_features = X.shape[1] if self.detection else 1
 
         # initialize priors
-        self.prior()
+        self.prior(dtype=data.dtype)
 
         # mark first dimension as independent
         for site in self._sites.values():
@@ -447,7 +466,7 @@ class AbstractLogisticRegression(AbstractCalibration):
                     warmup_steps=self.mcmc_warmup,
                     num_chains=self.mcmc_chains,
                     hook_fn=log)
-        mcmc.run(data.float(), y.float())
+        mcmc.run(data, y.to(dtype=data.dtype))
 
         # get samples from MCMC chains and store weights
         samples = mcmc.get_samples()
@@ -468,14 +487,10 @@ class AbstractLogisticRegression(AbstractCalibration):
             NumPy array with ground truth labels as 1-D vector (binary).
         """
 
-        # explicitly define datatype
-        data = data.float()
-        y = y.float()
-
         num_samples = data.shape[0]
 
         # create dataset
-        lr_dataset = torch.utils.data.TensorDataset(data, y)
+        lr_dataset = torch.utils.data.TensorDataset(data, y.to(dtype=data.dtype))
         data_loader = DataLoader(dataset=lr_dataset, batch_size=1024, pin_memory=False)
 
         # define optimizer
@@ -536,6 +551,8 @@ class AbstractLogisticRegression(AbstractCalibration):
             NumPy array with ground truth labels as 1-D vector (binary).
         """
 
+        dtype = data.dtype
+
         # optimization objective function
         # compute NLL loss - fix weights given of the model for the current iteration step
         def MLE(w, x, y):
@@ -544,16 +561,16 @@ class AbstractLogisticRegression(AbstractCalibration):
             start = 0
             for name, site in self._sites.items():
                 num_weights = len(site['init']['mean'])
-                data[name] = torch.from_numpy(w[start:start+num_weights]).to(self._device)
+                data[name] = torch.from_numpy(w[start:start+num_weights]).to(
+                    dtype=dtype,
+                    device=self._device,
+                )
                 start += num_weights
 
             return loss_op(torch.squeeze(pyro.condition(self.model, data=data)(x)), y).item()
 
-        # convert input data to double as well as the weights
-        # this might be necessary for the optimizer
-        data = data.double()
         initial_weights = np.concatenate(
-            [site['init']['mean'].cpu().numpy().astype(np.float64) for site in self._sites.values()]
+            [site['init']['mean'].cpu().numpy() for site in self._sites.values()]
         )
 
         # on detection or binary classification, use binary cross entropy loss and convert target vector to double
@@ -581,7 +598,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         start = 0
         for name, site in self._sites.items():
             num_weights = len(site['init']['mean'])
-            site['values'] = result.x[start:start + num_weights].astype(np.float32)
+            site['values'] = result.x[start:start + num_weights].astype(self.dtypes[dtype])
             start += num_weights
 
         # on some methods like Beta calibration, it is necessary to repeat the optimization
@@ -599,7 +616,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         start = 0
         for name, site in self._sites.items():
             num_weights = len(site['init']['mean'])
-            site['values'] = result.x[start:start + num_weights].astype(np.float32)
+            site['values'] = result.x[start:start + num_weights].astype(self.dtypes[dtype])
             start += num_weights
 
     def momentum(self, data: torch.Tensor, y: torch.Tensor, tensorboard: bool, log_dir: str):
@@ -624,7 +641,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         criterion = nn.BCEWithLogitsLoss(reduction='mean')
 
         # create dataset
-        lr_dataset = torch.utils.data.TensorDataset(data.double(), y.double())
+        lr_dataset = torch.utils.data.TensorDataset(data, y.to(dtype=data.dtype))
         data_loader = DataLoader(dataset=lr_dataset, batch_size=batch_size, pin_memory=False)
 
         # init model and optimizer
@@ -739,7 +756,12 @@ class AbstractLogisticRegression(AbstractCalibration):
         self.to(self._device)
 
         # convert input data and weights to torch (and possibly to CUDA)
-        data = self.prepare(X).float().to(self._device)
+        data = self.prepare(X).to(self._device)
+        dtype = data.dtype
+
+        # check if input data type is known
+        if dtype not in self.dtypes:
+            raise RuntimeError("Unsupported input data type: ", data.dtype)
 
         # if weights is 2-D matrix, we are in sampling mode
         # treat each row as a separate weights vector
@@ -756,17 +778,23 @@ class AbstractLogisticRegression(AbstractCalibration):
                     for name, site in self._sites.items():
                         weights[name] = torch.from_numpy(np.mean(self.mcmc_model[name])).to(self._device)
 
+                        if weights[name].dtype != dtype:
+                            raise RuntimeError("Training dtype %s does not match to passed data dtype %s." % (weights[name].dtype, dtype))
+
                 # on variational inference, use mean of the variational distribution for inference
                 elif self.vi_model is not None:
                     for name, site in self._sites.items():
                         weights[name] = torch.from_numpy(self.vi_model['params']['%s_mean' % name]).to(self._device)
+
+                        if weights[name].dtype != dtype:
+                            raise RuntimeError("Training dtype %s does not match to passed data dtype %s." % (weights[name].dtype, dtype))
 
                 else:
                     raise ValueError("Internal error: neither MCMC nor variational model given.")
 
                 # on MLE without uncertainty, only return the single model estimate
                 calibrated = process_model(weights).cpu().numpy()
-                calibrated = self.squeeze_generic(calibrated, axes_to_keep=0)
+                calibrated = squeeze_generic(calibrated, axes_to_keep=0)
             else:
 
                 parameter = []
@@ -791,7 +819,7 @@ class AbstractLogisticRegression(AbstractCalibration):
                     raise ValueError("Internal error: neither MCMC nor variational model given.")
 
                 # remove unnecessary dims that possibly occur on MCMC or VI
-                samples = {k: torch.reshape(v, (num_samples, -1)) for k, v in samples.items()}
+                samples = {k: torch.squeeze(v, dim=1) for k, v in samples.items()}
 
                 # iterate over all parameter sets
                 for i in range(num_samples):
@@ -812,7 +840,7 @@ class AbstractLogisticRegression(AbstractCalibration):
 
                 # stack all calibrated estimates along axis 0 and calculate stddev as well as mean
                 calibrated = torch.stack(calibrated, dim=0).cpu().numpy()
-                calibrated = self.squeeze_generic(calibrated, axes_to_keep=(0, 1))
+                calibrated = squeeze_generic(calibrated, axes_to_keep=(0, 1))
         else:
 
             # extract all weight values of sites and store into single dict
@@ -820,9 +848,12 @@ class AbstractLogisticRegression(AbstractCalibration):
             for name, site in self._sites.items():
                 weights[name] = torch.from_numpy(site['values']).to(self._device)
 
+                if weights[name].dtype != dtype:
+                    raise RuntimeError("Training dtype %s does not match to passed data dtype %s." % (weights[name].dtype, dtype))
+
             # on MLE without uncertainty, only return the single model estimate
             calibrated = process_model(weights).cpu().numpy()
-            calibrated = self.squeeze_generic(calibrated, axes_to_keep=0)
+            calibrated = squeeze_generic(calibrated, axes_to_keep=0)
 
         # delete torch data tensor
         del data

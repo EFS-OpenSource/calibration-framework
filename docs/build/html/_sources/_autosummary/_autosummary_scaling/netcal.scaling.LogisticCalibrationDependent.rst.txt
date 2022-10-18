@@ -28,7 +28,6 @@ netcal.scaling.LogisticCalibrationDependent
       ~LogisticCalibrationDependent.prior
       ~LogisticCalibrationDependent.save_model
       ~LogisticCalibrationDependent.set_params
-      ~LogisticCalibrationDependent.squeeze_generic
       ~LogisticCalibrationDependent.to
       ~LogisticCalibrationDependent.transform
       ~LogisticCalibrationDependent.variational

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.regression.VarianceScaling &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.regression" href="../netcal.regression.html" />
+    <link rel="next" title="netcal.regression.GPBeta" href="netcal.regression.GPBeta.html" />
+    <link rel="prev" title="netcal.regression.IsotonicRegression" href="netcal.regression.IsotonicRegression.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.regression.VarianceScaling</a><ul>
+<li><a class="reference internal" href="#netcal.regression.VarianceScaling"><code class="docutils literal notranslate"><span class="pre">VarianceScaling</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="netcal.regression.IsotonicRegression.html" title="netcal.regression.IsotonicRegression" accesskey="P">previous </a></li>
+              <li><a href="netcal.regression.GPBeta.html" title="netcal.regression.GPBeta" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.regression.html" accesskey="U">netcal.regression</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_regression/netcal.regression.VarianceScaling.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.regression.html#probabilistic-regression-calibration-package">Probabilistic Regression Calibration Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.regression.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.IsotonicRegression.html">netcal.regression.IsotonicRegression</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.regression.VarianceScaling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.regression.VarianceScaling"><code class="docutils literal notranslate"><span class="pre">VarianceScaling</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.GPBeta.html">netcal.regression.GPBeta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.GPNormal.html">netcal.regression.GPNormal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.regression.GPCauchy.html">netcal.regression.GPCauchy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../netcal.regression.html#package-for-gaussian-process-optimization">Package for Gaussian process optimization</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-regression-variancescaling">
+<h1>netcal.regression.VarianceScaling<a class="headerlink" href="#netcal-regression-variancescaling" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.regression.VarianceScaling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.regression.</span></span><span class="sig-name descname"><span class="pre">VarianceScaling</span></span><a class="headerlink" href="#netcal.regression.VarianceScaling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variance recalibration using maximum likelihood estimation for multiple independent dimensions (optionally).
+Rescales the input standard deviation by a scalar parameter to achieve <em>variance calibration</em> <a class="footnote-reference brackets" href="#id7" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, <a class="footnote-reference brackets" href="#id8" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+This method uses the negative log likelihood as the loss function to optimize the scalar scaling parameter.
+The distributional mean is fixed during optimization.</p>
+<p>On the one hand, this method accepts as input X either a tuple X = (mean, stddev) using two NumPy arrays of
+shape N with N number of samples that express the estimated mean and standard deviation of a probabilistic
+forecaster. On the other hand, a NumPy array of shape (R, N) is also accepted where R denotes the number of
+probabilistic forecasts. For example, if probabilistic outputs are obtained by Monte-Carlo sampling using N samples
+and R stochastic forward passes, it is possible to pass all outputs to the calibration function in a single
+NumPy array.</p>
+<p>This method is capable of multiple independent data dimensions where separate calibration models are fitted for
+each data dimension. This method outputs the recalibrated standard deviation (stddev) for each dimension D.</p>
+<p><strong>Mathematical background:</strong> In <a class="footnote-reference brackets" href="#id7" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id8" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, regression calibration is defined in terms of <em>variance calibration</em>.
+A probabilistic forecaster <span class="math notranslate nohighlight">\(h(X)\)</span> outputs for any input <span class="math notranslate nohighlight">\(X \in \mathbb{R}\)</span> a mean <span class="math notranslate nohighlight">\(\mu_Y(X)\)</span>
+and a variance <span class="math notranslate nohighlight">\(\sigma_Y^2(X)\)</span> for the target domain <span class="math notranslate nohighlight">\(Y \in \mathcal{Y} = \mathbb{R}\)</span>.
+Using this notation, <em>variance calibration</em> <a class="footnote-reference brackets" href="#id7" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, <a class="footnote-reference brackets" href="#id8" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{E}_{X,Y}\Big[(\mu_Y(X) - Y)^2 | \sigma^2_Y(X) = \sigma \Big] = \sigma^2,
+\quad \forall \sigma \in \mathbb{R}_{&gt;0},\]</div>
+<p>In other words, the estimated variance should match the observed variance given a certain variance level.
+For example, if a forecaster outputs 100 predictions with a variance of <span class="math notranslate nohighlight">\(\sigma^2=2\)</span>, we would also expect
+a variance (mean squared error) of 2.
+Further definitions for regression calibration are <em>quantile calibration</em> and <em>distribution calibration</em>.</p>
+<p>To achieve <em>variance calibration</em>, the Variance Scaling methods applies a temperature scaling on the
+input variance by a single scalar parameter <span class="math notranslate nohighlight">\(\theta\)</span>. The methods uses the negative log likelihood as the
+loss for the scalar. Since we are working with Gaussians, the loss is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathcal{L}(\theta) &amp;= -\sum^N_{n=1} \frac{1}{\sqrt{2\pi} \theta \cdot \sigma_Y(x_n)}
+\exp\Bigg( \frac{y_n - \mu_Y(x_n)}{2 (\theta \cdot \sigma_Y(x_n))^2} \Bigg) \\
+&amp;\propto -N \log(\theta) - \frac{1}{2\theta^2} \sum^N_{n=1} \sigma_Y^{-2}(x_n) ,
+\big(y_n - \mu_Y(x_n)\big)^2\end{split}\]</div>
+<p>which is to be minimized.
+Thus, we seek to get the minimum of the optimization objective which can be analytically determined in this case,
+setting its first derivative to 0 by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;\frac{\partial \mathcal{L}(\theta)}{\partial \theta} = 0\\
+\leftrightarrow \quad &amp; -N \theta^2 \sum^N_{n=1} \sigma_Y^{-2}(x_n) \big(y_n - \mu_Y(x_n) \big)^2 \\
+\leftrightarrow \quad &amp; \theta \pm \sqrt{\frac{1}{N} \sum^N_{n=1} \sigma_Y^{-2}(x_n) \big(y_n - \mu_Y(x_n) \big)^2} .\end{split}\]</div>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
+<p>Levi, Dan, et al.:
+“Evaluating and calibrating uncertainty prediction in regression tasks.”
+arXiv preprint arXiv:1905.11659 (2019).
+<a class="reference external" href="https://arxiv.org/pdf/1905.11659.pdf">Get source online</a></p>
+</aside>
+<aside class="footnote brackets" id="id8" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id6">3</a>)</span>
+<p>Laves, Max-Heinrich, et al.:
+“Well-calibrated regression uncertainty in medical imaging with deep learning.”
+Medical Imaging with Deep Learning. PMLR, 2020.
+<a class="reference external" href="http://proceedings.mlr.press/v121/laves20a/laves20a.pdf">Get source online</a></p>
+</aside>
+</aside>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>()</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
+<td><p>Clear model parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y[, tensorboard])</p></td>
+<td><p>Fit a variance scaling calibration method to the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_model</span></code>(filename)</p></td>
+<td><p>Load model from saved torch dump.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_model</span></code>(filename)</p></td>
+<td><p>Save model instance as with torch's save function as this is safer for torch tensors.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</p></td>
+<td><p>Transform uncalibrated distributional estimates (mean and stddev or stochastic samples) to calibrated ones by applying variance recalibration.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="netcal.regression.IsotonicRegression.html" title="netcal.regression.IsotonicRegression" >previous</a></li>
+        <li><a href="netcal.regression.GPBeta.html" title="netcal.regression.GPBeta" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.regression.html" >netcal.regression</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

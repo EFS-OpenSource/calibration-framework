@@ -1,0 +1,95 @@
+netcal.regression.GPBeta
+========================
+
+.. currentmodule:: netcal.regression
+
+.. autoclass:: GPBeta
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GPBeta.__init__
+      ~GPBeta.add_module
+      ~GPBeta.added_loss_terms
+      ~GPBeta.apply
+      ~GPBeta.bfloat16
+      ~GPBeta.buffers
+      ~GPBeta.children
+      ~GPBeta.clear
+      ~GPBeta.constraint_for_parameter_name
+      ~GPBeta.constraints
+      ~GPBeta.cpu
+      ~GPBeta.cuda
+      ~GPBeta.double
+      ~GPBeta.eval
+      ~GPBeta.extra_repr
+      ~GPBeta.fit
+      ~GPBeta.fit_transform
+      ~GPBeta.float
+      ~GPBeta.forward
+      ~GPBeta.get_buffer
+      ~GPBeta.get_extra_state
+      ~GPBeta.get_fantasy_model
+      ~GPBeta.get_parameter
+      ~GPBeta.get_params
+      ~GPBeta.get_submodule
+      ~GPBeta.guide
+      ~GPBeta.half
+      ~GPBeta.hyperparameters
+      ~GPBeta.initialize
+      ~GPBeta.ipu
+      ~GPBeta.load_model
+      ~GPBeta.load_state_dict
+      ~GPBeta.load_strict_shapes
+      ~GPBeta.local_load_samples
+      ~GPBeta.model
+      ~GPBeta.modules
+      ~GPBeta.named_added_loss_terms
+      ~GPBeta.named_buffers
+      ~GPBeta.named_children
+      ~GPBeta.named_constraints
+      ~GPBeta.named_hyperparameters
+      ~GPBeta.named_modules
+      ~GPBeta.named_parameters
+      ~GPBeta.named_parameters_and_constraints
+      ~GPBeta.named_priors
+      ~GPBeta.named_variational_parameters
+      ~GPBeta.parameters
+      ~GPBeta.pyro_guide
+      ~GPBeta.pyro_load_from_samples
+      ~GPBeta.pyro_model
+      ~GPBeta.pyro_sample_from_prior
+      ~GPBeta.register_added_loss_term
+      ~GPBeta.register_backward_hook
+      ~GPBeta.register_buffer
+      ~GPBeta.register_constraint
+      ~GPBeta.register_forward_hook
+      ~GPBeta.register_forward_pre_hook
+      ~GPBeta.register_full_backward_hook
+      ~GPBeta.register_load_state_dict_post_hook
+      ~GPBeta.register_module
+      ~GPBeta.register_parameter
+      ~GPBeta.register_prior
+      ~GPBeta.requires_grad_
+      ~GPBeta.sample_from_prior
+      ~GPBeta.save_model
+      ~GPBeta.set_extra_state
+      ~GPBeta.set_params
+      ~GPBeta.share_memory
+      ~GPBeta.state_dict
+      ~GPBeta.to
+      ~GPBeta.to_empty
+      ~GPBeta.to_pyro_random_module
+      ~GPBeta.train
+      ~GPBeta.transform
+      ~GPBeta.type
+      ~GPBeta.update_added_loss_term
+      ~GPBeta.variational_parameters
+      ~GPBeta.xpu
+      ~GPBeta.zero_grad
+   
+   

@@ -1,0 +1,23 @@
+netcal.metrics.ENCE
+===================
+
+.. currentmodule:: netcal.metrics
+
+.. autoclass:: ENCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ENCE.__init__
+      ~ENCE.binning
+      ~ENCE.frequency
+      ~ENCE.measure
+      ~ENCE.prepare
+      ~ENCE.process
+      ~ENCE.reduce
+   
+   

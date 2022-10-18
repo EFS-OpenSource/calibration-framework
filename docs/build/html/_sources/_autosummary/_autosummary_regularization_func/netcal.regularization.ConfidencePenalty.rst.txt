@@ -22,11 +22,17 @@ netcal.regularization.ConfidencePenalty
       ~ConfidencePenalty.cpu
       ~ConfidencePenalty.cuda
       ~ConfidencePenalty.double
+      ~ConfidencePenalty.entropy
       ~ConfidencePenalty.eval
       ~ConfidencePenalty.extra_repr
       ~ConfidencePenalty.float
       ~ConfidencePenalty.forward
+      ~ConfidencePenalty.get_buffer
+      ~ConfidencePenalty.get_extra_state
+      ~ConfidencePenalty.get_parameter
+      ~ConfidencePenalty.get_submodule
       ~ConfidencePenalty.half
+      ~ConfidencePenalty.ipu
       ~ConfidencePenalty.load_state_dict
       ~ConfidencePenalty.modules
       ~ConfidencePenalty.named_buffers
@@ -38,13 +44,19 @@ netcal.regularization.ConfidencePenalty
       ~ConfidencePenalty.register_buffer
       ~ConfidencePenalty.register_forward_hook
       ~ConfidencePenalty.register_forward_pre_hook
+      ~ConfidencePenalty.register_full_backward_hook
+      ~ConfidencePenalty.register_load_state_dict_post_hook
+      ~ConfidencePenalty.register_module
       ~ConfidencePenalty.register_parameter
       ~ConfidencePenalty.requires_grad_
+      ~ConfidencePenalty.set_extra_state
       ~ConfidencePenalty.share_memory
       ~ConfidencePenalty.state_dict
       ~ConfidencePenalty.to
+      ~ConfidencePenalty.to_empty
       ~ConfidencePenalty.train
       ~ConfidencePenalty.type
+      ~ConfidencePenalty.xpu
       ~ConfidencePenalty.zero_grad
    
    
@@ -55,7 +67,10 @@ netcal.regularization.ConfidencePenalty
 
    .. autosummary::
    
+      ~ConfidencePenalty.T_destination
       ~ConfidencePenalty.dump_patches
       ~ConfidencePenalty.epsilon
+      ~ConfidencePenalty.reduction
+      ~ConfidencePenalty.training
    
    

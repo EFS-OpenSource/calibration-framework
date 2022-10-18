@@ -1,14 +1,13 @@
-# Copyright (C) 2019-2021 Ruhr West University of Applied Sciences, Bottrop, Germany
-# AND Elektronische Fahrwerksysteme GmbH, Gaimersheim Germany
+# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
 # If a copy of the APL2 was not distributed with this
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 """
-Scaling methods for confidence calibration.
-This package consists of several methods for confidence calibration which use confidence scaling to approximate
-confidence estimates to observed accuracy.
+.. include:: /../../netcal/scaling/README.md
+   :parser: myst_parser.sphinx_
 
 Available classes
 =================

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>netcal.metrics.ENCE &mdash; net:cal API Reference</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '1.3.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="net:cal API Reference" href="../../index.html" />
+    <link rel="up" title="netcal.metrics" href="../netcal.metrics.html" />
+    <link rel="next" title="netcal.metrics.UCE" href="netcal.metrics.UCE.html" />
+    <link rel="prev" title="netcal.metrics.PinballLoss" href="netcal.metrics.PinballLoss.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">net:cal API Reference</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">netcal.metrics.ENCE</a><ul>
+<li><a class="reference internal" href="#netcal.metrics.ENCE"><code class="docutils literal notranslate"><span class="pre">ENCE</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="netcal.metrics.PinballLoss.html" title="netcal.metrics.PinballLoss" accesskey="P">previous </a></li>
+              <li><a href="netcal.metrics.UCE.html" title="netcal.metrics.UCE" accesskey="N">next </a></li>
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../netcal.metrics.html" accesskey="U">netcal.metrics</a></li>
+            
+            <li class="visible-xs"><a href="../../_sources/_autosummary/_autosummary_metric/netcal.metrics.ENCE.rst.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/logo200x200.png" alt="Logo"/>
+    </a></p>
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../netcal.metrics.html">netcal.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../netcal.metrics.html#metrics-package-to-measure-miscalibration">Metrics Package to Measure Miscalibration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../netcal.metrics.html#available-classes">Available classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.ACE.html">netcal.metrics.ACE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.ECE.html">netcal.metrics.ECE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.MCE.html">netcal.metrics.MCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.MMCE.html">netcal.metrics.MMCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.QuantileLoss.html">netcal.metrics.QuantileLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.PinballLoss.html">netcal.metrics.PinballLoss</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">netcal.metrics.ENCE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#netcal.metrics.ENCE"><code class="docutils literal notranslate"><span class="pre">ENCE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.UCE.html">netcal.metrics.UCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.PICP.html">netcal.metrics.PICP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.QCE.html">netcal.metrics.QCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="netcal.metrics.NLL.html">netcal.metrics.NLL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../netcal.metrics.html#packages">Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
+
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="netcal-metrics-ence">
+<h1>netcal.metrics.ENCE<a class="headerlink" href="#netcal-metrics-ence" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="netcal.metrics.ENCE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.metrics.</span></span><span class="sig-name descname"><span class="pre">ENCE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.metrics.ENCE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expected Normalized Calibration Error (ENCE) for a regression calibration evaluation to test for
+<em>variance calibration</em>. A probabilistic regression model takes <span class="math notranslate nohighlight">\(X\)</span> as input and outputs a
+mean <span class="math notranslate nohighlight">\(\mu_Y(X)\)</span> and a standard deviation <span class="math notranslate nohighlight">\(\sigma_Y(X)\)</span> targeting the ground-truth <span class="math notranslate nohighlight">\(y\)</span>.
+Similar to the <a class="reference internal" href="../_autosummary_metric_submodules/_autosummary_metric/netcal.metrics.confidence.ECE.html#netcal.metrics.confidence.ECE" title="netcal.metrics.confidence.ECE"><code class="xref py py-class docutils literal notranslate"><span class="pre">netcal.metrics.confidence.ECE</span></code></a>, the ENCE applies a binning scheme with <span class="math notranslate nohighlight">\(B\)</span> bins
+over the predicted standard deviation <span class="math notranslate nohighlight">\(\sigma_Y(X)\)</span> and measures the absolute (normalized) difference
+between root mean squared error (RMSE) and root mean variance (RMV) <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+Thus, the ENCE <a class="footnote-reference brackets" href="#id3" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is defined by</p>
+<div class="math notranslate nohighlight">
+\[\text{ENCE} := \frac{1}{B} \sum^B_{b=1} \frac{|RMSE(b) - RMV(b)|}{RMV(b)} ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(RMSE(b)\)</span> and <span class="math notranslate nohighlight">\(RMV(b)\)</span> are the root mean squared error and the root mean variance within
+bin <span class="math notranslate nohighlight">\(b\)</span>, respectively.</p>
+<p>If multiple dimensions are given, the ENCE is measured for each dimension separately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>iterable</em><em>, </em><em>default: 10</em>) – Number of bins used by the ENCE binning.
+If iterable, use different amount of bins for each dimension (nx1, nx2, … = bins).</p></li>
+<li><p><strong>sample_threshold</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default: 1</em>) – Bins with an amount of samples below this threshold are not included into the miscalibration metrics.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Levi, Dan, et al.:
+“Evaluating and calibrating uncertainty prediction in regression tasks.”
+arXiv preprint arXiv:1905.11659 (2019).
+<a class="reference external" href="https://arxiv.org/pdf/1905.11659.pdf">Get source online</a></p>
+</aside>
+</aside>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([bins, sample_threshold])</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code>(bin_bounds, samples, *values[, nan])</p></td>
+<td><p>Perform binning on value (and all additional values passed) based on samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequency</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Measure the frequency of each point by binning.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">measure</span></code>(X, y, *[, kind, range_])</p></td>
+<td><p>Measure the ENCE for given input data either as tuple consisting of mean and stddev estimates or as NumPy array consisting of a sample distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code>(X, y[, batched, uncertainty])</p></td>
+<td><p>Check input data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code>(metric, acc_hist, conf_hist, ...)</p></td>
+<td><p>Determine miscalibration based on passed histograms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce</span></code>(histogram, distribution, axis[, ...])</p></td>
+<td><p>Calculate the weighted mean on a given histogram based on a dedicated data distribution.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">net:cal API Reference</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="netcal.metrics.PinballLoss.html" title="netcal.metrics.PinballLoss" >previous</a></li>
+        <li><a href="netcal.metrics.UCE.html" title="netcal.metrics.UCE" >next</a></li>
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../netcal.metrics.html" >netcal.metrics</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

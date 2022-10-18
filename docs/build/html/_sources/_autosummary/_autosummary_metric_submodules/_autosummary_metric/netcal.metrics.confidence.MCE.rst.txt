@@ -1,0 +1,23 @@
+netcal.metrics.confidence.MCE
+=============================
+
+.. currentmodule:: netcal.metrics.confidence
+
+.. autoclass:: MCE
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MCE.__init__
+      ~MCE.binning
+      ~MCE.frequency
+      ~MCE.measure
+      ~MCE.prepare
+      ~MCE.process
+      ~MCE.reduce
+   
+   

@@ -1,0 +1,95 @@
+netcal.regression.gp.GPNormal
+=============================
+
+.. currentmodule:: netcal.regression.gp
+
+.. autoclass:: GPNormal
+   :no-private-members:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GPNormal.__init__
+      ~GPNormal.add_module
+      ~GPNormal.added_loss_terms
+      ~GPNormal.apply
+      ~GPNormal.bfloat16
+      ~GPNormal.buffers
+      ~GPNormal.children
+      ~GPNormal.clear
+      ~GPNormal.constraint_for_parameter_name
+      ~GPNormal.constraints
+      ~GPNormal.cpu
+      ~GPNormal.cuda
+      ~GPNormal.double
+      ~GPNormal.eval
+      ~GPNormal.extra_repr
+      ~GPNormal.fit
+      ~GPNormal.fit_transform
+      ~GPNormal.float
+      ~GPNormal.forward
+      ~GPNormal.get_buffer
+      ~GPNormal.get_extra_state
+      ~GPNormal.get_fantasy_model
+      ~GPNormal.get_parameter
+      ~GPNormal.get_params
+      ~GPNormal.get_submodule
+      ~GPNormal.guide
+      ~GPNormal.half
+      ~GPNormal.hyperparameters
+      ~GPNormal.initialize
+      ~GPNormal.ipu
+      ~GPNormal.load_model
+      ~GPNormal.load_state_dict
+      ~GPNormal.load_strict_shapes
+      ~GPNormal.local_load_samples
+      ~GPNormal.model
+      ~GPNormal.modules
+      ~GPNormal.named_added_loss_terms
+      ~GPNormal.named_buffers
+      ~GPNormal.named_children
+      ~GPNormal.named_constraints
+      ~GPNormal.named_hyperparameters
+      ~GPNormal.named_modules
+      ~GPNormal.named_parameters
+      ~GPNormal.named_parameters_and_constraints
+      ~GPNormal.named_priors
+      ~GPNormal.named_variational_parameters
+      ~GPNormal.parameters
+      ~GPNormal.pyro_guide
+      ~GPNormal.pyro_load_from_samples
+      ~GPNormal.pyro_model
+      ~GPNormal.pyro_sample_from_prior
+      ~GPNormal.register_added_loss_term
+      ~GPNormal.register_backward_hook
+      ~GPNormal.register_buffer
+      ~GPNormal.register_constraint
+      ~GPNormal.register_forward_hook
+      ~GPNormal.register_forward_pre_hook
+      ~GPNormal.register_full_backward_hook
+      ~GPNormal.register_load_state_dict_post_hook
+      ~GPNormal.register_module
+      ~GPNormal.register_parameter
+      ~GPNormal.register_prior
+      ~GPNormal.requires_grad_
+      ~GPNormal.sample_from_prior
+      ~GPNormal.save_model
+      ~GPNormal.set_extra_state
+      ~GPNormal.set_params
+      ~GPNormal.share_memory
+      ~GPNormal.state_dict
+      ~GPNormal.to
+      ~GPNormal.to_empty
+      ~GPNormal.to_pyro_random_module
+      ~GPNormal.train
+      ~GPNormal.transform
+      ~GPNormal.type
+      ~GPNormal.update_added_loss_term
+      ~GPNormal.variational_parameters
+      ~GPNormal.xpu
+      ~GPNormal.zero_grad
+   
+   

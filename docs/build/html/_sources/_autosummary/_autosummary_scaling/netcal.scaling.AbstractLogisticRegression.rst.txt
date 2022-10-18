@@ -28,7 +28,6 @@ netcal.scaling.AbstractLogisticRegression
       ~AbstractLogisticRegression.prior
       ~AbstractLogisticRegression.save_model
       ~AbstractLogisticRegression.set_params
-      ~AbstractLogisticRegression.squeeze_generic
       ~AbstractLogisticRegression.to
       ~AbstractLogisticRegression.transform
       ~AbstractLogisticRegression.variational
