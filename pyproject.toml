@@ -66,8 +66,8 @@ documentation = "https://fabiankueppers.github.io/calibration-framework"
 [project.license]
 file = "LICENSE.txt"
 
-[tool.setuptools]
-packages = ["netcal"]
+[tool.setuptools.packages.find]
+exclude = ["img"]
 
 [tool.setuptools.dynamic]
 version = {attr = "netcal.__version__"}
