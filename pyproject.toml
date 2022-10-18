@@ -57,11 +57,15 @@ dependencies = [
     "gpytorch>=1.5.1"
 ]
 
-dynamic = ["version", "readme"]
+dynamic = ["version"]
 
 [project.urls]
 homepage = "https://github.com/fabiankueppers/calibration-framework"
 documentation = "https://fabiankueppers.github.io/calibration-framework"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
 
 [project.license]
 file = "LICENSE.txt"
@@ -71,4 +75,3 @@ exclude = ["img"]
 
 [tool.setuptools.dynamic]
 version = {attr = "netcal.__version__"}
-readme = {file = ["README.md"]}
