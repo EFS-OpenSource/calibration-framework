@@ -248,13 +248,13 @@ The installation of the calibration suite is quite easy as it registered
 in the Python Package Index (PyPI). You can either install this
 framework using PIP:
 ```shell
-    $ python3 -m pip install netcal
+$ python3 -m pip install netcal
 ```
 Or simply invoke the following command to install the calibration suite when installing from source:
 ```shell
-    $ git clone https://github.com/fabiankueppers/calibration-framework.git
-    $ cd calibration-framework
-    $ python3 -m pip install .
+$ git clone https://github.com/EFS-OpenSource/calibration-framework
+$ cd calibration-framework
+$ python3 -m pip install .
 ```
 
 Note: with update 1.3, we switched from *setup.py* to *pyproject.toml*
