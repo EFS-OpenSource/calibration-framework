@@ -5,5 +5,3 @@
 # If a copy of the APL2 was not distributed with this
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
-# TODO: update docstring to include into sphinx
-# TODO: write and include all readmes of the sub-packages
