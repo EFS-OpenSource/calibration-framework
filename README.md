@@ -6,7 +6,7 @@
 
 The **net:cal** calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network. 
 For full API reference documentation, visit
-<https://fabiankueppers.github.io/calibration-framework>.
+<https://efs-opensource.github.io/calibration-framework>.
 
 Copyright &copy; 2019-2022 Ruhr West University of Applied Sciences,
 Bottrop, Germany AND e:fs TechHub GmbH, Gaimersheim, Germany.
