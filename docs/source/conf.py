@@ -84,5 +84,3 @@ html_sidebars = { '**': ['globaltoc.html', 'searchbox.html'] }
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_logo = "img/logo/logo200x200.png"
-html_favicon = "img/logo/favicon.ico"

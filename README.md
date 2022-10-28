@@ -1,5 +1,3 @@
-![netcal logo](img/logo/logo_long.png)
-
 # net:cal - Uncertainty Calibration
 
 <div style="text-align: justify">
