@@ -176,7 +176,8 @@ class HistogramBinning(AbstractCalibration):
 
         # calculate 'matched' (0 or 1)
         matched = prediction == y
-        X = np.clip(X, self.epsilon, 1.-self.epsilon)
+        epsilon = self.epsilon(X.dtype)
+        X = np.clip(X, epsilon, 1.-epsilon)
 
         # get number of features for detection mode calibration
         if self.detection:

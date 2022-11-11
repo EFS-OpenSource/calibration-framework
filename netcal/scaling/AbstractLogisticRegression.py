@@ -115,20 +115,22 @@ class AbstractLogisticRegression(AbstractCalibration):
     }
 
     @accepts(str, int, int, int, int, int, bool, bool, (str, bool))
-    def __init__(self,
-                 method: str = 'mle',
-                 momentum_epochs: int = 1000,
+    def __init__(
+            self,
+            method: str = 'mle',
+            momentum_epochs: int = 1000,
 
-                 mcmc_steps: int = 250,
-                 mcmc_chains: int = 1,
-                 mcmc_warmup_steps: int = 100,
+            mcmc_steps: int = 250,
+            mcmc_chains: int = 1,
+            mcmc_warmup_steps: int = 100,
 
-                 vi_epochs: int = 1000,
+            vi_epochs: int = 1000,
 
-                 detection: bool = False,
-                 independent_probabilities: bool = False,
-                 use_cuda: Union[str, bool] = False,
-                 **kwargs):
+            detection: bool = False,
+            independent_probabilities: bool = False,
+            use_cuda: Union[str, bool] = False,
+            **kwargs
+    ):
         """ Create an instance of `AbstractLogisticRegression`. Detailed parameter description given in class docs. """
 
         super().__init__(detection=detection, independent_probabilities=independent_probabilities)
@@ -335,12 +337,18 @@ class AbstractLogisticRegression(AbstractCalibration):
 
         # MCMC samples are also dictionary
         if self.mcmc_model is not None:
-            for key, param in self.vi_model.items():
-                self.vi_model[key] = param.detach().to(device)
+            for key, param in self.mcmc_model.items():
+                self.mcmc_model[key] = param.detach().to(device)
 
     @dimensions((1, 2), (1, 2), None, None, None)
-    def fit(self, X: np.ndarray, y: np.ndarray, random_state: int = None, tensorboard: bool = True,
-                 log_dir: str = None) -> 'AbstractLogisticRegression':
+    def fit(
+            self,
+            X: np.ndarray,
+            y: np.ndarray,
+            random_state: int = None,
+            tensorboard: bool = True,
+            log_dir: str = None
+    ) -> 'AbstractLogisticRegression':
         """
         Build logitic calibration model either conventional with single MLE estimate or with
         Variational Inference (VI) or Markov-Chain Monte-Carlo (MCMC) algorithm to also obtain uncertainty estimates.
@@ -573,7 +581,7 @@ class AbstractLogisticRegression(AbstractCalibration):
             [site['init']['mean'].cpu().numpy() for site in self._sites.values()]
         )
 
-        # on detection or binary classification, use binary cross entropy loss and convert target vector to double
+        # on detection or binary classification, use binary cross entropy loss and convert target vector dtype to data dtype
         if self.detection or self._is_binary_classification():
 
             # for an arbitrary reason, binary_cross_entropy_with_logits returns NaN
@@ -581,7 +589,7 @@ class AbstractLogisticRegression(AbstractCalibration):
             def loss_op(x, y):
                 return torch.nn.BCELoss(reduction='mean')(torch.sigmoid(x), y)
 
-            y = y.double()
+            y = y.to(dtype=dtype)
 
         # on multiclass classification, use multiclass cross entropy loss and convert target vector to long
         else:
@@ -631,6 +639,8 @@ class AbstractLogisticRegression(AbstractCalibration):
         y : np.ndarray, shape=(n_samples,)
             NumPy array with ground truth labels as 1-D vector (binary).
         """
+
+        assert self.detection, "Regression calbration: method \'momentum\' only supported for detection mode."
 
         # initial learning rate, min delta for early stopping and patience
         # for early stopping (number of epochs without improvement)
@@ -697,17 +707,23 @@ class AbstractLogisticRegression(AbstractCalibration):
 
                 # use NumPy's clip function as this also supports arrays for clipping instead for
                 # single scalars only
-                site['values'] = np.clip(
+                np.clip(
                     site['values'],
                     [b[0] for b in optim_bounds[start:start+num_weights]],
-                    [b[1] for b in optim_bounds[start:start+num_weights]]
+                    [b[1] for b in optim_bounds[start:start+num_weights]],
+                    out=site['values'],
                 )
                 start += num_weights
 
     # -----------------------------------------------------------------
 
-    def transform(self, X: np.ndarray, num_samples: int = 1000, random_state: int = None,
-                  mean_estimate: bool = False) -> np.ndarray:
+    def transform(
+            self,
+            X: np.ndarray,
+            num_samples: int = 1000,
+            random_state: int = None,
+            mean_estimate: bool = False
+    ) -> np.ndarray:
         """
         After model calibration, this function is used to get calibrated outputs of uncalibrated
         confidence estimates.
@@ -869,33 +885,39 @@ class AbstractLogisticRegression(AbstractCalibration):
     def _inverse_sigmoid(self, confidence: Union[np.ndarray, torch.Tensor]) -> Union[np.ndarray, torch.Tensor]:
         """ Calculate inverse of Sigmoid to get Logit. """
 
+        # get epsilon to prevent digits from being 0 or 1
+        epsilon = self.epsilon(confidence.dtype)
+
         # on torch tensors, use torch built-in functions
         if isinstance(confidence, torch.Tensor):
 
             # clip normal and inverse separately due to numerical stability
-            clipped = torch.clamp(confidence, self.epsilon, 1. - self.epsilon)
-            inv_clipped = torch.clamp(1. - confidence, self.epsilon, 1. - self.epsilon)
+            clipped = torch.clamp(confidence, epsilon, 1. - epsilon)
+            inv_clipped = torch.clamp(1. - confidence, epsilon, 1. - epsilon)
 
             logit = torch.log(clipped) - torch.log(inv_clipped)
             return logit
 
         # use NumPy method otherwise
         else:
-            clipped = np.clip(confidence, self.epsilon, 1. - self.epsilon)
+            clipped = np.clip(confidence, epsilon, 1. - epsilon)
             return safe_logit(clipped)
 
     @dimensions(2)
     def _inverse_softmax(self, confidences: Union[np.ndarray, torch.Tensor]) -> Union[np.ndarray, torch.Tensor]:
         """ Calculate inverse of multi class softmax. """
 
+        # get epsilon to prevent digits from being 0 or 1
+        epsilon = self.epsilon(confidences.dtype)
+
         # on torch tensors, use torch built-in functions
         if isinstance(confidences, torch.Tensor):
-            clipped = torch.clamp(confidences, self.epsilon, 1. - self.epsilon)
+            clipped = torch.clamp(confidences, epsilon, 1. - epsilon)
             return torch.log(clipped)
 
         # use NumPy methods otherwise
         else:
-            clipped = np.clip(confidences, self.epsilon, 1. - self.epsilon)
+            clipped = np.clip(confidences, epsilon, 1. - epsilon)
             return np.log(clipped)
 
     def _get_scipy_constraints(self) -> List:

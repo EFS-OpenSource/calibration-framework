@@ -196,8 +196,11 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
         if len(X.shape) == 1:
             X = np.reshape(X, (-1, 1))
 
+        # get epsilon to prevent digits from being 0 or 1
+        epsilon = self.epsilon(X.dtype)
+
         # clip seperately due to numerical stability
-        data = np.clip(X, self.epsilon, 1. - self.epsilon) / np.clip((1. - X), self.epsilon, 1. - self.epsilon)
+        data = np.clip(X, epsilon, 1. - epsilon) / np.clip((1. - X), epsilon, 1. - epsilon)
         return torch.from_numpy(data)
 
     def prior(self, dtype: torch.dtype):
@@ -215,8 +218,11 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
         num_weights = 4 * (self.num_features + 1)
         self._sites = OrderedDict()
 
+        # get epsilon to prevent digits from being 0 or 1
+        epsilon = self.epsilon(dtype)
+
         # initial values for mean, scale and prior dist
-        init_mean = torch.ones(num_weights, dtype=dtype).uniform_(1. + self.epsilon, 2.)
+        init_mean = torch.ones(num_weights, dtype=dtype).uniform_(1. + epsilon, 2.)
         init_scale = torch.ones(num_weights, dtype=dtype)
         prior = dist.Normal(init_mean, 10 * init_scale, validate_args=True)
 
@@ -235,7 +241,7 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
         # set properties for "weights": weights must be positive
         self._sites['weights'] = {
             'values': None,
-            'constraint': constraints.greater_than(self.epsilon),
+            'constraint': constraints.greater_than(epsilon),
             'init': {
                 'mean': init_mean,
                 'scale': init_scale
@@ -248,7 +254,7 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
             'values': None,
             'constraint': constraints.real,
             'init': {
-                'mean': torch.ones(1, dtype=dtype) * self.epsilon,
+                'mean': torch.ones(1, dtype=dtype) * epsilon,
                 'scale': torch.ones(1, dtype=dtype)
             },
             'prior': dist.Normal(torch.zeros(1, dtype=dtype), 10 * torch.ones(1, dtype=dtype), validate_args=True),
@@ -300,11 +306,14 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
         # the first dimension of the given input data is the "independent" sample dimension
         with pyro.plate("data", X.shape[0]):
 
+            # get epsilon to prevent digits from being 0 or 1
+            epsilon = self.epsilon(weights.dtype)
+
             # clip values to range (0, inf]
-            alpha_pos = torch.clamp(weights[:index_1], self.epsilon, np.infty)
-            alpha_neg = torch.clamp(weights[index_1:index_2], self.epsilon, np.infty)
-            beta_pos = torch.clamp(weights[index_2:index_3], self.epsilon, np.infty)
-            beta_neg = torch.clamp(weights[index_3:], self.epsilon, np.infty)
+            alpha_pos = torch.clamp(weights[:index_1], epsilon, np.infty)
+            alpha_neg = torch.clamp(weights[index_1:index_2], epsilon, np.infty)
+            beta_pos = torch.clamp(weights[index_2:index_3], epsilon, np.infty)
+            beta_neg = torch.clamp(weights[index_3:], epsilon, np.infty)
 
             # lambdas are ratio between all betas and beta_0
             lambda_pos = beta_pos[1:] / beta_pos[0]

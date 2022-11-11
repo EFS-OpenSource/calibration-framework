@@ -7,7 +7,7 @@
 
 import abc, os
 import numpy as np
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Union
 from sklearn.base import BaseEstimator, TransformerMixin
 
 import torch
@@ -47,9 +47,6 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         Lowest possible digit that can be computed. Needed for several operations like divisions or log to guarantee
         values inequal to 0 or 1.
     """
-
-    # epsilon to prevent division by zero
-    epsilon = np.finfo(np.float).eps
 
     @accepts(bool, bool)
     def __init__(self, detection: bool = False, independent_probabilities: bool = False):
@@ -284,6 +281,28 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
 
         self.num_classes = 2 if self.detection else None
         self.independent_probabilities = self._default_independent_probabilities
+
+    def epsilon(self, dtype: Union[np.dtype, torch.dtype]) -> float:
+        """
+        Get the smallest digit that is representable depending on the passed dtype (NumPy or PyTorch).
+
+        Parameters
+        ----------
+        dtype : either NumPy dtype or PyTorch dtype
+            Data type.
+
+        Returns
+        -------
+        float
+            Smallest representable digit depending on the passed input dtype.
+        """
+
+        if isinstance(dtype, torch.dtype):
+            return float(torch.finfo(dtype).eps)
+        elif isinstance(dtype, np.dtype):
+            return float(np.finfo(dtype).eps)
+        else:
+            raise RuntimeError("Unknown dtype:", dtype)
 
     def get_params(self, deep=True) -> Dict:
         """
