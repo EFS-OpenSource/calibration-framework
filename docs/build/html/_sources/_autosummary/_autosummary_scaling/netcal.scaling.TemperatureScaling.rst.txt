@@ -1,4 +1,4 @@
-netcal.scaling.TemperatureScaling
+﻿netcal.scaling.TemperatureScaling
 =================================
 
 .. currentmodule:: netcal.scaling
@@ -15,6 +15,7 @@ netcal.scaling.TemperatureScaling
       ~TemperatureScaling.__init__
       ~TemperatureScaling.clear
       ~TemperatureScaling.convex
+      ~TemperatureScaling.epsilon
       ~TemperatureScaling.fit
       ~TemperatureScaling.fit_transform
       ~TemperatureScaling.get_params

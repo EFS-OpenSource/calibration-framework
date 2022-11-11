@@ -1,4 +1,4 @@
-netcal.regression.gp.GPCauchy
+﻿netcal.regression.gp.GPCauchy
 =============================
 
 .. currentmodule:: netcal.regression.gp
@@ -25,6 +25,7 @@ netcal.regression.gp.GPCauchy
       ~GPCauchy.cpu
       ~GPCauchy.cuda
       ~GPCauchy.double
+      ~GPCauchy.epsilon
       ~GPCauchy.eval
       ~GPCauchy.extra_repr
       ~GPCauchy.fit
