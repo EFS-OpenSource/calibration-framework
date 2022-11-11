@@ -1,4 +1,4 @@
-netcal.regression.GPNormal
+﻿netcal.regression.GPNormal
 ==========================
 
 .. currentmodule:: netcal.regression
@@ -25,6 +25,7 @@ netcal.regression.GPNormal
       ~GPNormal.cpu
       ~GPNormal.cuda
       ~GPNormal.double
+      ~GPNormal.epsilon
       ~GPNormal.eval
       ~GPNormal.extra_repr
       ~GPNormal.fit

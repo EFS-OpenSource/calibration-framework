@@ -177,6 +177,9 @@ class BetaCalibration(AbstractLogisticRegression):
         # build 2-D array with [log(x), -log(1-x)]
         # convert confidences array and clip values to open interval (0, 1)
 
+        # get epsilon to prevent digits from being 0 or 1
+        epsilon = self.epsilon(X.dtype)
+
         # on detection, create array of shape (n_samples, 2*n_features)
         if self.detection:
             features = []
@@ -185,7 +188,7 @@ class BetaCalibration(AbstractLogisticRegression):
                 features.append(1. - X[:, i])
 
             data_input = np.stack(features, axis=1)
-            data_input = np.clip(data_input, self.epsilon, 1. - self.epsilon)
+            data_input = np.clip(data_input, epsilon, 1. - epsilon)
             data_input = np.log(data_input)
             data_input[:, 1::2] *= -1
 
@@ -198,7 +201,7 @@ class BetaCalibration(AbstractLogisticRegression):
                 features.append(np.stack([X[:, i], 1. - X[:, i]], axis=1))
 
             data_input = features[0] if self._is_binary_classification() else np.stack(features, axis=1)
-            data_input = np.clip(data_input, self.epsilon, 1. - self.epsilon)
+            data_input = np.clip(data_input, epsilon, 1. - epsilon)
             data_input = np.log(data_input)
             data_input[..., 1] *= -1
 

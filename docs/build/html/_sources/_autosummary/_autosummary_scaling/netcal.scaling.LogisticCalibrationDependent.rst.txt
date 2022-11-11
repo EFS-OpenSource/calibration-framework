@@ -1,4 +1,4 @@
-netcal.scaling.LogisticCalibrationDependent
+﻿netcal.scaling.LogisticCalibrationDependent
 ===========================================
 
 .. currentmodule:: netcal.scaling
@@ -15,6 +15,7 @@ netcal.scaling.LogisticCalibrationDependent
       ~LogisticCalibrationDependent.__init__
       ~LogisticCalibrationDependent.clear
       ~LogisticCalibrationDependent.convex
+      ~LogisticCalibrationDependent.epsilon
       ~LogisticCalibrationDependent.fit
       ~LogisticCalibrationDependent.fit_transform
       ~LogisticCalibrationDependent.get_params

@@ -1,4 +1,4 @@
-netcal.regression.gp.GPBeta
+﻿netcal.regression.gp.GPBeta
 ===========================
 
 .. currentmodule:: netcal.regression.gp
@@ -25,6 +25,7 @@ netcal.regression.gp.GPBeta
       ~GPBeta.cpu
       ~GPBeta.cuda
       ~GPBeta.double
+      ~GPBeta.epsilon
       ~GPBeta.eval
       ~GPBeta.extra_repr
       ~GPBeta.fit

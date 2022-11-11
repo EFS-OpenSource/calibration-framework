@@ -314,7 +314,7 @@ class ENIR(AbstractCalibration):
 
             if not self.independent_probabilities:
                 # normalize to keep probability sum of 1
-                normalizer = np.clip(np.sum(calibrated, axis=1, keepdims=True), self.epsilon, None)
+                normalizer = np.clip(np.sum(calibrated, axis=1, keepdims=True), self.epsilon(calibrated.dtype), None)
                 calibrated = np.divide(calibrated, normalizer)
 
         # on binary classification, it's much easier

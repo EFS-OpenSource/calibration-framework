@@ -1,4 +1,4 @@
-netcal.regression.gp.AbstractGP
+﻿netcal.regression.gp.AbstractGP
 ===============================
 
 .. currentmodule:: netcal.regression.gp
@@ -25,6 +25,7 @@ netcal.regression.gp.AbstractGP
       ~AbstractGP.cpu
       ~AbstractGP.cuda
       ~AbstractGP.double
+      ~AbstractGP.epsilon
       ~AbstractGP.eval
       ~AbstractGP.extra_repr
       ~AbstractGP.fit
