@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2021-2023 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
