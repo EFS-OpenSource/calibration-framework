@@ -249,7 +249,7 @@ class NearIsotonicRegression(AbstractCalibration):
         upper_bounds = np.append(bounds, 1.0)
 
         self._group_bounds = np.stack((lower_bounds, upper_bounds), axis=1)
-        self._group_values = np.array(y, dtype=np.float)
+        self._group_values = np.array(y, dtype=X.dtype)
 
     @dimensions(1, (1, 2))
     def __initial_model_quick(self, X: np.ndarray, y: np.ndarray):
@@ -289,7 +289,7 @@ class NearIsotonicRegression(AbstractCalibration):
         # group values are differences (map -1 to 0 and insert first ground truth value as first group value)
         self._group_values = differences
         self._group_values[differences == -1.] = 0.0
-        self._group_values = np.insert(differences, 0, y[0]).astype(np.float)
+        self._group_values = np.insert(differences, 0, y[0]).astype(X.dtype)
 
         # get group items as NumPy arrays
         # split arrays where monotony violations are found (index +1 needed)
@@ -315,7 +315,7 @@ class NearIsotonicRegression(AbstractCalibration):
         """
 
         # determine amount of samples in each group and create Numpy vector
-        num_samples_per_group = np.array([self._group_items[i].size for i in range(self._num_groups)], dtype=np.float)
+        num_samples_per_group = np.array([self._group_items[i].size for i in range(self._num_groups)], dtype=np.float64)
 
         # calculate monotony violation of consecutive group values (consecutive betas)
         pre_group_values = np.array(self._group_values[:-1])
@@ -325,7 +325,7 @@ class NearIsotonicRegression(AbstractCalibration):
         indicator = np.greater(pre_group_values, post_group_values)
         indicator = np.insert(indicator, 0, False)
         indicator = np.append(indicator, False)
-        indicator = indicator.astype(np.float)
+        indicator = indicator.astype(np.float64)
 
         # slopes are calculated by previously calculated indicator
         slopes = indicator[:-1] - indicator[1:]
@@ -356,7 +356,7 @@ class NearIsotonicRegression(AbstractCalibration):
         # divide group differences by slope differences
         # if slope differences are 0, set resulting value to inf
         t_values = np.divide(group_difference, slope_difference,
-                             out=np.full_like(group_difference, np.inf, dtype=np.float),
+                             out=np.full_like(group_difference, np.inf, dtype=slopes.dtype),
                              where=slope_difference != 0)
 
         # add current lambda to t values

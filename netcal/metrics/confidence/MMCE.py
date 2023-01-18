@@ -142,7 +142,7 @@ class MMCE(object):
             n_samples = float(confidence.size)
 
             # get matched flag and difference
-            matched = (y_batch == labels).astype(np.float)
+            matched = (y_batch == labels).astype(confidence.dtype)
             diff = np.expand_dims(matched - confidence, axis=1)
 
             # now calculate product of differences for each pair

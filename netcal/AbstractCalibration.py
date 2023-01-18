@@ -454,7 +454,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             log_likelihood[i] = -loss.item()
 
         # get degrees of freedom of each model. This is equivalent to number of groups
-        degrees_of_freedom = np.array([x.get_degrees_of_freedom() for x in model_list], dtype=np.int)
+        degrees_of_freedom = np.array([x.get_degrees_of_freedom() for x in model_list], dtype=np.int32)
 
         # choose scoring function 'AIC' oder 'BIC'
         if score_function == 'aic':
@@ -656,7 +656,7 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
             NumPy 1-D array with replaced labels ('label' by 1, rest by 0).
         """
 
-        onevsall_label = np.array(label_vec, dtype=np.int)
+        onevsall_label = np.array(label_vec, dtype=np.int64)
         onevsall_label[label_vec == label] = 1
         onevsall_label[label_vec != label] = 0
 

@@ -51,8 +51,6 @@ class _Miscalibration(object):
        `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`__
     """
 
-    epsilon = np.finfo(np.float).eps
-
     @accepts((int, tuple, list), bool, bool, int)
     def __init__(
             self,
@@ -443,7 +441,8 @@ class _Miscalibration(object):
                 y = np.argmax(y, axis=1)
 
         # clip to (0, 1) in order to get all samples into binning scheme
-        X = np.clip(X, self.epsilon, 1. - self.epsilon)
+        epsilon = np.finfo(X.dtype).eps
+        X = np.clip(X, epsilon, 1. - epsilon)
 
         # -------------------------------------------------
         # now evaluate the accuracy/precision

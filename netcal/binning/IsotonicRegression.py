@@ -117,7 +117,7 @@ class IsotonicRegression(AbstractCalibration):
         X, y = self._sort_arrays(X, y)
 
         # due to some reasons, this is necessary for IsotonicRegression function by sklearn
-        X = X.astype(np.float)
+        X = X.astype(np.float64)
 
         # use isotonic regression routine from sklearn
         # and store as member variable
