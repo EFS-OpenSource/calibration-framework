@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2023 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
@@ -42,7 +42,7 @@ Base class
 """
 
 name = 'netcal'
-__version__ = '1.3.2'
+__version__ = '1.3.3'
 
 from .AbstractCalibration import AbstractCalibration
 from .Decorator import accepts, dimensions, global_accepts, global_dimensions

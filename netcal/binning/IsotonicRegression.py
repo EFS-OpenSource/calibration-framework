@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2023 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
@@ -117,7 +117,7 @@ class IsotonicRegression(AbstractCalibration):
         X, y = self._sort_arrays(X, y)
 
         # due to some reasons, this is necessary for IsotonicRegression function by sklearn
-        X = X.astype(np.float)
+        X = X.astype(np.float64)
 
         # use isotonic regression routine from sklearn
         # and store as member variable

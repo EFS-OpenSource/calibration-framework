@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2023 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
@@ -50,8 +50,6 @@ class _Miscalibration(object):
        The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, 2020.
        `Get source online <https://openaccess.thecvf.com/content_CVPRW_2020/papers/w20/Kuppers_Multivariate_Confidence_Calibration_for_Object_Detection_CVPRW_2020_paper.pdf>`__
     """
-
-    epsilon = np.finfo(np.float).eps
 
     @accepts((int, tuple, list), bool, bool, int)
     def __init__(
@@ -443,7 +441,8 @@ class _Miscalibration(object):
                 y = np.argmax(y, axis=1)
 
         # clip to (0, 1) in order to get all samples into binning scheme
-        X = np.clip(X, self.epsilon, 1. - self.epsilon)
+        epsilon = np.finfo(X.dtype).eps
+        X = np.clip(X, epsilon, 1. - epsilon)
 
         # -------------------------------------------------
         # now evaluate the accuracy/precision
