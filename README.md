@@ -6,7 +6,7 @@ The **net:cal** calibration framework is a Python 3 library for measuring and mi
 For full API reference documentation, visit
 <https://efs-opensource.github.io/calibration-framework>.
 
-Copyright &copy; 2019-2022 Ruhr West University of Applied Sciences,
+Copyright &copy; 2019-2023 Ruhr West University of Applied Sciences,
 Bottrop, Germany AND e:fs TechHub GmbH, Gaimersheim, Germany.
 
 This Source Code Form is subject to the terms of the Apache License 2.0.
