@@ -1,4 +1,4 @@
-﻿netcal.regression.IsotonicRegression
+netcal.regression.IsotonicRegression
 ====================================
 
 .. currentmodule:: netcal.regression

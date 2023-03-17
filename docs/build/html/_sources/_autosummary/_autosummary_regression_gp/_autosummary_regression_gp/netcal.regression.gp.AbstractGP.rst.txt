@@ -1,4 +1,4 @@
-﻿netcal.regression.gp.AbstractGP
+netcal.regression.gp.AbstractGP
 ===============================
 
 .. currentmodule:: netcal.regression.gp

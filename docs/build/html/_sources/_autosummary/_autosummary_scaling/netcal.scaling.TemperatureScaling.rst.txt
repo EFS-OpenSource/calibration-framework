@@ -1,4 +1,4 @@
-﻿netcal.scaling.TemperatureScaling
+netcal.scaling.TemperatureScaling
 =================================
 
 .. currentmodule:: netcal.scaling

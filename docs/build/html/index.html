@@ -35,16 +35,13 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.3.3',
+            VERSION:     '1.3.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
     <script type="text/javascript" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
@@ -426,73 +423,73 @@ it by</em>:</p>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><span class="xref myst">Overview</span></p>
+<li><p><a class="reference internal" href="#overview"><span class="xref myst">Overview</span></a></p>
 <ul>
-<li><p><span class="xref myst">Update on version 1.3</span></p></li>
-<li><p><span class="xref myst">Update on version 1.2</span></p></li>
-<li><p><span class="xref myst">Update on version 1.1</span></p></li>
+<li><p><a class="reference internal" href="#update-on-version-13"><span class="xref myst">Update on version 1.3</span></a></p></li>
+<li><p><a class="reference internal" href="#update-on-version-12"><span class="xref myst">Update on version 1.2</span></a></p></li>
+<li><p><a class="reference internal" href="#update-on-version-11"><span class="xref myst">Update on version 1.1</span></a></p></li>
 </ul>
 </li>
-<li><p><span class="xref myst">Installation</span></p></li>
-<li><p><span class="xref myst">Requirements</span></p></li>
-<li><p><span class="xref myst">Calibration Metrics</span></p>
+<li><p><a class="reference internal" href="#installation"><span class="xref myst">Installation</span></a></p></li>
+<li><p><a class="reference internal" href="#requirements"><span class="xref myst">Requirements</span></a></p></li>
+<li><p><a class="reference internal" href="#calibration-metrics"><span class="xref myst">Calibration Metrics</span></a></p>
 <ul>
-<li><p><span class="xref myst">Confidence Calibration Metrics</span></p></li>
-<li><p><span class="xref myst">Regression Calibration Metrics</span></p></li>
+<li><p><a class="reference internal" href="#confidence-calibration-metrics"><span class="xref myst">Confidence Calibration Metrics</span></a></p></li>
+<li><p><a class="reference internal" href="#regression-calibration-metrics"><span class="xref myst">Regression Calibration Metrics</span></a></p></li>
 </ul>
 </li>
-<li><p><span class="xref myst">Methods</span></p>
+<li><p><a class="reference internal" href="#methods"><span class="xref myst">Methods</span></a></p>
 <ul>
-<li><p><span class="xref myst">Confidence Calibration Methods</span></p>
+<li><p><a class="reference internal" href="#confidence-calibration-methods"><span class="xref myst">Confidence Calibration Methods</span></a></p>
 <ul>
-<li><p><span class="xref myst">Binning</span></p></li>
-<li><p><span class="xref myst">Scaling</span></p></li>
-<li><p><span class="xref myst">Regularization</span></p></li>
+<li><p><a class="reference internal" href="_autosummary/netcal.binning.html#module-netcal.binning" title="netcal.binning"><span class="xref myst py py-mod">Binning</span></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/netcal.scaling.html#module-netcal.scaling" title="netcal.scaling"><span class="xref myst py py-mod">Scaling</span></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/netcal.regularization.html#module-netcal.regularization" title="netcal.regularization"><span class="xref myst py py-mod">Regularization</span></a></p></li>
 </ul>
 </li>
-<li><p><span class="xref myst">Regression Calibration Methods</span></p>
+<li><p><a class="reference internal" href="#regression-calibration-methods"><span class="xref myst">Regression Calibration Methods</span></a></p>
 <ul>
-<li><p><span class="xref myst">Non-parametric calibration</span></p></li>
-<li><p><span class="xref myst">Parametric calibration</span></p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><span class="xref myst">Visualization</span></p></li>
-<li><p><span class="xref myst">Examples</span></p>
-<ul>
-<li><p><span class="xref myst">Classification</span></p>
-<ul>
-<li><p><span class="xref myst">Post-hoc Calibration for Classification</span></p></li>
-<li><p><span class="xref myst">Measuring Miscalibration for Classification</span></p></li>
-<li><p><span class="xref myst">Visualizing Miscalibration for Classification</span></p></li>
-</ul>
-</li>
-<li><p><span class="xref myst">Detection (Confidence of Objects)</span></p>
-<ul>
-<li><p><span class="xref myst">Post-hoc Calibration for Detection</span></p></li>
-<li><p><span class="xref myst">Measuring Miscalibration for Detection</span></p></li>
-<li><p><span class="xref myst">Visualizing Miscalibration for Detection</span></p></li>
-</ul>
-</li>
-<li><p><span class="xref myst">Uncertainty in Confidence Calibration</span></p>
-<ul>
-<li><p><span class="xref myst">Post-hoc Calibration with Uncertainty</span></p></li>
-<li><p><span class="xref myst">Measuing Miscalibration with Uncertainty</span></p></li>
-</ul>
-</li>
-<li><p><span class="xref myst">Probabilistic Regression</span></p>
-<ul>
-<li><p><span class="xref myst">Post-hoc Calibration (Parametric)</span></p></li>
-<li><p><span class="xref myst">Post-hoc Calibration (Non-Parametric)</span></p></li>
-<li><p><span class="xref myst">Correlation Estimation and Recalibration</span></p></li>
-<li><p><span class="xref myst">Measuring Miscalibration for Regression</span></p></li>
-<li><p><span class="xref myst">Visualizing Miscalibration for Regression</span></p></li>
+<li><p><a class="reference internal" href="#non-parametric-calibration"><span class="xref myst">Non-parametric calibration</span></a></p></li>
+<li><p><a class="reference internal" href="#parametric-calibration"><span class="xref myst">Parametric calibration</span></a></p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><span class="xref myst">References</span></p></li>
+<li><p><a class="reference internal" href="#visualization"><span class="xref myst">Visualization</span></a></p></li>
+<li><p><a class="reference internal" href="#examples"><span class="xref myst">Examples</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#classification"><span class="xref myst">Classification</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#post-hoc-calibration-for-classification"><span class="xref myst">Post-hoc Calibration for Classification</span></a></p></li>
+<li><p><a class="reference internal" href="#measuring-miscalibration-for-classification"><span class="xref myst">Measuring Miscalibration for Classification</span></a></p></li>
+<li><p><a class="reference internal" href="#visualizing-miscalibration-for-classification"><span class="xref myst">Visualizing Miscalibration for Classification</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#detection-confidence-of-objects"><span class="xref myst">Detection (Confidence of Objects)</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#post-hoc-calibration-for-detection"><span class="xref myst">Post-hoc Calibration for Detection</span></a></p></li>
+<li><p><a class="reference internal" href="#measuring-miscalibration-for-detection"><span class="xref myst">Measuring Miscalibration for Detection</span></a></p></li>
+<li><p><a class="reference internal" href="#visualizing-miscalibration-for-detection"><span class="xref myst">Visualizing Miscalibration for Detection</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#uncertainty-in-confidence-calibration"><span class="xref myst">Uncertainty in Confidence Calibration</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#post-hoc-calibration-with-uncertainty"><span class="xref myst">Post-hoc Calibration with Uncertainty</span></a></p></li>
+<li><p><a class="reference internal" href="#measuring-miscalibration-with-uncertainty"><span class="xref myst">Measuing Miscalibration with Uncertainty</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#probabilistic-regression"><span class="xref myst">Probabilistic Regression</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#post-hoc-calibration-parametric"><span class="xref myst">Post-hoc Calibration (Parametric)</span></a></p></li>
+<li><p><a class="reference internal" href="#post-hoc-calibration-non-parametric"><span class="xref myst">Post-hoc Calibration (Non-Parametric)</span></a></p></li>
+<li><p><a class="reference internal" href="#correlation-estimation-and-recalibration"><span class="xref myst">Correlation Estimation and Recalibration</span></a></p></li>
+<li><p><a class="reference internal" href="#measuring-miscalibration-for-regression"><span class="xref myst">Measuring Miscalibration for Regression</span></a></p></li>
+<li><p><a class="reference internal" href="#visualizing-miscalibration-for-regression"><span class="xref myst">Visualizing Miscalibration for Regression</span></a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#references"><span class="xref myst">References</span></a></p></li>
 </ul>
 </section>
 <section id="overview">
@@ -600,8 +597,8 @@ any type of publication/document</p>
 <p>TL;DR:</p>
 <ul class="simple">
 <li><p>Bayesian confidence calibration: train and infer scaling methods using variational inference (VI) and MCMC sampling</p></li>
-<li><p>New metrics: MMCE <span class="xref myst">[13]</span> and PICP <span class="xref myst">[14]</span> (<em>netcal.metrics.MMCE</em> and <em>netcal.metrics.PICP</em>)</p></li>
-<li><p>New regularization methods: MMCE <span class="xref myst">[13]</span> and DCA <span class="xref myst">[15]</span> (<em>netcal.regularization.MMCEPenalty</em> and <em>netcal.regularization.DCAPenalty</em>)</p></li>
+<li><p>New metrics: MMCE <a class="reference internal" href="#ref13"><span class="xref myst">[13]</span></a> and PICP <a class="reference internal" href="#ref14"><span class="xref myst">[14]</span></a> (<em>netcal.metrics.MMCE</em> and <em>netcal.metrics.PICP</em>)</p></li>
+<li><p>New regularization methods: MMCE <a class="reference internal" href="#ref13"><span class="xref myst">[13]</span></a> and DCA <a class="reference internal" href="#ref15"><span class="xref myst">[15]</span></a> (<em>netcal.regularization.MMCEPenalty</em> and <em>netcal.regularization.DCAPenalty</em>)</p></li>
 <li><p>Updated examples</p></li>
 <li><p>Switched license from MPL2 to APL2</p></li>
 </ul>
@@ -619,16 +616,16 @@ that can be used during model training (MMCE and DCA).</p>
 <h3>Update on version 1.1<a class="headerlink" href="#update-on-version-1-1" title="Permalink to this heading">¶</a></h3>
 <p>This framework can also be used to calibrate object detection models. It
 has recently been shown that calibration on object detection also
-depends on the position and/or scale of a predicted object <span class="xref myst">[12]</span>. We
+depends on the position and/or scale of a predicted object <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a>. We
 provide calibration methods to perform confidence calibration w.r.t. the
 additional box regression branch. For this purpose, we extended the
-commonly used Histogram Binning <span class="xref myst">[3]</span>, Logistic Calibration alias Platt
-scaling <span class="xref myst">[10]</span> and the Beta Calibration method <span class="xref myst">[2]</span> to also include the
+commonly used Histogram Binning <a class="reference internal" href="#ref3"><span class="xref myst">[3]</span></a>, Logistic Calibration alias Platt
+scaling <a class="reference internal" href="#ref10"><span class="xref myst">[10]</span></a> and the Beta Calibration method <a class="reference internal" href="#ref2"><span class="xref myst">[2]</span></a> to also include the
 bounding box information into a calibration mapping. Furthermore, we
 provide two new methods called the <em>Dependent Logistic Calibration</em> and
 the <em>Dependent Beta Calibration</em> that are not only able to perform a
 calibration mapping w.r.t. additional bounding box information but also
-to model correlations and dependencies between all given quantities <span class="xref myst">[12]</span>.
+to model correlations and dependencies between all given quantities <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a>.
 Those methods should be preffered over their counterparts in object
 detection mode.</p>
 <p>The framework is structured as follows:</p>
@@ -689,25 +686,25 @@ calibration in probabilistic regression settings.</p>
 <section id="confidence-calibration-metrics">
 <h3>Confidence Calibration Metrics<a class="headerlink" href="#confidence-calibration-metrics" title="Permalink to this heading">¶</a></h3>
 <p>The most common metric to determine miscalibration in the scope of
-classification is the <em>Expected Calibration Error</em> (ECE) <span class="xref myst">[1]</span>. This
+classification is the <em>Expected Calibration Error</em> (ECE) <a class="reference internal" href="#ref1"><span class="xref myst">[1]</span></a>. This
 metric divides the confidence space into several bins and measures the
 observed accuracy in each bin. The bin gaps between observed accuracy
 and bin confidence are summed up and weighted by the amount of samples
 in each bin. The <em>Maximum Calibration Error</em> (MCE) denotes the highest
-gap over all bins. The <em>Average Calibration Error</em> (ACE) <span class="xref myst">[11]</span> denotes
+gap over all bins. The <em>Average Calibration Error</em> (ACE) <a class="reference internal" href="#ref11"><span class="xref myst">[11]</span></a> denotes
 the average miscalibration where each bin gets weighted equally. For
 object detection, we implemented the <em>Detection Calibration Error</em>
-(D-ECE) <span class="xref myst">[12]</span> that is the natural extension of the ECE to object
+(D-ECE) <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> that is the natural extension of the ECE to object
 detection tasks. The miscalibration is determined w.r.t. the bounding
 box information provided (e.g. box location and/or scale). For this
 purpose, all available information gets binned in a multidimensional
 histogram. The accuracy is then calculated in each bin separately to
 determine the mean deviation between confidence and accuracy.</p>
 <ul class="simple">
-<li><p>(Detection) Expected Calibration Error <span class="xref myst">[1]</span>, <span class="xref myst">[12]</span> (<em>netcal.metrics.ECE</em>)</p></li>
-<li><p>(Detection) Maximum Calibration Error <span class="xref myst">[1]</span>, <span class="xref myst">[12]</span>  (<em>netcal.metrics.MCE</em>)</p></li>
-<li><p>(Detection) Average Calibration Error <span class="xref myst">[11]</span>, <span class="xref myst">[12]</span> (<em>netcal.metrics.ACE</em>)</p></li>
-<li><p>Maximum Mean Calibration Error (MMCE) <span class="xref myst">[13]</span> (<em>netcal.metrics.MMCE</em>) (no position-dependency)</p></li>
+<li><p>(Detection) Expected Calibration Error <a class="reference internal" href="#ref1"><span class="xref myst">[1]</span></a>, <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.metrics.ECE</em>)</p></li>
+<li><p>(Detection) Maximum Calibration Error <a class="reference internal" href="#ref1"><span class="xref myst">[1]</span></a>, <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a>  (<em>netcal.metrics.MCE</em>)</p></li>
+<li><p>(Detection) Average Calibration Error <a class="reference internal" href="#ref11"><span class="xref myst">[11]</span></a>, <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.metrics.ACE</em>)</p></li>
+<li><p>Maximum Mean Calibration Error (MMCE) <a class="reference internal" href="#ref13"><span class="xref myst">[13]</span></a> (<em>netcal.metrics.MMCE</em>) (no position-dependency)</p></li>
 </ul>
 </section>
 <section id="regression-calibration-metrics">
@@ -730,8 +727,8 @@ quantile level, a forecaster is told to be miscalibrated in terms of
 <em>quantile calibration</em>. Appropriate metrics in this context are</p>
 <ul class="simple">
 <li><p>Pinball Loss (<em>netcal.metrics.PinballLoss</em>)</p></li>
-<li><p>Prediction Interval Coverage Probability (PICP) <span class="xref myst">[14]</span> (<em>netcal.metrics.PICP</em>)</p></li>
-<li><p>Quantile Calibration Error (QCE) <span class="xref myst">[15]</span> (<em>netcal.metrics.QCE</em>)</p></li>
+<li><p>Prediction Interval Coverage Probability (PICP) <a class="reference internal" href="#ref14"><span class="xref myst">[14]</span></a> (<em>netcal.metrics.PICP</em>)</p></li>
+<li><p>Quantile Calibration Error (QCE) <a class="reference internal" href="#ref15"><span class="xref myst">[15]</span></a> (<em>netcal.metrics.QCE</em>)</p></li>
 </ul>
 <p>Finally, if we work with normal distributions, we can measure the
 quality of the predicted variance/stddev estimates. For <em>variance
@@ -739,8 +736,8 @@ calibration</em>, it is required that the predicted variance mathes the
 observed error variance which is equivalent to then Mean Squared Error
 (MSE). Metrics for <em>variance calibration</em> are</p>
 <ul class="simple">
-<li><p>Expected Normalized Calibration Error (ENCE) <span class="xref myst">[17]</span> (<em>netcal.metrics.ENCE</em>)</p></li>
-<li><p>Uncertainty Calibration Error (UCE) <span class="xref myst">[18]</span> (<em>netcal.metrics.UCE</em>)</p></li>
+<li><p>Expected Normalized Calibration Error (ENCE) <a class="reference internal" href="#ref17"><span class="xref myst">[17]</span></a> (<em>netcal.metrics.ENCE</em>)</p></li>
+<li><p>Uncertainty Calibration Error (UCE) <a class="reference internal" href="#ref18"><span class="xref myst">[18]</span></a> (<em>netcal.metrics.UCE</em>)</p></li>
 </ul>
 </section>
 </section>
@@ -765,28 +762,28 @@ not necessary for <em>netcal.scaling.LogisticCalibrationDependent</em> and
 tasks. For binning methods, multi-class calibration is performed in
 “one vs. all” by default.</p>
 <p>Some methods such as “Isotonic Regression” utilize methods from the
-scikit-learn API <span class="xref myst">[9]</span>.</p>
+scikit-learn API <a class="reference internal" href="#ref9"><span class="xref myst">[9]</span></a>.</p>
 <p>Another group are the regularization tools which are added to the loss
 during the training of a Neural Network.</p>
 <section id="binning">
 <h4>Binning<a class="headerlink" href="#binning" title="Permalink to this heading">¶</a></h4>
 <p>Implemented binning methods are:</p>
 <ul class="simple">
-<li><p>Histogram Binning for classification <span class="xref myst">[3]</span>, <span class="xref myst">[4]</span> and object detection <span class="xref myst">[12]</span> (<em>netcal.binning.HistogramBinning</em>)</p></li>
-<li><p>Isotonic Regression <span class="xref myst">[4]</span>,<span class="xref myst">[5]</span> (<em>netcal.binning.IsotonicRegression</em>)</p></li>
-<li><p>Bayesian Binning into Quantiles (BBQ) <span class="xref myst">[1]</span> (<em>netcal.binning.BBQ</em>)</p></li>
-<li><p>Ensemble of Near Isotonic Regression (ENIR) <span class="xref myst">[6]</span> (<em>netcal.binning.ENIR</em>)</p></li>
+<li><p>Histogram Binning for classification <a class="reference internal" href="#ref3"><span class="xref myst">[3]</span></a>, <a class="reference internal" href="#ref4"><span class="xref myst">[4]</span></a> and object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.binning.HistogramBinning</em>)</p></li>
+<li><p>Isotonic Regression <a class="reference internal" href="#ref4"><span class="xref myst">[4]</span></a>,<a class="reference internal" href="#ref5"><span class="xref myst">[5]</span></a> (<em>netcal.binning.IsotonicRegression</em>)</p></li>
+<li><p>Bayesian Binning into Quantiles (BBQ) <a class="reference internal" href="#ref1"><span class="xref myst">[1]</span></a> (<em>netcal.binning.BBQ</em>)</p></li>
+<li><p>Ensemble of Near Isotonic Regression (ENIR) <a class="reference internal" href="#ref6"><span class="xref myst">[6]</span></a> (<em>netcal.binning.ENIR</em>)</p></li>
 </ul>
 </section>
 <section id="scaling">
 <h4>Scaling<a class="headerlink" href="#scaling" title="Permalink to this heading">¶</a></h4>
 <p>Implemented scaling methods are:</p>
 <ul class="simple">
-<li><p>Logistic Calibration/Platt Scaling for classification <span class="xref myst">[10]</span> and object detection <span class="xref myst">[12]</span> (<em>netcal.scaling.LogisticCalibration</em>)</p></li>
-<li><p>Dependent Logistic Calibration for object detection <span class="xref myst">[12]</span> (<em>netcal.scaling.LogisticCalibrationDependent</em>) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Logistic Calibration for object detection</p></li>
-<li><p>Temperature Scaling for classification <span class="xref myst">[7]</span> and object detection <span class="xref myst">[12]</span> (<em>netcal.scaling.TemperatureScaling</em>)</p></li>
-<li><p>Beta Calibration for classification <span class="xref myst">[2]</span> and object detection <span class="xref myst">[12]</span> (<em>netcal.scaling.BetaCalibration</em>)</p></li>
-<li><p>Dependent Beta Calibration for object detection <span class="xref myst">[12]</span> (<em>netcal.scaling.BetaCalibrationDependent</em>) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Beta Calibration for object detection</p></li>
+<li><p>Logistic Calibration/Platt Scaling for classification <a class="reference internal" href="#ref10"><span class="xref myst">[10]</span></a> and object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.scaling.LogisticCalibration</em>)</p></li>
+<li><p>Dependent Logistic Calibration for object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.scaling.LogisticCalibrationDependent</em>) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Logistic Calibration for object detection</p></li>
+<li><p>Temperature Scaling for classification <a class="reference internal" href="#ref7"><span class="xref myst">[7]</span></a> and object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.scaling.TemperatureScaling</em>)</p></li>
+<li><p>Beta Calibration for classification <a class="reference internal" href="#ref2"><span class="xref myst">[2]</span></a> and object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.scaling.BetaCalibration</em>)</p></li>
+<li><p>Dependent Beta Calibration for object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.scaling.BetaCalibrationDependent</em>) - on detection, this method is able to capture correlations between all input quantities and should be preferred over Beta Calibration for object detection</p></li>
 </ul>
 <p><strong>New on version 1.2:</strong> you can provide a parameter named “method” to
 the constructor of each scaling method. This parameter could be one of
@@ -805,9 +802,9 @@ uncertainty in the calibration</p>
 calibrated confidences by regularization. Implemented regularization
 methods are:</p>
 <ul class="simple">
-<li><p>Confidence Penalty <span class="xref myst">[8]</span> (<em>netcal.regularization.confidence_penalty</em> and <em>netcal.regularization.ConfidencePenalty</em> - the latter one is a PyTorch implementation that might be used as a regularization term)</p></li>
-<li><p>Maximum Mean Calibration Error (MMCE) <span class="xref myst">[13]</span> (<em>netcal.regularization.MMCEPenalty</em> - PyTorch regularization module)</p></li>
-<li><p>DCA <span class="xref myst">[15]</span> (<em>netcal.regularization.DCAPenalty</em> - PyTorch regularization module)</p></li>
+<li><p>Confidence Penalty <a class="reference internal" href="#ref8"><span class="xref myst">[8]</span></a> (<em>netcal.regularization.confidence_penalty</em> and <em>netcal.regularization.ConfidencePenalty</em> - the latter one is a PyTorch implementation that might be used as a regularization term)</p></li>
+<li><p>Maximum Mean Calibration Error (MMCE) <a class="reference internal" href="#ref13"><span class="xref myst">[13]</span></a> (<em>netcal.regularization.MMCEPenalty</em> - PyTorch regularization module)</p></li>
+<li><p>DCA <a class="reference internal" href="#ref15"><span class="xref myst">[15]</span></a> (<em>netcal.regularization.DCAPenalty</em> - PyTorch regularization module)</p></li>
 </ul>
 </section>
 </section>
@@ -833,8 +830,8 @@ functions (PDF) or to extract statistical moments such as mean and
 variance. Non-parametric calibration methods within the
 <em>netcal.regression</em> package are</p>
 <ul class="simple">
-<li><p>Isotonic Regression <span class="xref myst">[19]</span> which applies a (marginal) recalibration of the CDF (<em>netcal.regression.IsotonicRegression</em>)</p></li>
-<li><p>GP-Beta <span class="xref myst">[20]</span> which applies an input-dependent recalibration of the CDF using a Gaussian process for parameter estimation (<em>netcal.regression.GPBeta</em>)</p></li>
+<li><p>Isotonic Regression <a class="reference internal" href="#ref19"><span class="xref myst">[19]</span></a> which applies a (marginal) recalibration of the CDF (<em>netcal.regression.IsotonicRegression</em>)</p></li>
+<li><p>GP-Beta <a class="reference internal" href="#ref20"><span class="xref myst">[20]</span></a> which applies an input-dependent recalibration of the CDF using a Gaussian process for parameter estimation (<em>netcal.regression.GPBeta</em>)</p></li>
 </ul>
 </section>
 <section id="parametric-calibration">
@@ -847,9 +844,9 @@ parametric distribution is required for subsequent applications, e.g.,
 within Kalman filtering. We implemented the following parametric
 calibration methods:</p>
 <ul class="simple">
-<li><p>Variance Scaling <span class="xref myst">[17]</span>, <span class="xref myst">[18]</span> which is nothing else but a temperature scaling for the predicted variance (<em>netcal.regression.VarianceScaling</em>)</p></li>
-<li><p>GP-Normal <span class="xref myst">[16]</span> which applies an input-dependent rescaling of the predicted variance (<em>netcal.regression.GPNormal</em>). Note: this method is also able to capture correlations between multiple input dimensions and can return a joint multivariate normal distribution as calibration output (cf. examples section).</p></li>
-<li><p>GP-Cauchy <span class="xref myst">[16]</span> is similar to GP-Normal but utilizes a Cauchy distribution as calibration output (<em>netcal.regression.GPCauchy</em>)</p></li>
+<li><p>Variance Scaling <a class="reference internal" href="#ref17"><span class="xref myst">[17]</span></a>, <a class="reference internal" href="#ref18"><span class="xref myst">[18]</span></a> which is nothing else but a temperature scaling for the predicted variance (<em>netcal.regression.VarianceScaling</em>)</p></li>
+<li><p>GP-Normal <a class="reference internal" href="#ref16"><span class="xref myst">[16]</span></a> which applies an input-dependent rescaling of the predicted variance (<em>netcal.regression.GPNormal</em>). Note: this method is also able to capture correlations between multiple input dimensions and can return a joint multivariate normal distribution as calibration output (cf. examples section).</p></li>
+<li><p>GP-Cauchy <a class="reference internal" href="#ref16"><span class="xref myst">[16]</span></a> is similar to GP-Normal but utilizes a Cauchy distribution as calibration output (<em>netcal.regression.GPCauchy</em>)</p></li>
 </ul>
 </section>
 </section>
@@ -870,9 +867,9 @@ of a heatmap.</p>
 the relative prediction interval coverage of the ground-truth samples
 for different quantile levels.</p>
 <ul class="simple">
-<li><p>Reliability Diagram <span class="xref myst">[1]</span>, <span class="xref myst">[12]</span> (<em>netcal.presentation.ReliabilityDiagram</em>)</p></li>
+<li><p>Reliability Diagram <a class="reference internal" href="#ref1"><span class="xref myst">[1]</span></a>, <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.presentation.ReliabilityDiagram</em>)</p></li>
 <li><p>Reliability Diagram for regression calibration (<em>netcal.presentation.ReliabilityRegression</em>)</p></li>
-<li><p>Reliability QCE Diagram <span class="xref myst">[16]</span> shows the Quantile Calibration Error (QCE) for different variance levels (<em>netcal.presentation.ReliabilityQCE</em>)</p></li>
+<li><p>Reliability QCE Diagram <a class="reference internal" href="#ref16"><span class="xref myst">[16]</span></a> shows the Quantile Calibration Error (QCE) for different variance levels (<em>netcal.presentation.ReliabilityQCE</em>)</p></li>
 </ul>
 <p><strong>New on version 1.3:</strong> All plot-methods within the
 <em>netcal.presentation</em> package now support the option “tikz=True” which

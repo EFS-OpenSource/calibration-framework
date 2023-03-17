@@ -450,6 +450,19 @@ class _Miscalibration(object):
         if self.detection or len(np.unique(y)) <= 2:
             matched = np.array(y)
 
+            # check if X is given with (n, 2) in classification mode which might hold the confidence for a
+            # binary classification problem as well with separate entries for the positive
+            # and negative class, respectively
+            if not self.detection:
+
+                # raise error if more than 2 confidence dims have been detected
+                if X.shape[1] > 2:
+                    raise RuntimeError("Asserted binary classification problem but retrieved more than 2 confidence dims.")
+
+                # if the confidence dim is equal to 2, take the confidence from the positive class
+                elif X.shape[1] == 2:
+                    X = X[:, 1:2]
+
         # on multiclass classification, we need to evaluate the accuracy by the predictions in X
         else:
             matched = np.argmax(X, axis=1) == y

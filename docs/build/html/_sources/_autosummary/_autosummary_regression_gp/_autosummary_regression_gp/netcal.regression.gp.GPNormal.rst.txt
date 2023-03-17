@@ -1,4 +1,4 @@
-﻿netcal.regression.gp.GPNormal
+netcal.regression.gp.GPNormal
 =============================
 
 .. currentmodule:: netcal.regression.gp
