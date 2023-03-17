@@ -1,4 +1,4 @@
-﻿netcal.binning.BBQ
+netcal.binning.BBQ
 ==================
 
 .. currentmodule:: netcal.binning

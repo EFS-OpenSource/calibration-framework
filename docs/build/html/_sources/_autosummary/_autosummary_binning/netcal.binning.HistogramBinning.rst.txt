@@ -1,4 +1,4 @@
-﻿netcal.binning.HistogramBinning
+netcal.binning.HistogramBinning
 ===============================
 
 .. currentmodule:: netcal.binning

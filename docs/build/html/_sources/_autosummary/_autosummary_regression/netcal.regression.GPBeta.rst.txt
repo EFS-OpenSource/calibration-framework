@@ -1,4 +1,4 @@
-﻿netcal.regression.GPBeta
+netcal.regression.GPBeta
 ========================
 
 .. currentmodule:: netcal.regression
