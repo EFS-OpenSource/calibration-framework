@@ -106,6 +106,7 @@ class ReliabilityDiagram(object):
             tikz: bool = False,
             title_suffix: str = None,
             feature_names: List[str] = None,
+            fig: plt.Figure = None,
             **save_args
     ) -> Union[plt.Figure, str]:
         """
@@ -150,6 +151,9 @@ class ReliabilityDiagram(object):
             Suffix for plot title.
         feature_names : list, optional, default: None
             Names of the additional features that are attached to the axes of a reliability diagram.
+        fig: plt.Figure, optional, default: None
+            If given, the figure instance is used to draw the reliability diagram.
+            If fig is None, a new one will be created.
         **save_args : args
             Additional arguments passed to 'matplotlib.pyplot.Figure.savefig' function if 'tikz' is False.
             If 'tikz' is True, the argument are passed to 'tikzplotlib.get_tikz_code' function.
@@ -208,15 +212,15 @@ class ReliabilityDiagram(object):
 
         # no additional dimensions? compute standard reliability diagram
         if num_features == 1:
-            fig = self.__plot_confidence_histogram(X, matched, histograms, num_samples_hist, bin_bounds, title_suffix)
+            fig = self.__plot_confidence_histogram(X, matched, histograms, num_samples_hist, bin_bounds, title_suffix, fig)
 
         # one additional feature? compute 1D-plot
         elif num_features == 2:
-            fig = self.__plot_1d(histograms, num_samples_hist, bin_bounds, title_suffix, feature_names)
+            fig = self.__plot_1d(histograms, num_samples_hist, bin_bounds, title_suffix, feature_names, fig)
 
         # two additional features? compute 2D plot
         elif num_features == 3:
-            fig = self.__plot_2d(histograms, num_samples_hist, bin_bounds, title_suffix, feature_names)
+            fig = self.__plot_2d(histograms, num_samples_hist, bin_bounds, title_suffix, feature_names, fig)
 
         # number of dimensions exceeds 3? quit
         else:
@@ -262,7 +266,8 @@ class ReliabilityDiagram(object):
             histograms: List[np.ndarray],
             num_samples_hist: List[np.ndarray],
             bin_bounds: List,
-            title_suffix: str = None
+            title_suffix: str = None,
+            fig: plt.Figure = None,
     ) -> plt.Figure:
         """ Plot confidence histogram and reliability diagram to visualize miscalibration for condidences only. """
 
@@ -313,7 +318,16 @@ class ReliabilityDiagram(object):
 
         # -----------------------------------------
         # plot data distribution histogram first
-        fig, axes = plt.subplots(2, squeeze=True, figsize=(7, 6))
+        if fig is None:
+            fig, axes = plt.subplots(2, squeeze=True, figsize=(7, 6))
+
+        # use an existing figure object if given
+        else:
+            axes = [
+                fig.add_subplot(2, 1, 1),
+                fig.add_subplot(2, 1, 2),
+            ]
+
         ax = axes[0]
 
         # set title suffix is given
@@ -369,7 +383,8 @@ class ReliabilityDiagram(object):
             num_samples_hist: List[np.ndarray],
             bin_bounds: List,
             title_suffix: str = None,
-            feature_names: List[str] = None
+            feature_names: List[str] = None,
+            fig: plt.Figure = None,
     ) -> plt.Figure:
         """ Plot 1-D miscalibration w.r.t. one additional feature. """
 
@@ -399,7 +414,13 @@ class ReliabilityDiagram(object):
         uncertainty = np.sqrt(np.mean([result[3] for result in results], axis=0))
 
         # draw routines
-        fig, ax1 = plt.subplots()
+        if fig is None:
+            fig, ax1 = plt.subplots()
+
+        # use an existing figure object if given
+        else:
+            ax1 = fig.add_subplot(1, 1, 1)
+
         conf_color = 'tab:blue'
 
         # set name of the additional feature
@@ -461,7 +482,8 @@ class ReliabilityDiagram(object):
             num_samples_hist: List[np.ndarray],
             bin_bounds: List[np.ndarray],
             title_suffix: str = None,
-            feature_names: List[str] = None
+            feature_names: List[str] = None,
+            fig: plt.Figure = None,
     ) -> plt.Figure:
         """ Plot 2D miscalibration reliability diagram heatmap. """
 
@@ -522,11 +544,23 @@ class ReliabilityDiagram(object):
 
         # create only two subplots if no additional uncertainty is given
         if np.count_nonzero(uncertainty) == 0:
-            fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+            if fig is None:
+                fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+            else:
+                ax1 = fig.add_subplot(1, 3, 1)
+                ax2 = fig.add_subplot(1, 3, 2)
+                ax3 = fig.add_subplot(1, 3, 3)
 
         # process additional uncertainty if given
         else:
-            fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, squeeze=True, figsize=(10, 10))
+            if fig is None:
+                fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, squeeze=True, figsize=(10, 10))
+            else:
+                ax1 = fig.add_subplot(2, 2, 1)
+                ax2 = fig.add_subplot(2, 2, 2)
+                ax3 = fig.add_subplot(2, 2, 3)
+                ax4 = fig.add_subplot(2, 2, 4)
+
             ax4, img4 = set_axis(ax4, uncertainty)
 
             if title_suffix is not None:

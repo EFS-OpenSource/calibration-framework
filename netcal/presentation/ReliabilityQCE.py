@@ -55,6 +55,7 @@ class ReliabilityQCE(object):
             filename: str = None,
             tikz: bool = False,
             title_suffix: str = None,
+            fig: plt.Figure = None,
             **save_args
     ) -> Union[plt.Figure, str]:
         """
@@ -93,6 +94,9 @@ class ReliabilityQCE(object):
             If True, use 'tikzplotlib' package to return tikz-code for Latex rather than a Matplotlib figure.
         title_suffix : str, optional, default: None
             Suffix for plot title.
+        fig: plt.Figure, optional, default: None
+            If given, the figure instance is used to draw the reliability diagram.
+            If fig is None, a new one will be created.
         **save_args : args
             Additional arguments passed to 'matplotlib.pyplot.Figure.savefig' function if 'tikz' is False.
             If 'tikz' is True, the argument are passed to 'tikzplotlib.get_tikz_code' function.
@@ -122,7 +126,15 @@ class ReliabilityQCE(object):
         assert len(self.qce._bin_edges) != 0, "Fatal error: could not compute bin_edges for ReliabilityQCE."
 
         # initialize plot and create an own chart for each dimension
-        fig, axes = plt.subplots(nrows=2, ncols=ndims, figsize=(7 * ndims, 6), squeeze=False)
+        if fig is None:
+            fig, axes = plt.subplots(nrows=2, ncols=ndims, figsize=(7 * ndims, 6), squeeze=False)
+        else:
+
+            axes = [
+                [fig.add_subplot(2, ndims, idx) for idx in range(1, ndims + 1)],
+                [fig.add_subplot(2, ndims, idx) for idx in range(ndims + 1, 2 * ndims + 1)],
+            ]
+
         for dim in range(ndims):
 
             # convert absolute number of samples to relative amount

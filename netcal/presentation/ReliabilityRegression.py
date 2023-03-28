@@ -63,6 +63,7 @@ class ReliabilityRegression(object):
             tikz: bool = False,
             title_suffix: str = None,
             feature_names: List[str] = None,
+            fig: plt.Figure = None,
             **save_args
     ) -> Union[plt.Figure, str]:
         """
@@ -100,6 +101,9 @@ class ReliabilityRegression(object):
             Suffix for plot title.
         feature_names : list, optional, default: None
             Names of the additional features that are attached to the axes of a reliability diagram.
+        fig: plt.Figure, optional, default: None
+            If given, the figure instance is used to draw the reliability diagram.
+            If fig is None, a new one will be created.
         **save_args : args
             Additional arguments passed to 'matplotlib.pyplot.Figure.savefig' function if 'tikz' is False.
             If 'tikz' is True, the argument are passed to 'tikzplotlib.get_tikz_code' function.
@@ -132,7 +136,11 @@ class ReliabilityRegression(object):
                                                  "as n_features=1."
 
         # initialize plot and create an own chart for each dimension
-        fig, axes = plt.subplots(nrows=n_dims, figsize=(7, 3 * n_dims), squeeze=False)
+        if fig is None:
+            fig, axes = plt.subplots(nrows=n_dims, figsize=(7, 3 * n_dims), squeeze=False)
+        else:
+            axes = [fig.add_subplot(n_dims, 1, idx) for idx in range(1, n_dims + 1)]
+
         for dim, ax in enumerate(axes):
 
             # ax object also has an extra dim for columns
