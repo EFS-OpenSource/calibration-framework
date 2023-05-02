@@ -634,7 +634,7 @@ input = np.stack((confidences, relative_x_position), axis=1)
 
 # flag 'detection=True' is mandatory for this method
 # use Variational Inference with 2000 optimization steps for creating this calibration mapping
-lr = LogisticCalibration(detection=True, method'variational', vi_epochs=2000, use_cuda=False)
+lr = LogisticCalibration(detection=True, method='variational', vi_epochs=2000, use_cuda=False)
 lr.fit(input, matched)
 
 # 'num_samples=1000': sample 1000 parameter sets from VI
