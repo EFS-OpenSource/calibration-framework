@@ -13,7 +13,13 @@ This Source Code Form is subject to the terms of the Apache License 2.0.
 If a copy of the APL2 was not distributed with this file, You can obtain
 one at <https://www.apache.org/licenses/LICENSE-2.0.txt>.
 
-**Important: updated references!** If you use this framework
+--------------------------------------------------------------------------------
+
+<a href="https://github.com/EFS-OpenSource/Thetis">![Thetis Logo](img/thetis-banner.png)</a>
+
+--------------------------------------------------------------------------------
+
+**Important: updated references!** If you use the net:cal framework
 (*classification or detection*) or parts of it for your research, please
 cite it by:
 
