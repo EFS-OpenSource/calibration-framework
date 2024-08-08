@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2023 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND e:fs TechHub GmbH, Gaimersheim Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
@@ -43,20 +43,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
-dependencies = [
-    "numpy>=1.18",
-    "scipy>=1.4",
-    "matplotlib>=3.3",
-    "scikit-learn>=0.24",
-    "torch>=1.9",
-    "torchvision>=0.10.0",
-    "tqdm>=4.40",
-    "pyro-ppl>=1.8",
-    "tikzplotlib==0.9.8",
-    "tensorboard>=2.2",
-    "gpytorch>=1.5.1"
-]
-
+dependencies = {file = ["requirements.txt"]}
 dynamic = ["version"]
 
 [project.urls]

@@ -1,4 +1,4 @@
-netcal.binning.HistogramBinning
+﻿netcal.binning.HistogramBinning
 ===============================
 
 .. currentmodule:: netcal.binning
@@ -18,10 +18,14 @@ netcal.binning.HistogramBinning
       ~HistogramBinning.fit
       ~HistogramBinning.fit_transform
       ~HistogramBinning.get_degrees_of_freedom
+      ~HistogramBinning.get_metadata_routing
       ~HistogramBinning.get_params
       ~HistogramBinning.load_model
       ~HistogramBinning.save_model
+      ~HistogramBinning.set_fit_request
+      ~HistogramBinning.set_output
       ~HistogramBinning.set_params
+      ~HistogramBinning.set_transform_request
       ~HistogramBinning.transform
    
    

@@ -1,4 +1,4 @@
-netcal.regression.GPBeta
+﻿netcal.regression.GPBeta
 ========================
 
 .. currentmodule:: netcal.regression
@@ -35,6 +35,7 @@ netcal.regression.GPBeta
       ~GPBeta.get_buffer
       ~GPBeta.get_extra_state
       ~GPBeta.get_fantasy_model
+      ~GPBeta.get_metadata_routing
       ~GPBeta.get_parameter
       ~GPBeta.get_params
       ~GPBeta.get_submodule
@@ -79,7 +80,10 @@ netcal.regression.GPBeta
       ~GPBeta.sample_from_prior
       ~GPBeta.save_model
       ~GPBeta.set_extra_state
+      ~GPBeta.set_fit_request
+      ~GPBeta.set_output
       ~GPBeta.set_params
+      ~GPBeta.set_transform_request
       ~GPBeta.share_memory
       ~GPBeta.state_dict
       ~GPBeta.to

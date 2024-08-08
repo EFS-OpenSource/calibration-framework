@@ -196,9 +196,10 @@ class AbstractCalibration(BaseEstimator, TransformerMixin):
         # count all class labels and warn if not all labels are present
         unique = np.unique(y)
 
-        # on detection, only binary labels are allowed
-        if self.detection and len(unique) != 2:
-            raise RuntimeError("On detection mode, it is mandatory to provide binary labels y in [0,1].")
+        # on detection, only binary labels {0, 1} are allowed
+        # the method "issubset" also allows the presence of only {0} or {1} in the input data
+        if self.detection and not set(np.round(unique).astype(np.int64)).issubset({0, 1}):
+            raise RuntimeError("On detection mode, it is mandatory to provide binary labels y in {0, 1}.")
 
         if len(unique) != self.num_classes:
             print("WARNING: Not all class labels are present in ground truth array \'y\'. "

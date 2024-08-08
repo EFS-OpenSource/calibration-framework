@@ -1,4 +1,4 @@
-netcal.scaling.BetaCalibration
+﻿netcal.scaling.BetaCalibration
 ==============================
 
 .. currentmodule:: netcal.scaling
@@ -18,6 +18,7 @@ netcal.scaling.BetaCalibration
       ~BetaCalibration.epsilon
       ~BetaCalibration.fit
       ~BetaCalibration.fit_transform
+      ~BetaCalibration.get_metadata_routing
       ~BetaCalibration.get_params
       ~BetaCalibration.guide
       ~BetaCalibration.load_model
@@ -28,7 +29,10 @@ netcal.scaling.BetaCalibration
       ~BetaCalibration.prepare
       ~BetaCalibration.prior
       ~BetaCalibration.save_model
+      ~BetaCalibration.set_fit_request
+      ~BetaCalibration.set_output
       ~BetaCalibration.set_params
+      ~BetaCalibration.set_transform_request
       ~BetaCalibration.to
       ~BetaCalibration.transform
       ~BetaCalibration.variational

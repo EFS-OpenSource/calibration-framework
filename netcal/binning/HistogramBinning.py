@@ -311,6 +311,10 @@ class HistogramBinning(AbstractCalibration):
 
             calibrated = self._bin_map[tuple(bin_indices)]
 
+        # add clipping to [0, 1] to avoid exceeding due to numerical issues
+        # https://github.com/EFS-OpenSource/calibration-framework/issues/54
+        np.clip(calibrated, 0, 1, out=calibrated)
+
         return calibrated
 
     def get_degrees_of_freedom(self) -> int:

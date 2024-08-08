@@ -1,4 +1,4 @@
-netcal.binning.ENIR
+﻿netcal.binning.ENIR
 ===================
 
 .. currentmodule:: netcal.binning
@@ -17,9 +17,11 @@ netcal.binning.ENIR
       ~ENIR.epsilon
       ~ENIR.fit
       ~ENIR.fit_transform
+      ~ENIR.get_metadata_routing
       ~ENIR.get_params
       ~ENIR.load_model
       ~ENIR.save_model
+      ~ENIR.set_output
       ~ENIR.set_params
       ~ENIR.transform
    

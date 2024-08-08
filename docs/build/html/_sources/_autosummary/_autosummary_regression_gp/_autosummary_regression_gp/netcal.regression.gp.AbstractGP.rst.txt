@@ -1,4 +1,4 @@
-netcal.regression.gp.AbstractGP
+﻿netcal.regression.gp.AbstractGP
 ===============================
 
 .. currentmodule:: netcal.regression.gp
@@ -35,6 +35,7 @@ netcal.regression.gp.AbstractGP
       ~AbstractGP.get_buffer
       ~AbstractGP.get_extra_state
       ~AbstractGP.get_fantasy_model
+      ~AbstractGP.get_metadata_routing
       ~AbstractGP.get_parameter
       ~AbstractGP.get_params
       ~AbstractGP.get_submodule
@@ -79,6 +80,8 @@ netcal.regression.gp.AbstractGP
       ~AbstractGP.sample_from_prior
       ~AbstractGP.save_model
       ~AbstractGP.set_extra_state
+      ~AbstractGP.set_fit_request
+      ~AbstractGP.set_output
       ~AbstractGP.set_params
       ~AbstractGP.share_memory
       ~AbstractGP.state_dict

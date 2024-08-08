@@ -1,4 +1,4 @@
-netcal.regression.gp.GPNormal
+﻿netcal.regression.gp.GPNormal
 =============================
 
 .. currentmodule:: netcal.regression.gp
@@ -35,6 +35,7 @@ netcal.regression.gp.GPNormal
       ~GPNormal.get_buffer
       ~GPNormal.get_extra_state
       ~GPNormal.get_fantasy_model
+      ~GPNormal.get_metadata_routing
       ~GPNormal.get_parameter
       ~GPNormal.get_params
       ~GPNormal.get_submodule
@@ -79,6 +80,8 @@ netcal.regression.gp.GPNormal
       ~GPNormal.sample_from_prior
       ~GPNormal.save_model
       ~GPNormal.set_extra_state
+      ~GPNormal.set_fit_request
+      ~GPNormal.set_output
       ~GPNormal.set_params
       ~GPNormal.share_memory
       ~GPNormal.state_dict

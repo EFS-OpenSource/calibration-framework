@@ -1,4 +1,4 @@
-netcal.regression.IsotonicRegression
+﻿netcal.regression.IsotonicRegression
 ====================================
 
 .. currentmodule:: netcal.regression
@@ -17,10 +17,14 @@ netcal.regression.IsotonicRegression
       ~IsotonicRegression.epsilon
       ~IsotonicRegression.fit
       ~IsotonicRegression.fit_transform
+      ~IsotonicRegression.get_metadata_routing
       ~IsotonicRegression.get_params
       ~IsotonicRegression.load_model
       ~IsotonicRegression.save_model
+      ~IsotonicRegression.set_fit_request
+      ~IsotonicRegression.set_output
       ~IsotonicRegression.set_params
+      ~IsotonicRegression.set_transform_request
       ~IsotonicRegression.transform
    
    

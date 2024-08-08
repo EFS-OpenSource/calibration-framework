@@ -1,4 +1,4 @@
-netcal.binning.IsotonicRegression
+﻿netcal.binning.IsotonicRegression
 =================================
 
 .. currentmodule:: netcal.binning
@@ -17,9 +17,11 @@ netcal.binning.IsotonicRegression
       ~IsotonicRegression.epsilon
       ~IsotonicRegression.fit
       ~IsotonicRegression.fit_transform
+      ~IsotonicRegression.get_metadata_routing
       ~IsotonicRegression.get_params
       ~IsotonicRegression.load_model
       ~IsotonicRegression.save_model
+      ~IsotonicRegression.set_output
       ~IsotonicRegression.set_params
       ~IsotonicRegression.transform
    
