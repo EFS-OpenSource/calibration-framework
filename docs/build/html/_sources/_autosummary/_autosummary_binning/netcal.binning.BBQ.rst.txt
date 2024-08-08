@@ -1,4 +1,4 @@
-netcal.binning.BBQ
+﻿netcal.binning.BBQ
 ==================
 
 .. currentmodule:: netcal.binning
@@ -17,9 +17,11 @@ netcal.binning.BBQ
       ~BBQ.epsilon
       ~BBQ.fit
       ~BBQ.fit_transform
+      ~BBQ.get_metadata_routing
       ~BBQ.get_params
       ~BBQ.load_model
       ~BBQ.save_model
+      ~BBQ.set_output
       ~BBQ.set_params
       ~BBQ.transform
    

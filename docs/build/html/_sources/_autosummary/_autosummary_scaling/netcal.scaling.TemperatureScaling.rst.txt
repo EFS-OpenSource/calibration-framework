@@ -1,4 +1,4 @@
-netcal.scaling.TemperatureScaling
+﻿netcal.scaling.TemperatureScaling
 =================================
 
 .. currentmodule:: netcal.scaling
@@ -18,6 +18,7 @@ netcal.scaling.TemperatureScaling
       ~TemperatureScaling.epsilon
       ~TemperatureScaling.fit
       ~TemperatureScaling.fit_transform
+      ~TemperatureScaling.get_metadata_routing
       ~TemperatureScaling.get_params
       ~TemperatureScaling.guide
       ~TemperatureScaling.load_model
@@ -28,7 +29,10 @@ netcal.scaling.TemperatureScaling
       ~TemperatureScaling.prepare
       ~TemperatureScaling.prior
       ~TemperatureScaling.save_model
+      ~TemperatureScaling.set_fit_request
+      ~TemperatureScaling.set_output
       ~TemperatureScaling.set_params
+      ~TemperatureScaling.set_transform_request
       ~TemperatureScaling.to
       ~TemperatureScaling.transform
       ~TemperatureScaling.variational

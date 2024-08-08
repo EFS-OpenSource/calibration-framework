@@ -1,4 +1,4 @@
-netcal.regression.GPCauchy
+﻿netcal.regression.GPCauchy
 ==========================
 
 .. currentmodule:: netcal.regression
@@ -35,6 +35,7 @@ netcal.regression.GPCauchy
       ~GPCauchy.get_buffer
       ~GPCauchy.get_extra_state
       ~GPCauchy.get_fantasy_model
+      ~GPCauchy.get_metadata_routing
       ~GPCauchy.get_parameter
       ~GPCauchy.get_params
       ~GPCauchy.get_submodule
@@ -79,6 +80,8 @@ netcal.regression.GPCauchy
       ~GPCauchy.sample_from_prior
       ~GPCauchy.save_model
       ~GPCauchy.set_extra_state
+      ~GPCauchy.set_fit_request
+      ~GPCauchy.set_output
       ~GPCauchy.set_params
       ~GPCauchy.share_memory
       ~GPCauchy.state_dict

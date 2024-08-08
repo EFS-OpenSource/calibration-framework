@@ -1,4 +1,4 @@
-netcal.regression.VarianceScaling
+﻿netcal.regression.VarianceScaling
 =================================
 
 .. currentmodule:: netcal.regression
@@ -17,9 +17,12 @@ netcal.regression.VarianceScaling
       ~VarianceScaling.epsilon
       ~VarianceScaling.fit
       ~VarianceScaling.fit_transform
+      ~VarianceScaling.get_metadata_routing
       ~VarianceScaling.get_params
       ~VarianceScaling.load_model
       ~VarianceScaling.save_model
+      ~VarianceScaling.set_fit_request
+      ~VarianceScaling.set_output
       ~VarianceScaling.set_params
       ~VarianceScaling.transform
    

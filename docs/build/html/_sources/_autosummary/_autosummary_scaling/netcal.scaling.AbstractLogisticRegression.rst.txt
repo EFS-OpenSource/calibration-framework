@@ -1,4 +1,4 @@
-netcal.scaling.AbstractLogisticRegression
+﻿netcal.scaling.AbstractLogisticRegression
 =========================================
 
 .. currentmodule:: netcal.scaling
@@ -18,6 +18,7 @@ netcal.scaling.AbstractLogisticRegression
       ~AbstractLogisticRegression.epsilon
       ~AbstractLogisticRegression.fit
       ~AbstractLogisticRegression.fit_transform
+      ~AbstractLogisticRegression.get_metadata_routing
       ~AbstractLogisticRegression.get_params
       ~AbstractLogisticRegression.guide
       ~AbstractLogisticRegression.load_model
@@ -28,7 +29,10 @@ netcal.scaling.AbstractLogisticRegression
       ~AbstractLogisticRegression.prepare
       ~AbstractLogisticRegression.prior
       ~AbstractLogisticRegression.save_model
+      ~AbstractLogisticRegression.set_fit_request
+      ~AbstractLogisticRegression.set_output
       ~AbstractLogisticRegression.set_params
+      ~AbstractLogisticRegression.set_transform_request
       ~AbstractLogisticRegression.to
       ~AbstractLogisticRegression.transform
       ~AbstractLogisticRegression.variational

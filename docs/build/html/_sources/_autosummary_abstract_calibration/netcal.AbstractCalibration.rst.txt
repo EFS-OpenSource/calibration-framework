@@ -17,9 +17,11 @@
       ~AbstractCalibration.epsilon
       ~AbstractCalibration.fit
       ~AbstractCalibration.fit_transform
+      ~AbstractCalibration.get_metadata_routing
       ~AbstractCalibration.get_params
       ~AbstractCalibration.load_model
       ~AbstractCalibration.save_model
+      ~AbstractCalibration.set_output
       ~AbstractCalibration.set_params
       ~AbstractCalibration.transform
    
