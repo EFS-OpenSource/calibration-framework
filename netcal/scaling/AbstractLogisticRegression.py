@@ -879,6 +879,10 @@ class AbstractLogisticRegression(AbstractCalibration):
             with torch.cuda.device(self._device):
                 torch.cuda.empty_cache()
 
+        # add clipping to [0, 1] to avoid exceeding due to numerical issues
+        # https://github.com/EFS-OpenSource/calibration-framework/issues/54
+        np.clip(calibrated, 0, 1, out=calibrated)
+
         return calibrated
 
     @dimensions((1, 2))
