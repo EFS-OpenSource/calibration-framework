@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2022 Ruhr West University of Applied Sciences, Bottrop, Germany
+# Copyright (C) 2019-2023 Ruhr West University of Applied Sciences, Bottrop, Germany
 # AND e:fs TechHub GmbH, Gaimersheim, Germany
 #
 # This Source Code Form is subject to the terms of the Apache License 2.0
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     densenet = "records/cifar100/densenet-bc-100-cifar-100.npz"
     wideresnet = "records/cifar100/wideresnet-16-4-cifar-100.npz"
 
-    cifar100 = [lenet, densenet, wideresnet]
+    cifar100 = [lenet, densenet]
 
     # for each model, perform a single example and a 5x2 cross validation
     for model in cifar100:
