@@ -8,6 +8,7 @@
 from tqdm import tqdm
 from copy import deepcopy
 from typing import Tuple, Iterable, Union, Optional, Dict
+from packaging import version
 import numpy as np
 from scipy.stats import norm
 from matplotlib import pyplot as plt
@@ -689,8 +690,14 @@ class AbstractGP(AbstractCalibration, gpytorch.models.ApproximateGP):
 
             best_loss, best_parameters = float('inf'), {}
 
+            # on gpytorch >=1.10, the parameters of "cholesky_jitter" have been changed
+            if version.parse(gpytorch.__version__) >= version.parse("1.10"):
+                jitter_kwargs = {"float_value": self.jitter, "double_value": self.jitter}
+            else:
+                jitter_kwargs = {"float": self.jitter, "double": self.jitter}
+
             # enter optimization loop and iterate over epochs and batches
-            with gpytorch.settings.cholesky_jitter(float=self.jitter, double=self.jitter), tqdm(total=self.n_epochs) as pbar:
+            with gpytorch.settings.cholesky_jitter(**jitter_kwargs), tqdm(total=self.n_epochs) as pbar:
                 step = 0
                 for epoch in range(self.n_epochs):
                     train_loss = []
