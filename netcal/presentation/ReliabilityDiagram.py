@@ -5,13 +5,13 @@
 # If a copy of the APL2 was not distributed with this
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
+import warnings
 from typing import Union, Iterable, List
 import numpy as np
 from scipy.stats import norm
 from scipy.interpolate import interp1d, griddata
 
 import matplotlib.pyplot as plt
-import tikzplotlib
 
 from netcal.metrics.Miscalibration import _Miscalibration
 
@@ -103,7 +103,7 @@ class ReliabilityDiagram(object):
             batched: bool = False,
             uncertainty: str = None,
             filename: str = None,
-            tikz: bool = False,
+            tikz: bool = None,
             title_suffix: str = None,
             feature_names: List[str] = None,
             fig: plt.Figure = None,
@@ -145,8 +145,8 @@ class ReliabilityDiagram(object):
                         (mean) with a standard deviation that is visualized.
         filename : str, optional, default: None
             Optional filename to save the plotted figure.
-        tikz : bool, optional, default: False
-            If True, use 'tikzplotlib' package to return tikz-code for Latex rather than a Matplotlib figure.
+        tikz : DEPRECATED, bool, optional, default: None
+            DEPRECATED: not supported anymore.
         title_suffix : str, optional, default: None
             Suffix for plot title.
         feature_names : list, optional, default: None
@@ -155,13 +155,12 @@ class ReliabilityDiagram(object):
             If given, the figure instance is used to draw the reliability diagram.
             If fig is None, a new one will be created.
         **save_args : args
-            Additional arguments passed to 'matplotlib.pyplot.Figure.savefig' function if 'tikz' is False.
-            If 'tikz' is True, the argument are passed to 'tikzplotlib.get_tikz_code' function.
+            Additional arguments passed to 'matplotlib.pyplot.Figure.savefig' function.
 
         Returns
         -------
-        matplotlib.pyplot.Figure if 'tikz' is False else str with tikz code.
-            Visualization of the reliability diagrams either as Matplotlib figure or as string with tikz code.
+        matplotlib.pyplot.Figure.
+            Visualization of the reliability diagrams as Matplotlib figure.
 
         Raises
         ------
@@ -172,6 +171,9 @@ class ReliabilityDiagram(object):
             - If length of bins parameter does not match the number of features given by X
             - If more than 3 feature dimensions (including confidence) are provided
         """
+
+        if tikz is not None:
+            warnings.warn("The 'tikz' parameter is not supported anymore due to end-of-support of tikzplotlib library.", DeprecationWarning)
 
         # assign deprecated constructor parameter to title_suffix and feature_names
         if hasattr(self, 'title_suffix') and title_suffix is None:
@@ -226,23 +228,10 @@ class ReliabilityDiagram(object):
         else:
             raise AttributeError("Diagram is not defined for more than 2 additional feature dimensions.")
 
-        # if tikz is true, create tikz code from matplotlib figure
-        if tikz:
 
-            # get tikz code for our specific figure and also pass filename to store possible bitmaps
-            tikz_fig = tikzplotlib.get_tikz_code(fig, filepath=filename, **save_args)
-
-            # close matplotlib figure when tikz figure is requested to save memory
-            plt.close(fig)
-            fig = tikz_fig
-
-        # save figure either as matplotlib PNG or as tikz output file
+        # save figure as matplotlib PNG output file
         if filename is not None:
-            if tikz:
-                with open(filename, "w") as open_file:
-                    open_file.write(fig)
-            else:
-                fig.savefig(filename, **save_args)
+            fig.savefig(filename, **save_args)
 
         return fig
 
