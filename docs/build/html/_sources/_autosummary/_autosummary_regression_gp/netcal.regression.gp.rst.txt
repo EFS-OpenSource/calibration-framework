@@ -4,20 +4,3 @@ netcal.regression.gp
 .. automodule:: netcal.regression.gp
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

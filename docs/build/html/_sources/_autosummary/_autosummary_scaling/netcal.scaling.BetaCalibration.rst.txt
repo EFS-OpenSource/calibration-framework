@@ -1,4 +1,4 @@
-﻿netcal.scaling.BetaCalibration
+netcal.scaling.BetaCalibration
 ==============================
 
 .. currentmodule:: netcal.scaling

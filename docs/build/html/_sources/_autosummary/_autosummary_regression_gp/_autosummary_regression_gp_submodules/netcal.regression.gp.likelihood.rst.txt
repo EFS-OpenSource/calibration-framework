@@ -4,20 +4,3 @@ netcal.regression.gp.likelihood
 .. automodule:: netcal.regression.gp.likelihood
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

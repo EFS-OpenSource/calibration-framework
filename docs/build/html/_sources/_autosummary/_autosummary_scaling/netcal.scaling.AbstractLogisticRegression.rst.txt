@@ -1,4 +1,4 @@
-﻿netcal.scaling.AbstractLogisticRegression
+netcal.scaling.AbstractLogisticRegression
 =========================================
 
 .. currentmodule:: netcal.scaling

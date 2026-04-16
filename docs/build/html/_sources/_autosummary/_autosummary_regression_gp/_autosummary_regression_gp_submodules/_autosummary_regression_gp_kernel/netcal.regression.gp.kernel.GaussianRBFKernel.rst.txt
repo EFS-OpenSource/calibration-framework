@@ -19,6 +19,7 @@ netcal.regression.gp.kernel.GaussianRBFKernel
       ~GaussianRBFKernel.bfloat16
       ~GaussianRBFKernel.buffers
       ~GaussianRBFKernel.children
+      ~GaussianRBFKernel.compile
       ~GaussianRBFKernel.constraint_for_parameter_name
       ~GaussianRBFKernel.constraints
       ~GaussianRBFKernel.covar_dist
@@ -26,6 +27,7 @@ netcal.regression.gp.kernel.GaussianRBFKernel
       ~GaussianRBFKernel.cuda
       ~GaussianRBFKernel.double
       ~GaussianRBFKernel.eval
+      ~GaussianRBFKernel.expand_batch
       ~GaussianRBFKernel.extra_repr
       ~GaussianRBFKernel.float
       ~GaussianRBFKernel.forward
@@ -41,6 +43,7 @@ netcal.regression.gp.kernel.GaussianRBFKernel
       ~GaussianRBFKernel.load_strict_shapes
       ~GaussianRBFKernel.local_load_samples
       ~GaussianRBFKernel.modules
+      ~GaussianRBFKernel.mtia
       ~GaussianRBFKernel.named_added_loss_terms
       ~GaussianRBFKernel.named_buffers
       ~GaussianRBFKernel.named_children
@@ -64,19 +67,25 @@ netcal.regression.gp.kernel.GaussianRBFKernel
       ~GaussianRBFKernel.register_forward_hook
       ~GaussianRBFKernel.register_forward_pre_hook
       ~GaussianRBFKernel.register_full_backward_hook
+      ~GaussianRBFKernel.register_full_backward_pre_hook
       ~GaussianRBFKernel.register_load_state_dict_post_hook
+      ~GaussianRBFKernel.register_load_state_dict_pre_hook
       ~GaussianRBFKernel.register_module
       ~GaussianRBFKernel.register_parameter
       ~GaussianRBFKernel.register_prior
+      ~GaussianRBFKernel.register_state_dict_post_hook
+      ~GaussianRBFKernel.register_state_dict_pre_hook
       ~GaussianRBFKernel.requires_grad_
       ~GaussianRBFKernel.sample_from_prior
       ~GaussianRBFKernel.set_extra_state
+      ~GaussianRBFKernel.set_submodule
       ~GaussianRBFKernel.share_memory
       ~GaussianRBFKernel.state_dict
       ~GaussianRBFKernel.sub_kernels
       ~GaussianRBFKernel.to
       ~GaussianRBFKernel.to_empty
       ~GaussianRBFKernel.to_pyro_random_module
+      ~GaussianRBFKernel.to_random_module
       ~GaussianRBFKernel.train
       ~GaussianRBFKernel.type
       ~GaussianRBFKernel.update_added_loss_term

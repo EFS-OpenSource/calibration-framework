@@ -1,4 +1,4 @@
-﻿netcal.regression.GPBeta
+netcal.regression.GPBeta
 ========================
 
 .. currentmodule:: netcal.regression
@@ -20,6 +20,7 @@
       ~GPBeta.buffers
       ~GPBeta.children
       ~GPBeta.clear
+      ~GPBeta.compile
       ~GPBeta.constraint_for_parameter_name
       ~GPBeta.constraints
       ~GPBeta.cpu
@@ -50,6 +51,7 @@
       ~GPBeta.local_load_samples
       ~GPBeta.model
       ~GPBeta.modules
+      ~GPBeta.mtia
       ~GPBeta.named_added_loss_terms
       ~GPBeta.named_buffers
       ~GPBeta.named_children
@@ -72,10 +74,14 @@
       ~GPBeta.register_forward_hook
       ~GPBeta.register_forward_pre_hook
       ~GPBeta.register_full_backward_hook
+      ~GPBeta.register_full_backward_pre_hook
       ~GPBeta.register_load_state_dict_post_hook
+      ~GPBeta.register_load_state_dict_pre_hook
       ~GPBeta.register_module
       ~GPBeta.register_parameter
       ~GPBeta.register_prior
+      ~GPBeta.register_state_dict_post_hook
+      ~GPBeta.register_state_dict_pre_hook
       ~GPBeta.requires_grad_
       ~GPBeta.sample_from_prior
       ~GPBeta.save_model
@@ -83,12 +89,14 @@
       ~GPBeta.set_fit_request
       ~GPBeta.set_output
       ~GPBeta.set_params
+      ~GPBeta.set_submodule
       ~GPBeta.set_transform_request
       ~GPBeta.share_memory
       ~GPBeta.state_dict
       ~GPBeta.to
       ~GPBeta.to_empty
       ~GPBeta.to_pyro_random_module
+      ~GPBeta.to_random_module
       ~GPBeta.train
       ~GPBeta.transform
       ~GPBeta.type
