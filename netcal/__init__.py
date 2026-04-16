@@ -6,9 +6,9 @@
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 """
-API Reference of net:cal
+API Reference of netcal
 ========================
-This is the detailed API reference for the net:cal calibration framework. This library can be used to
+This is the detailed API reference for the netcal calibration framework. This library can be used to
 obtain well-calibrated confidence or uncertainty estimates from biased estimators such as neural networks.
 The API reference contains a detailed description of all available methods and their parameters. For
 miscellaneous examples on how to use these methods, see readme below.
