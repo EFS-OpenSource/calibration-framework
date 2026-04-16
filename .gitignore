@@ -1,0 +1,7 @@
+__pycache__
+/docs/html
+/docs/source/_autosummary*
+netcal.egg-info
+examples/*/examination-*
+examples/*/runs
+logs
