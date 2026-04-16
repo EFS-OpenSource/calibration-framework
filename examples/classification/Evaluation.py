@@ -6,7 +6,6 @@
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
 import os
-import pandas as pd
 import numpy as np
 from typing import List
 
@@ -113,12 +112,19 @@ def measure_miscalibration(bins: int, methods: List, uncertainty: str,
         for i, method in enumerate(methods):
             columns_methods[i].append(measure(method, **vi_kwargs))
 
-    index = pd.Index(types)
-    df = pd.DataFrame(data=np.stack((column_baseline, *columns_methods), axis=1), index=index)
-    df.columns = ['baseline'] + methods
+    headers = ['type', 'baseline'] + methods
+    rows = []
+    for i, t in enumerate(types):
+        row = [t, column_baseline[i]]
+        for col in columns_methods:
+            row.append(col[i])
+        rows.append(row)
 
-    print(df)
-    return df
+    # Print table
+    print('\t'.join(headers))
+    for row in rows:
+        print('\t'.join(str(x) for x in row))
+    return rows  # or return dict(zip(types, rows)) if you want a mapping
 
 
 if __name__ == '__main__':

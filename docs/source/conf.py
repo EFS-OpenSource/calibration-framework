@@ -69,11 +69,11 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 
-extensions.append("sphinxjp.themes.basicstrap")
-html_theme = 'basicstrap'
+# extensions.append("sphinxjp.themes.basicstrap")
+# html_theme = 'basicstrap'
 
-html_title = "net:cal API Reference"
-html_short_title = "net:cal API Reference"
+html_title = "netcal API Reference"
+html_short_title = "netcal API Reference"
 html_show_copyright = False
 html_show_sphinx = False
 html_sidebars = { '**': ['globaltoc.html', 'searchbox.html'] }

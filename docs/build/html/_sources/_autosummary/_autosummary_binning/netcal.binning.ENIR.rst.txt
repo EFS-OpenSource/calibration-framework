@@ -1,4 +1,4 @@
-﻿netcal.binning.ENIR
+netcal.binning.ENIR
 ===================
 
 .. currentmodule:: netcal.binning

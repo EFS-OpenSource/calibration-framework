@@ -1,4 +1,4 @@
-﻿netcal.scaling.LogisticCalibrationDependent
+netcal.scaling.LogisticCalibrationDependent
 ===========================================
 
 .. currentmodule:: netcal.scaling

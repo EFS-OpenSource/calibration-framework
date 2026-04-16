@@ -1,4 +1,4 @@
-﻿netcal.binning.IsotonicRegression
+netcal.binning.IsotonicRegression
 =================================
 
 .. currentmodule:: netcal.binning

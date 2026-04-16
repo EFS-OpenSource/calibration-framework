@@ -5,10 +5,10 @@
 # If a copy of the APL2 was not distributed with this
 # file, You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.txt.
 
+import warnings
 from typing import Union, Iterable, Tuple, List
 import numpy as np
 from matplotlib import pyplot as plt
-import tikzplotlib
 
 from netcal.metrics.regression import QCE
 
@@ -53,7 +53,7 @@ class ReliabilityQCE(object):
             kind: str = 'meanstd',
             range_: List[Tuple[float, float]] = None,
             filename: str = None,
-            tikz: bool = False,
+            tikz: bool = None,
             title_suffix: str = None,
             fig: plt.Figure = None,
             **save_args
@@ -90,8 +90,8 @@ class ReliabilityQCE(object):
             for the binning, yielding a high amount of empty bins.
         filename : str, optional, default: None
             Optional filename to save the plotted figure.
-        tikz : bool, optional, default: False
-            If True, use 'tikzplotlib' package to return tikz-code for Latex rather than a Matplotlib figure.
+        tikz : DEPRECATED, bool, optional, default: None
+            DEPRECATED: not supported anymore.
         title_suffix : str, optional, default: None
             Suffix for plot title.
         fig: plt.Figure, optional, default: None
@@ -106,6 +106,9 @@ class ReliabilityQCE(object):
         matplotlib.pyplot.Figure if 'tikz' is False else str with tikz code.
             Visualization of the C-QCE either as Matplotlib figure or as string with tikz code.
         """
+
+        if tikz is not None:
+            warnings.warn("The 'tikz' parameter is not supported anymore due to end-of-support of tikzplotlib library.", DeprecationWarning)
 
         # measure QCE and return a miscalibration map
         _, qce_map, num_samples_hist = self.qce.measure(
@@ -179,22 +182,8 @@ class ReliabilityQCE(object):
 
         fig.tight_layout()
 
-        # if tikz is true, create tikz code from matplotlib figure
-        if tikz:
-
-            # get tikz code for our specific figure and also pass filename to store possible bitmaps
-            tikz_fig = tikzplotlib.get_tikz_code(fig, filepath=filename, **save_args)
-
-            # close matplotlib figure when tikz figure is requested to save memory
-            plt.close(fig)
-            fig = tikz_fig
-
         # save figure either as matplotlib PNG or as tikz output file
         if filename is not None:
-            if tikz:
-                with open(filename, "w") as open_file:
-                    open_file.write(fig)
-            else:
-                fig.savefig(filename, **save_args)
+            fig.savefig(filename, **save_args)
 
         return fig

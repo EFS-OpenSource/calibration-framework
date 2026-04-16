@@ -1,4 +1,4 @@
-﻿netcal.regression.gp.GPNormal
+netcal.regression.gp.GPNormal
 =============================
 
 .. currentmodule:: netcal.regression.gp
@@ -20,6 +20,7 @@
       ~GPNormal.buffers
       ~GPNormal.children
       ~GPNormal.clear
+      ~GPNormal.compile
       ~GPNormal.constraint_for_parameter_name
       ~GPNormal.constraints
       ~GPNormal.cpu
@@ -50,6 +51,7 @@
       ~GPNormal.local_load_samples
       ~GPNormal.model
       ~GPNormal.modules
+      ~GPNormal.mtia
       ~GPNormal.named_added_loss_terms
       ~GPNormal.named_buffers
       ~GPNormal.named_children
@@ -72,10 +74,14 @@
       ~GPNormal.register_forward_hook
       ~GPNormal.register_forward_pre_hook
       ~GPNormal.register_full_backward_hook
+      ~GPNormal.register_full_backward_pre_hook
       ~GPNormal.register_load_state_dict_post_hook
+      ~GPNormal.register_load_state_dict_pre_hook
       ~GPNormal.register_module
       ~GPNormal.register_parameter
       ~GPNormal.register_prior
+      ~GPNormal.register_state_dict_post_hook
+      ~GPNormal.register_state_dict_pre_hook
       ~GPNormal.requires_grad_
       ~GPNormal.sample_from_prior
       ~GPNormal.save_model
@@ -83,11 +89,13 @@
       ~GPNormal.set_fit_request
       ~GPNormal.set_output
       ~GPNormal.set_params
+      ~GPNormal.set_submodule
       ~GPNormal.share_memory
       ~GPNormal.state_dict
       ~GPNormal.to
       ~GPNormal.to_empty
       ~GPNormal.to_pyro_random_module
+      ~GPNormal.to_random_module
       ~GPNormal.train
       ~GPNormal.transform
       ~GPNormal.type

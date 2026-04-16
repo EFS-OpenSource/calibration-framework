@@ -1,4 +1,4 @@
-﻿netcal.regression.GPCauchy
+netcal.regression.GPCauchy
 ==========================
 
 .. currentmodule:: netcal.regression
@@ -20,6 +20,7 @@
       ~GPCauchy.buffers
       ~GPCauchy.children
       ~GPCauchy.clear
+      ~GPCauchy.compile
       ~GPCauchy.constraint_for_parameter_name
       ~GPCauchy.constraints
       ~GPCauchy.cpu
@@ -50,6 +51,7 @@
       ~GPCauchy.local_load_samples
       ~GPCauchy.model
       ~GPCauchy.modules
+      ~GPCauchy.mtia
       ~GPCauchy.named_added_loss_terms
       ~GPCauchy.named_buffers
       ~GPCauchy.named_children
@@ -72,10 +74,14 @@
       ~GPCauchy.register_forward_hook
       ~GPCauchy.register_forward_pre_hook
       ~GPCauchy.register_full_backward_hook
+      ~GPCauchy.register_full_backward_pre_hook
       ~GPCauchy.register_load_state_dict_post_hook
+      ~GPCauchy.register_load_state_dict_pre_hook
       ~GPCauchy.register_module
       ~GPCauchy.register_parameter
       ~GPCauchy.register_prior
+      ~GPCauchy.register_state_dict_post_hook
+      ~GPCauchy.register_state_dict_pre_hook
       ~GPCauchy.requires_grad_
       ~GPCauchy.sample_from_prior
       ~GPCauchy.save_model
@@ -83,11 +89,13 @@
       ~GPCauchy.set_fit_request
       ~GPCauchy.set_output
       ~GPCauchy.set_params
+      ~GPCauchy.set_submodule
       ~GPCauchy.share_memory
       ~GPCauchy.state_dict
       ~GPCauchy.to
       ~GPCauchy.to_empty
       ~GPCauchy.to_pyro_random_module
+      ~GPCauchy.to_random_module
       ~GPCauchy.train
       ~GPCauchy.transform
       ~GPCauchy.type

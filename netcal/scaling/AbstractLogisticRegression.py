@@ -658,7 +658,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         parameters = [nn.Parameter(site['init']['mean']).to(self._device) for site in self._sites.values()]
         optimizer = torch.optim.Adam(parameters, lr=init_lr)
 
-        best_loss = np.infty
+        best_loss = np.inf
 
         # use tqdm to log loop action
         with tqdm(total=self.momentum_epochs) as pbar:
@@ -932,7 +932,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         # iterate over bias and weights constraints
         for site in self._sites.values():
 
-            bound = [-np.infty, np.infty]
+            bound = [-np.inf, np.inf]
             constraint = site['constraint']
             num_parameters = len(site['init']['mean'])
 

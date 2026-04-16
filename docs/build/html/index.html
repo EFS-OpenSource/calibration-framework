@@ -1,234 +1,46 @@
 <!DOCTYPE html>
 
-
-
-
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference of net:cal &mdash; net:cal API Reference</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    
-
-<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
-
-<link rel="stylesheet" href="_static/css/font-awesome.min.css">
-
-<style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-</style>
-
-<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
-<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
-    
-<script type="text/javascript">
-  var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:    './',
-            VERSION:     '1.3.6',
-            COLLAPSE_INDEX: false,
-            FILE_SUFFIX: '.html',
-            HAS_SOURCE:  true
-  };
-</script>
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
-    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
-<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="_static/js/basicstrap.js"></script>
-<script type="text/javascript">
-</script>
+    <title>API Reference of netcal &#8212; netcal API Reference</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=9172181d"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="net:cal API Reference" href="#" />
-    <link rel="next" title="netcal.binning" href="_autosummary/netcal.binning.html" /> 
-  </head>
-  <body role="document">
-    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">net:cal API Reference</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown visible-xs">
-                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
-                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
-                <ul>
-<li><a class="reference internal" href="#">API Reference of net:cal</a><ul>
-<li><a class="reference internal" href="#available-packages">Available packages</a></li>
-<li><a class="reference internal" href="#base-class">Base class</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#net-cal-uncertainty-calibration">net:cal - Uncertainty Calibration</a><ul>
-<li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
-<li><a class="reference internal" href="#overview">Overview</a><ul>
-<li><a class="reference internal" href="#update-on-version-1-3">Update on version 1.3</a></li>
-<li><a class="reference internal" href="#update-on-version-1-2">Update on version 1.2</a></li>
-<li><a class="reference internal" href="#update-on-version-1-1">Update on version 1.1</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#installation">Installation</a><ul>
-<li><a class="reference internal" href="#requirements">Requirements</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#calibration-metrics">Calibration Metrics</a><ul>
-<li><a class="reference internal" href="#confidence-calibration-metrics">Confidence Calibration Metrics</a></li>
-<li><a class="reference internal" href="#regression-calibration-metrics">Regression Calibration Metrics</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#methods">Methods</a><ul>
-<li><a class="reference internal" href="#confidence-calibration-methods">Confidence Calibration Methods</a><ul>
-<li><a class="reference internal" href="#binning">Binning</a></li>
-<li><a class="reference internal" href="#scaling">Scaling</a></li>
-<li><a class="reference internal" href="#regularization">Regularization</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#regression-calibration-methods">Regression Calibration Methods</a><ul>
-<li><a class="reference internal" href="#non-parametric-calibration">Non-parametric calibration</a></li>
-<li><a class="reference internal" href="#parametric-calibration">Parametric calibration</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#visualization">Visualization</a></li>
-<li><a class="reference internal" href="#examples">Examples</a><ul>
-<li><a class="reference internal" href="#classification">Classification</a><ul>
-<li><a class="reference internal" href="#post-hoc-calibration-for-classification">Post-hoc Calibration for Classification</a></li>
-<li><a class="reference internal" href="#measuring-miscalibration-for-classification">Measuring Miscalibration for Classification</a></li>
-<li><a class="reference internal" href="#visualizing-miscalibration-for-classification">Visualizing Miscalibration for Classification</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#detection-confidence-of-objects">Detection (Confidence of Objects)</a><ul>
-<li><a class="reference internal" href="#post-hoc-calibration-for-detection">Post-hoc Calibration for Detection</a></li>
-<li><a class="reference internal" href="#measuring-miscalibration-for-detection">Measuring Miscalibration for Detection</a></li>
-<li><a class="reference internal" href="#visualizing-miscalibration-for-detection">Visualizing Miscalibration for Detection</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#uncertainty-in-confidence-calibration">Uncertainty in Confidence Calibration</a><ul>
-<li><a class="reference internal" href="#post-hoc-calibration-with-uncertainty">Post-hoc Calibration with Uncertainty</a></li>
-<li><a class="reference internal" href="#measuring-miscalibration-with-uncertainty">Measuring Miscalibration with Uncertainty</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#probabilistic-regression">Probabilistic Regression</a><ul>
-<li><a class="reference internal" href="#post-hoc-calibration-parametric">Post-hoc Calibration (Parametric)</a></li>
-<li><a class="reference internal" href="#post-hoc-calibration-non-parametric">Post-hoc Calibration (Non-Parametric)</a></li>
-<li><a class="reference internal" href="#correlation-estimation-and-recalibration">Correlation Estimation and Recalibration</a></li>
-<li><a class="reference internal" href="#measuring-miscalibration-for-regression">Measuring Miscalibration for Regression</a></li>
-<li><a class="reference internal" href="#visualizing-miscalibration-for-regression">Visualizing Miscalibration for Regression</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#references">References</a></li>
-</ul>
-</li>
-</ul>
+    <link rel="next" title="netcal.binning" href="_autosummary/netcal.binning.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
 
-                </ul>
-              </li>
+  
+  
 
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
             
-              <li><a href="_autosummary/netcal.binning.html" title="netcal.binning" accesskey="N">next </a></li>
-              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
-              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-            
-            <li class="visible-xs"><a href="_sources/index.rst.txt" rel="nofollow">Show Source</a></li>
-
-            <li class="visible-xs">
-                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
-                  <div class="input-append input-group">
-                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-                    <span class="input-group-btn">
-                    <input type="submit" class="btn" value="Go" />
-                    </span>
-                  </div>
-                  <input type="hidden" name="check_keywords" value="yes" />
-                  <input type="hidden" name="area" value="default" />
-                </form>
-            </li>
-
-            
-
-          </ul>
-
-        </div>
-      </div>
-    </div>
-    
-
-    <!-- container -->
-    <div class="container-fluid">
-
-      <!-- row -->
-      <div class="row">
-         
-<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
-  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
-<h3><a href="#">Table of Contents</a></h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.binning.html">netcal.binning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.scaling.html">netcal.scaling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.regularization.html">netcal.regularization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.metrics.html">netcal.metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.presentation.html">netcal.presentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.regression.html">netcal.regression</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
-</ul>
-
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-inline" action="search.html" method="get">
-      <div class="input-append input-group">
-        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-        <span class="input-group-btn">
-        <input type="submit" class="btn" value="Go" />
-        </span>
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div> 
-        
-
-        <div class="col-md-9" id="content-wrapper">
-          <div class="document" role="main">
-            <div class="documentwrapper">
-              <div class="bodywrapper">
-                <div class="body">
-                  
-  <span class="target" id="module-netcal"></span><section id="api-reference-of-net-cal">
-<h1>API Reference of net:cal<a class="headerlink" href="#api-reference-of-net-cal" title="Permalink to this heading">¶</a></h1>
-<p>This is the detailed API reference for the net:cal calibration framework. This library can be used to
+  <section id="api-reference-of-netcal">
+<span id="module-netcal"></span><h1>API Reference of netcal<a class="headerlink" href="#api-reference-of-netcal" title="Link to this heading">¶</a></h1>
+<p>This is the detailed API reference for the netcal calibration framework. This library can be used to
 obtain well-calibrated confidence or uncertainty estimates from biased estimators such as neural networks.
 The API reference contains a detailed description of all available methods and their parameters. For
 miscellaneous examples on how to use these methods, see readme below.</p>
 <section id="available-packages">
-<h2>Available packages<a class="headerlink" href="#available-packages" title="Permalink to this heading">¶</a></h2>
+<h2>Available packages<a class="headerlink" href="#available-packages" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/netcal.binning.html#module-netcal.binning" title="netcal.binning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binning</span></code></a></p></td>
@@ -365,7 +177,7 @@ Get source online</p></td>
 include into the framework, include this class as the base class.</p>
 </section>
 <section id="base-class">
-<h2>Base class<a class="headerlink" href="#base-class" title="Permalink to this heading">¶</a></h2>
+<h2>Base class<a class="headerlink" href="#base-class" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary_abstract_calibration/netcal.AbstractCalibration.html#netcal.AbstractCalibration" title="netcal.AbstractCalibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractCalibration</span></code></a>([detection, ...])</p></td>
@@ -375,18 +187,19 @@ include into the framework, include this class as the base class.</p>
 </table>
 </section>
 </section>
-<section id="net-cal-uncertainty-calibration">
-<h1>net:cal - Uncertainty Calibration<a class="headerlink" href="#net-cal-uncertainty-calibration" title="Permalink to this heading">¶</a></h1>
+<section id="netcal-uncertainty-calibration">
+<h1>netcal - Uncertainty Calibration<a class="headerlink" href="#netcal-uncertainty-calibration" title="Link to this heading">¶</a></h1>
 <div style="text-align: justify">
-<p>The <strong>net:cal</strong> calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network.
+<p>The <strong>netcal</strong> calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network.
 For full API reference documentation, visit
 <a class="reference external" href="https://efs-opensource.github.io/calibration-framework">https://efs-opensource.github.io/calibration-framework</a>.</p>
-<p>Copyright © 2019-2022 Ruhr West University of Applied Sciences,
+<p>Copyright © 2019-2023 Ruhr West University of Applied Sciences,
 Bottrop, Germany AND e:fs TechHub GmbH, Gaimersheim, Germany.</p>
 <p>This Source Code Form is subject to the terms of the Apache License 2.0.
 If a copy of the APL2 was not distributed with this file, You can obtain
 one at <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.txt">https://www.apache.org/licenses/LICENSE-2.0.txt</a>.</p>
-<p><strong>Important: updated references!</strong> If you use this framework
+<hr class="docutils" />
+<p><strong>Important: updated references!</strong> If you use the netcal framework
 (<em>classification or detection</em>) or parts of it for your research, please
 cite it by:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@InProceedings</span><span class="p">{</span><span class="n">Kueppers_2020_CVPR_Workshops</span><span class="p">,</span>
@@ -421,7 +234,7 @@ it by</em>:</p>
 </pre></div>
 </div>
 <section id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="#overview"><span class="xref myst">Overview</span></a></p>
 <ul>
@@ -493,7 +306,7 @@ it by</em>:</p>
 </ul>
 </section>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
 <p>This framework is designed to calibrate the confidence estimates of
 classifiers like neural networks. Modern neural networks are likely to
 be overconfident with their predictions. However, reliable confidence
@@ -503,8 +316,17 @@ applications.</p>
 prediction, the observed accuracy should also match 80% (neither more
 nor less). This behaviour is achievable with several calibration
 methods.</p>
+<section id="update-on-version-1-4">
+<h3>Update on version 1.4<a class="headerlink" href="#update-on-version-1-4" title="Link to this heading">¶</a></h3>
+<p>After a long time, I’m happy to announce to bring some updates to netcal again!</p>
+<p>Overall, this update consists of fundamental basics to make netcal usable again:</p>
+<ul class="simple">
+<li><p>Dropping tikzplotlib support (since it is not supported anymore)</p></li>
+<li><p>Updating dependencies to more modern variants of 3rd party dependencies</p></li>
+</ul>
+</section>
 <section id="update-on-version-1-3">
-<h3>Update on version 1.3<a class="headerlink" href="#update-on-version-1-3" title="Permalink to this heading">¶</a></h3>
+<h3>Update on version 1.3<a class="headerlink" href="#update-on-version-1-3" title="Link to this heading">¶</a></h3>
 <p>TL;DR:</p>
 <ul class="simple">
 <li><p>Regression calibration methods: train and infer methods to rescale the uncertainty of probabilistic regression models</p></li>
@@ -593,7 +415,7 @@ your reliability diagrams if you are planning to use this library for
 any type of publication/document</p>
 </section>
 <section id="update-on-version-1-2">
-<h3>Update on version 1.2<a class="headerlink" href="#update-on-version-1-2" title="Permalink to this heading">¶</a></h3>
+<h3>Update on version 1.2<a class="headerlink" href="#update-on-version-1-2" title="Link to this heading">¶</a></h3>
 <p>TL;DR:</p>
 <ul class="simple">
 <li><p>Bayesian confidence calibration: train and infer scaling methods using variational inference (VI) and MCMC sampling</p></li>
@@ -613,7 +435,7 @@ calibration (MMCE) and to evaluate the quality of prediction intervals
 that can be used during model training (MMCE and DCA).</p>
 </section>
 <section id="update-on-version-1-1">
-<h3>Update on version 1.1<a class="headerlink" href="#update-on-version-1-1" title="Permalink to this heading">¶</a></h3>
+<h3>Update on version 1.1<a class="headerlink" href="#update-on-version-1-1" title="Link to this heading">¶</a></h3>
 <p>This framework can also be used to calibrate object detection models. It
 has recently been shown that calibration on object detection also
 depends on the position and/or scale of a predicted object <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a>. We
@@ -643,48 +465,46 @@ examples           # example code snippets
 </section>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p>The installation of the calibration suite is quite easy as it registered
 in the Python Package Index (PyPI). You can either install this
 framework using PIP:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m pip install netcal
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>netcal
 </pre></div>
 </div>
 <p>Or simply invoke the following command to install the calibration suite when installing from source:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/EFS-OpenSource/calibration-framework
-$ <span class="nb">cd</span> calibration-framework
-$ python3 -m pip install .
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EFS-OpenSource/calibration-framework
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>calibration-framework
+$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
 <p>Note: with update 1.3, we switched from <em>setup.py</em> to <em>pyproject.toml</em>
 according to PEP-518. The <em>setup.py</em> is only for backwards
 compatibility.</p>
 <section id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h3>
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h3>
 <p>According to <em>requierments.txt</em>:</p>
 <ul class="simple">
-<li><p>numpy&gt;=1.18</p></li>
-<li><p>scipy&gt;=1.4</p></li>
-<li><p>matplotlib&gt;=3.3</p></li>
-<li><p>scikit-learn&gt;=0.24</p></li>
-<li><p>torch&gt;=1.9</p></li>
-<li><p>torchvision&gt;=0.10.0</p></li>
+<li><p>numpy&gt;=2.0</p></li>
+<li><p>scipy&gt;=1.11</p></li>
+<li><p>matplotlib&gt;=3.8</p></li>
+<li><p>scikit-learn&gt;=1.3</p></li>
+<li><p>torch&gt;=2.3</p></li>
 <li><p>tqdm&gt;=4.40</p></li>
-<li><p>pyro-ppl&gt;=1.8</p></li>
-<li><p>tikzplotlib&gt;=0.9.8</p></li>
-<li><p>tensorboard&gt;=2.2</p></li>
-<li><p>gpytorch&gt;=1.5.1</p></li>
+<li><p>pyro-ppl&gt;=1.8.5</p></li>
+<li><p>tensorboard&gt;=2.12</p></li>
+<li><p>gpytorch&gt;=1.11</p></li>
 </ul>
 </section>
 </section>
 <section id="calibration-metrics">
-<h2>Calibration Metrics<a class="headerlink" href="#calibration-metrics" title="Permalink to this heading">¶</a></h2>
-<p>We further distinguish between <em>onfidence calibration</em> which aims to
+<h2>Calibration Metrics<a class="headerlink" href="#calibration-metrics" title="Link to this heading">¶</a></h2>
+<p>We further distinguish between <em>confidence calibration</em> which aims to
 recalibrate confidence estimates in the [0, 1] interval, and
 <em>regression uncertainty calibration</em> which addresses the problem of
 calibration in probabilistic regression settings.</p>
 <section id="confidence-calibration-metrics">
-<h3>Confidence Calibration Metrics<a class="headerlink" href="#confidence-calibration-metrics" title="Permalink to this heading">¶</a></h3>
+<h3>Confidence Calibration Metrics<a class="headerlink" href="#confidence-calibration-metrics" title="Link to this heading">¶</a></h3>
 <p>The most common metric to determine miscalibration in the scope of
 classification is the <em>Expected Calibration Error</em> (ECE) <a class="reference internal" href="#ref1"><span class="xref myst">[1]</span></a>. This
 metric divides the confidence space into several bins and measures the
@@ -708,7 +528,7 @@ determine the mean deviation between confidence and accuracy.</p>
 </ul>
 </section>
 <section id="regression-calibration-metrics">
-<h3>Regression Calibration Metrics<a class="headerlink" href="#regression-calibration-metrics" title="Permalink to this heading">¶</a></h3>
+<h3>Regression Calibration Metrics<a class="headerlink" href="#regression-calibration-metrics" title="Link to this heading">¶</a></h3>
 <p>In regression calibration, the most common metric is the <em>Negative Log
 Likelihood</em> (NLL) to measure the quality of a predicted probability
 distribution w.r.t. the ground-truth:</p>
@@ -742,12 +562,12 @@ observed error variance which is equivalent to then Mean Squared Error
 </section>
 </section>
 <section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h2>
 <p>We further give an overview about the post-hoc calibration methods for
 (semantic) confidence calibration as well as about the methods for
 regression uncertainty calibration.</p>
 <section id="confidence-calibration-methods">
-<h3>Confidence Calibration Methods<a class="headerlink" href="#confidence-calibration-methods" title="Permalink to this heading">¶</a></h3>
+<h3>Confidence Calibration Methods<a class="headerlink" href="#confidence-calibration-methods" title="Link to this heading">¶</a></h3>
 <p>The post-hoc calibration methods are separated into binning and scaling
 methods. The binning methods divide the available information into
 several bins (like ECE or D-ECE) and perform calibration on each bin.
@@ -766,7 +586,7 @@ scikit-learn API <a class="reference internal" href="#ref9"><span class="xref my
 <p>Another group are the regularization tools which are added to the loss
 during the training of a Neural Network.</p>
 <section id="binning">
-<h4>Binning<a class="headerlink" href="#binning" title="Permalink to this heading">¶</a></h4>
+<h4>Binning<a class="headerlink" href="#binning" title="Link to this heading">¶</a></h4>
 <p>Implemented binning methods are:</p>
 <ul class="simple">
 <li><p>Histogram Binning for classification <a class="reference internal" href="#ref3"><span class="xref myst">[3]</span></a>, <a class="reference internal" href="#ref4"><span class="xref myst">[4]</span></a> and object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.binning.HistogramBinning</em>)</p></li>
@@ -776,7 +596,7 @@ during the training of a Neural Network.</p>
 </ul>
 </section>
 <section id="scaling">
-<h4>Scaling<a class="headerlink" href="#scaling" title="Permalink to this heading">¶</a></h4>
+<h4>Scaling<a class="headerlink" href="#scaling" title="Link to this heading">¶</a></h4>
 <p>Implemented scaling methods are:</p>
 <ul class="simple">
 <li><p>Logistic Calibration/Platt Scaling for classification <a class="reference internal" href="#ref10"><span class="xref myst">[10]</span></a> and object detection <a class="reference internal" href="#ref12"><span class="xref myst">[12]</span></a> (<em>netcal.scaling.LogisticCalibration</em>)</p></li>
@@ -797,7 +617,7 @@ Inference to obtain multiple parameter sets in order to quantify
 uncertainty in the calibration</p>
 </section>
 <section id="regularization">
-<h4>Regularization<a class="headerlink" href="#regularization" title="Permalink to this heading">¶</a></h4>
+<h4>Regularization<a class="headerlink" href="#regularization" title="Link to this heading">¶</a></h4>
 <p>With some effort, it is also possible to push the model training towards
 calibrated confidences by regularization. Implemented regularization
 methods are:</p>
@@ -809,7 +629,7 @@ methods are:</p>
 </section>
 </section>
 <section id="regression-calibration-methods">
-<h3>Regression Calibration Methods<a class="headerlink" href="#regression-calibration-methods" title="Permalink to this heading">¶</a></h3>
+<h3>Regression Calibration Methods<a class="headerlink" href="#regression-calibration-methods" title="Link to this heading">¶</a></h3>
 <p>The <em>netcal</em> library provides post-hoc methods to recalibrate the
 uncertainty of probabilistic regression tasks. We distinguish the
 calibration methods into non-parametric and parametric methods.
@@ -821,7 +641,7 @@ defining a CDF distribution. In contrast, parametric calibration methods
 also take a probability distribution as input and provide a recalibrated
 distribution that has an analytical expression (e.g., Gaussian).</p>
 <section id="non-parametric-calibration">
-<h4>Non-parametric calibration<a class="headerlink" href="#non-parametric-calibration" title="Permalink to this heading">¶</a></h4>
+<h4>Non-parametric calibration<a class="headerlink" href="#non-parametric-calibration" title="Link to this heading">¶</a></h4>
 <p>The common non-parametric recalibration methods use the predicted
 cumulative (CDF) distribution functions to learn a mapping from the
 uncalibrated quantiles to the observed quantile coverage. Using a
@@ -835,7 +655,7 @@ variance. Non-parametric calibration methods within the
 </ul>
 </section>
 <section id="parametric-calibration">
-<h4>Parametric calibration<a class="headerlink" href="#parametric-calibration" title="Permalink to this heading">¶</a></h4>
+<h4>Parametric calibration<a class="headerlink" href="#parametric-calibration" title="Link to this heading">¶</a></h4>
 <p>The parametric recalibration methods apply a recalibration of the
 estimated distributions so that the resulting distribution is given in
 terms of a distribution with an analytical expression (e.g., a
@@ -852,7 +672,7 @@ calibration methods:</p>
 </section>
 </section>
 <section id="visualization">
-<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">¶</a></h2>
+<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">¶</a></h2>
 <p>For visualization of miscalibration, one can use a Confidence Histograms
 &amp; Reliability Diagrams for (semantic) confidence calibration as well as
 for regression uncertainty calibration. Within confidence calibration,
@@ -880,12 +700,12 @@ improve the quality of your reliability diagrams if you are planning to
 use this library for any type of publication/document</p>
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
 <p>The calibration methods work with the predicted confidence estimates of
 a neural network and on detection also with the bounding box regression
 branch.</p>
 <section id="classification">
-<h3>Classification<a class="headerlink" href="#classification" title="Permalink to this heading">¶</a></h3>
+<h3>Classification<a class="headerlink" href="#classification" title="Link to this heading">¶</a></h3>
 <p>This is a basic example which uses softmax predictions of a
 classification task with 10 classes and the given NumPy arrays:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ground_truth</span>  <span class="c1"># this is a NumPy 1-D array with ground truth digits between 0-9 - shape: (n_samples,)</span>
@@ -893,12 +713,12 @@ classification task with 10 classes and the given NumPy arrays:</p>
 </pre></div>
 </div>
 <section id="post-hoc-calibration-for-classification">
-<h4>Post-hoc Calibration for Classification<a class="headerlink" href="#post-hoc-calibration-for-classification" title="Permalink to this heading">¶</a></h4>
+<h4>Post-hoc Calibration for Classification<a class="headerlink" href="#post-hoc-calibration-for-classification" title="Link to this heading">¶</a></h4>
 <p>This is an example for <em>netcal.scaling.TemperatureScaling</em> but also
 works for every calibration method (remind different constructor
 parameters):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">netcal.scaling</span> <span class="kn">import</span> <span class="n">TemperatureScaling</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">netcal.scaling</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemperatureScaling</span>
 
 <span class="n">temperature</span> <span class="o">=</span> <span class="n">TemperatureScaling</span><span class="p">()</span>
 <span class="n">temperature</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">confidences</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">)</span>
@@ -907,9 +727,9 @@ parameters):</p>
 </div>
 </section>
 <section id="measuring-miscalibration-for-classification">
-<h4>Measuring Miscalibration for Classification<a class="headerlink" href="#measuring-miscalibration-for-classification" title="Permalink to this heading">¶</a></h4>
+<h4>Measuring Miscalibration for Classification<a class="headerlink" href="#measuring-miscalibration-for-classification" title="Link to this heading">¶</a></h4>
 <p>The miscalibration can be determined with the ECE:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">ECE</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECE</span>
 
 <span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
 
@@ -920,9 +740,9 @@ parameters):</p>
 </div>
 </section>
 <section id="visualizing-miscalibration-for-classification">
-<h4>Visualizing Miscalibration for Classification<a class="headerlink" href="#visualizing-miscalibration-for-classification" title="Permalink to this heading">¶</a></h4>
+<h4>Visualizing Miscalibration for Classification<a class="headerlink" href="#visualizing-miscalibration-for-classification" title="Link to this heading">¶</a></h4>
 <p>The miscalibration can be visualized with a Reliability Diagram:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.presentation</span> <span class="kn">import</span> <span class="n">ReliabilityDiagram</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.presentation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReliabilityDiagram</span>
 
 <span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
 
@@ -938,7 +758,7 @@ parameters):</p>
 </section>
 </section>
 <section id="detection-confidence-of-objects">
-<h3>Detection (Confidence of Objects)<a class="headerlink" href="#detection-confidence-of-objects" title="Permalink to this heading">¶</a></h3>
+<h3>Detection (Confidence of Objects)<a class="headerlink" href="#detection-confidence-of-objects" title="Link to this heading">¶</a></h3>
 <p>In this example we use confidence predictions of an object detection
 model with the according x-position of the predicted bounding boxes. Our
 ground-truth provided to the calibration algorithm denotes if a bounding
@@ -950,12 +770,12 @@ class label.</p>
 </pre></div>
 </div>
 <section id="post-hoc-calibration-for-detection">
-<h4>Post-hoc Calibration for Detection<a class="headerlink" href="#post-hoc-calibration-for-detection" title="Permalink to this heading">¶</a></h4>
+<h4>Post-hoc Calibration for Detection<a class="headerlink" href="#post-hoc-calibration-for-detection" title="Link to this heading">¶</a></h4>
 <p>This is an example for <em>netcal.scaling.LogisticCalibration</em> and
 <em>netcal.scaling.LogisticCalibrationDependent</em> but also works for every
 calibration method (remind different constructor parameters):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">netcal.scaling</span> <span class="kn">import</span> <span class="n">LogisticCalibration</span><span class="p">,</span> <span class="n">LogisticCalibrationDependent</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">netcal.scaling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticCalibration</span><span class="p">,</span> <span class="n">LogisticCalibrationDependent</span>
 
 <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">confidences</span><span class="p">,</span> <span class="n">relative_x_position</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -970,9 +790,9 @@ calibration method (remind different constructor parameters):</p>
 </div>
 </section>
 <section id="measuring-miscalibration-for-detection">
-<h4>Measuring Miscalibration for Detection<a class="headerlink" href="#measuring-miscalibration-for-detection" title="Permalink to this heading">¶</a></h4>
+<h4>Measuring Miscalibration for Detection<a class="headerlink" href="#measuring-miscalibration-for-detection" title="Link to this heading">¶</a></h4>
 <p>The miscalibration can be determined with the D-ECE:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">ECE</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECE</span>
 
 <span class="n">n_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 <span class="n">input_calibrated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">calibrated</span><span class="p">,</span> <span class="n">relative_x_position</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -984,9 +804,9 @@ calibration method (remind different constructor parameters):</p>
 </div>
 </section>
 <section id="visualizing-miscalibration-for-detection">
-<h4>Visualizing Miscalibration for Detection<a class="headerlink" href="#visualizing-miscalibration-for-detection" title="Permalink to this heading">¶</a></h4>
+<h4>Visualizing Miscalibration for Detection<a class="headerlink" href="#visualizing-miscalibration-for-detection" title="Link to this heading">¶</a></h4>
 <p>The miscalibration can be visualized with a Reliability Diagram:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.presentation</span> <span class="kn">import</span> <span class="n">ReliabilityDiagram</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.presentation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReliabilityDiagram</span>
 
 <span class="n">n_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 
@@ -1002,7 +822,7 @@ calibration method (remind different constructor parameters):</p>
 </section>
 </section>
 <section id="uncertainty-in-confidence-calibration">
-<h3>Uncertainty in Confidence Calibration<a class="headerlink" href="#uncertainty-in-confidence-calibration" title="Permalink to this heading">¶</a></h3>
+<h3>Uncertainty in Confidence Calibration<a class="headerlink" href="#uncertainty-in-confidence-calibration" title="Link to this heading">¶</a></h3>
 <p>We can also quantify the uncertainty in a calibration mapping if we use
 a Bayesian view on the calibration models. We can sample multiple
 parameter sets using MCMC sampling or VI. In this example, we reuse the
@@ -1013,18 +833,18 @@ data of the previous detection example.</p>
 </pre></div>
 </div>
 <section id="post-hoc-calibration-with-uncertainty">
-<h4>Post-hoc Calibration with Uncertainty<a class="headerlink" href="#post-hoc-calibration-with-uncertainty" title="Permalink to this heading">¶</a></h4>
+<h4>Post-hoc Calibration with Uncertainty<a class="headerlink" href="#post-hoc-calibration-with-uncertainty" title="Link to this heading">¶</a></h4>
 <p>This is an example for <em>netcal.scaling.LogisticCalibration</em> and
 <em>netcal.scaling.LogisticCalibrationDependent</em> but also works for every
 calibration method (remind different constructor parameters):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">netcal.scaling</span> <span class="kn">import</span> <span class="n">LogisticCalibration</span><span class="p">,</span> <span class="n">LogisticCalibrationDependent</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">netcal.scaling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticCalibration</span><span class="p">,</span> <span class="n">LogisticCalibrationDependent</span>
 
 <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">confidences</span><span class="p">,</span> <span class="n">relative_x_position</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># flag &#39;detection=True&#39; is mandatory for this method</span>
 <span class="c1"># use Variational Inference with 2000 optimization steps for creating this calibration mapping</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticCalibration</span><span class="p">(</span><span class="n">detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="s1">&#39;variational&#39;</span><span class="p">,</span> <span class="n">vi_epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticCalibration</span><span class="p">(</span><span class="n">detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;variational&#39;</span><span class="p">,</span> <span class="n">vi_epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">matched</span><span class="p">)</span>
 
 <span class="c1"># &#39;num_samples=1000&#39;: sample 1000 parameter sets from VI</span>
@@ -1045,11 +865,11 @@ calibration method (remind different constructor parameters):</p>
 </div>
 </section>
 <section id="measuring-miscalibration-with-uncertainty">
-<h4>Measuring Miscalibration with Uncertainty<a class="headerlink" href="#measuring-miscalibration-with-uncertainty" title="Permalink to this heading">¶</a></h4>
+<h4>Measuring Miscalibration with Uncertainty<a class="headerlink" href="#measuring-miscalibration-with-uncertainty" title="Link to this heading">¶</a></h4>
 <p>You can directly pass the output to the D-ECE and PICP instance to
 measure miscalibration and mask quality:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">ECE</span>
-<span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">PICP</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">netcal.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">PICP</span>
 
 <span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">ece</span> <span class="o">=</span> <span class="n">ECE</span><span class="p">(</span><span class="n">n_bins</span><span class="p">,</span> <span class="n">detection</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1092,7 +912,7 @@ the relative x position, we need to broadcast the according information:</p>
 </section>
 </section>
 <section id="probabilistic-regression">
-<h3>Probabilistic Regression<a class="headerlink" href="#probabilistic-regression" title="Permalink to this heading">¶</a></h3>
+<h3>Probabilistic Regression<a class="headerlink" href="#probabilistic-regression" title="Link to this heading">¶</a></h3>
 <p>The following example shows how to use the post-hoc calibration methods
 for probabilistic regression tasks. Within probabilistic regression, a
 forecaster (e.g. with Gaussian prior) outputs a mean and a variance
@@ -1104,12 +924,12 @@ is required to construct the calibration methods:</p>
 </pre></div>
 </div>
 <section id="post-hoc-calibration-parametric">
-<h4>Post-hoc Calibration (Parametric)<a class="headerlink" href="#post-hoc-calibration-parametric" title="Permalink to this heading">¶</a></h4>
+<h4>Post-hoc Calibration (Parametric)<a class="headerlink" href="#post-hoc-calibration-parametric" title="Link to this heading">¶</a></h4>
 <p>These information might result e.g. from object detection where the
 position information of the objects (bounding boxes) are parametrized by
 normal distributions. We start by using parametric calibration methods
 such as Variance Scaling:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.regression</span> <span class="kn">import</span> <span class="n">VarianceScaling</span><span class="p">,</span> <span class="n">GPNormal</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">VarianceScaling</span><span class="p">,</span> <span class="n">GPNormal</span>
 
 <span class="c1"># the initialization of the Variance Scaling method is pretty simple</span>
 <span class="n">varscaling</span> <span class="o">=</span> <span class="n">VarianceScaling</span><span class="p">()</span>
@@ -1137,11 +957,11 @@ such as Variance Scaling:</p>
 </div>
 </section>
 <section id="post-hoc-calibration-non-parametric">
-<h4>Post-hoc Calibration (Non-Parametric)<a class="headerlink" href="#post-hoc-calibration-non-parametric" title="Permalink to this heading">¶</a></h4>
+<h4>Post-hoc Calibration (Non-Parametric)<a class="headerlink" href="#post-hoc-calibration-non-parametric" title="Link to this heading">¶</a></h4>
 <p>We can also use non-parametric calibration methods. In this case, the
 calibrated distributions are defined by their density (PDF) and
 cumulative (CDF) functions:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.regression</span> <span class="kn">import</span> <span class="n">IsotonicRegression</span><span class="p">,</span> <span class="n">GPBeta</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsotonicRegression</span><span class="p">,</span> <span class="n">GPBeta</span>
 
 <span class="c1"># the initialization of the Isotonic Regression method is pretty simple</span>
 <span class="n">isotonic</span> <span class="o">=</span> <span class="n">IsotonicRegression</span><span class="p">()</span>
@@ -1179,7 +999,7 @@ cumulative (CDF) functions:</p>
 </div>
 <p>You can visualize the non-parametric distribution of a single sample
 within a single dimension using Matplotlib:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -1202,7 +1022,7 @@ within a single dimension using Matplotlib:</p>
 variance from the recalibrated cumulative (CDF). Note that we advise to
 use one of the parametric calibration methods if you need e.g. a
 Gaussian for subsequent applications such as Kalman filtering.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal</span> <span class="kn">import</span> <span class="n">cumulative_moments</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal</span><span class="w"> </span><span class="kn">import</span> <span class="n">cumulative_moments</span>
 
 <span class="c1"># extract the expectation (mean) and the variance from the recalibrated CDF</span>
 <span class="n">ymean_isotonic</span><span class="p">,</span> <span class="n">yvar_isotonic</span> <span class="o">=</span> <span class="n">cumulative_moments</span><span class="p">(</span><span class="n">t_isotonic</span><span class="p">,</span> <span class="n">cdf_isotonic</span><span class="p">)</span>
@@ -1214,11 +1034,11 @@ Gaussian for subsequent applications such as Kalman filtering.</p>
 </div>
 </section>
 <section id="correlation-estimation-and-recalibration">
-<h4>Correlation Estimation and Recalibration<a class="headerlink" href="#correlation-estimation-and-recalibration" title="Permalink to this heading">¶</a></h4>
+<h4>Correlation Estimation and Recalibration<a class="headerlink" href="#correlation-estimation-and-recalibration" title="Link to this heading">¶</a></h4>
 <p>With the GP-Normal <em>netcal.regression.GPNormal</em>, it is also possible to
 detect possible correlations between multiple input dimensions that have
 originally been trained/modelled independently from each other:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.regression</span> <span class="kn">import</span> <span class="n">GPNormal</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPNormal</span>
 
 <span class="c1"># the GP-Normal requires a little bit more parameters to parametrize the underlying GP</span>
 <span class="n">gpnormal</span> <span class="o">=</span> <span class="n">GPNormal</span><span class="p">(</span>
@@ -1244,10 +1064,10 @@ originally been trained/modelled independently from each other:</p>
 </div>
 </section>
 <section id="measuring-miscalibration-for-regression">
-<h4>Measuring Miscalibration for Regression<a class="headerlink" href="#measuring-miscalibration-for-regression" title="Permalink to this heading">¶</a></h4>
+<h4>Measuring Miscalibration for Regression<a class="headerlink" href="#measuring-miscalibration-for-regression" title="Link to this heading">¶</a></h4>
 <p>Measuring miscalibration is as simple as the training of the methods:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">netcal.metrics</span> <span class="kn">import</span> <span class="n">NLL</span><span class="p">,</span> <span class="n">PinballLoss</span><span class="p">,</span> <span class="n">QCE</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">netcal.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">NLL</span><span class="p">,</span> <span class="n">PinballLoss</span><span class="p">,</span> <span class="n">QCE</span>
 
 <span class="c1"># define the quantile levels that are used to evaluate the pinball loss and the QCE</span>
 <span class="n">quantiles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
@@ -1267,10 +1087,10 @@ originally been trained/modelled independently from each other:</p>
 </div>
 </section>
 <section id="visualizing-miscalibration-for-regression">
-<h4>Visualizing Miscalibration for Regression<a class="headerlink" href="#visualizing-miscalibration-for-regression" title="Permalink to this heading">¶</a></h4>
+<h4>Visualizing Miscalibration for Regression<a class="headerlink" href="#visualizing-miscalibration-for-regression" title="Link to this heading">¶</a></h4>
 <p>Example visualization code block using the
 <em>netcal.presentation.ReliabilityRegression</em> class:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">netcal.presentation</span> <span class="kn">import</span> <span class="n">ReliabilityRegression</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">netcal.presentation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReliabilityRegression</span>
 
 <span class="c1"># define the quantile levels that are used for the quantile evaluation</span>
 <span class="n">quantiles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
@@ -1291,7 +1111,7 @@ originally been trained/modelled independently from each other:</p>
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
 <p><a name="ref1">[1]</a> Naeini, Mahdi Pakdaman, Gregory Cooper, and Milos Hauskrecht: “Obtaining well calibrated probabilities using bayesian binning.” Twenty-Ninth AAAI Conference on Artificial Intelligence, 2015.</p>
 <p><a name="ref2">[2]</a> Kull, Meelis, Telmo Silva Filho, and Peter Flach: “Beta calibration: a well-founded and easily implemented improvement on logistic calibration for binary classifiers.” Artificial Intelligence and Statistics, PMLR 54:623-631, 2017.</p>
 <p><a name="ref3">[3]</a> Zadrozny, Bianca and Elkan, Charles: “Obtaining calibrated probability estimates from decision trees and naive bayesian classifiers.” In ICML, pp. 609–616, 2001.</p>
@@ -1316,41 +1136,49 @@ originally been trained/modelled independently from each other:</p>
 </section>
 
 
-                </div>
-              </div>
-            </div>
           </div>
+          
         </div>
-        
-        
-      </div><!-- /row -->
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="#">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary_abstract_calibration/netcal.AbstractCalibration.html">netcal.AbstractCalibration</a></li>
+</ul>
 
-      <!-- row -->
-      <div class="row footer-relbar">
-<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
-  <div class="navbar-inner">
-    <ul class="nav navbar-nav ">
-        <li><a href="#">net:cal API Reference</a></li>
-    </ul>
-<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
-      
-        <li><a href="_autosummary/netcal.binning.html" title="netcal.binning" >next</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="#">top</a></li> 
-      
-    </ul>
-  </div>
-</div>
-      </div><!-- /row -->
-
-      <!-- footer -->
-      <footer role="contentinfo">
-      </footer>
-      <!-- /footer -->
-
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
     </div>
-    <!-- /container -->
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
 
+    
+
+    
   </body>
 </html>

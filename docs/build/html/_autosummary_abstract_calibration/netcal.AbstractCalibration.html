@@ -1,176 +1,42 @@
 <!DOCTYPE html>
 
-
-
-
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>netcal.AbstractCalibration &mdash; net:cal API Reference</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    
-
-<link rel="stylesheet" href="../_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" id="current-theme" href="../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
-
-<link rel="stylesheet" href="../_static/css/font-awesome.min.css">
-
-<style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-</style>
-
-<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
-<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="../_static/css/basicstrap.css" type="text/css" />
-    
-<script type="text/javascript">
-  var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:    '../',
-            VERSION:     '1.3.6',
-            COLLAPSE_INDEX: false,
-            FILE_SUFFIX: '.html',
-            HAS_SOURCE:  true
-  };
-</script>
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
-    <script type="text/javascript" src="../_static/js/bootstrap3.min.js"></script>
-<script type="text/javascript" src="../_static/js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="../_static/js/basicstrap.js"></script>
-<script type="text/javascript">
-</script>
+    <title>netcal.AbstractCalibration &#8212; netcal API Reference</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=9172181d"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="net:cal API Reference" href="../index.html" />
-    <link rel="prev" title="netcal.regression.gp.likelihood.CauchyLikelihood" href="../_autosummary/_autosummary_regression_gp/_autosummary_regression_gp_submodules/_autosummary_regression_gp_likelihood/netcal.regression.gp.likelihood.CauchyLikelihood.html" /> 
-  </head>
-  <body role="document">
-    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="../index.html">net:cal API Reference</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown visible-xs">
-                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
-                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
-                <ul>
-<li><a class="reference internal" href="#">netcal.AbstractCalibration</a><ul>
-<li><a class="reference internal" href="#netcal.AbstractCalibration"><code class="docutils literal notranslate"><span class="pre">AbstractCalibration</span></code></a><ul>
-<li><a class="reference internal" href="#netcal.AbstractCalibration.epsilon"><code class="docutils literal notranslate"><span class="pre">AbstractCalibration.epsilon</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+    <link rel="prev" title="netcal.regression.gp.likelihood.CauchyLikelihood" href="../_autosummary/_autosummary_regression_gp/_autosummary_regression_gp_submodules/_autosummary_regression_gp_likelihood/netcal.regression.gp.likelihood.CauchyLikelihood.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
 
-                </ul>
-              </li>
+  
+  
 
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
             
-              <li><a href="../_autosummary/_autosummary_regression_gp/_autosummary_regression_gp_submodules/_autosummary_regression_gp_likelihood/netcal.regression.gp.likelihood.CauchyLikelihood.html" title="netcal.regression.gp.likelihood.CauchyLikelihood" accesskey="P">previous </a></li>
-              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
-              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
-            
-            <li class="visible-xs"><a href="../_sources/_autosummary_abstract_calibration/netcal.AbstractCalibration.rst.txt" rel="nofollow">Show Source</a></li>
-
-            <li class="visible-xs">
-                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
-                  <div class="input-append input-group">
-                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-                    <span class="input-group-btn">
-                    <input type="submit" class="btn" value="Go" />
-                    </span>
-                  </div>
-                  <input type="hidden" name="check_keywords" value="yes" />
-                  <input type="hidden" name="area" value="default" />
-                </form>
-            </li>
-
-            
-
-          </ul>
-
-        </div>
-      </div>
-    </div>
-    
-
-    <!-- container -->
-    <div class="container-fluid">
-
-      <!-- row -->
-      <div class="row">
-         
-<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
-  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
-<h3><a href="../index.html">Table of Contents</a></h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.binning.html">netcal.binning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.scaling.html">netcal.scaling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.regularization.html">netcal.regularization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.metrics.html">netcal.metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.presentation.html">netcal.presentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.regression.html">netcal.regression</a></li>
-</ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">netcal.AbstractCalibration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#netcal.AbstractCalibration"><code class="docutils literal notranslate"><span class="pre">AbstractCalibration</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#netcal.AbstractCalibration.epsilon"><code class="docutils literal notranslate"><span class="pre">AbstractCalibration.epsilon</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-inline" action="../search.html" method="get">
-      <div class="input-append input-group">
-        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-        <span class="input-group-btn">
-        <input type="submit" class="btn" value="Go" />
-        </span>
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div> 
-        
-
-        <div class="col-md-9" id="content-wrapper">
-          <div class="document" role="main">
-            <div class="documentwrapper">
-              <div class="bodywrapper">
-                <div class="body">
-                  
   <section id="netcal-abstractcalibration">
-<h1>netcal.AbstractCalibration<a class="headerlink" href="#netcal-abstractcalibration" title="Permalink to this heading">¶</a></h1>
+<h1>netcal.AbstractCalibration<a class="headerlink" href="#netcal-abstractcalibration" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="netcal.AbstractCalibration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.</span></span><span class="sig-name descname"><span class="pre">AbstractCalibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent_probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">netcal.</span></span><span class="sig-name descname"><span class="pre">AbstractCalibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent_probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#netcal.AbstractCalibration" title="Link to this definition">¶</a></dt>
 <dd><p>Abstract base class for all calibration methods.
 Inherits functions from sklearn’s BaseEstimator.</p>
 <dl class="field-list simple">
@@ -188,7 +54,7 @@ class are treated as independent of each other (sigmoid).</p></li>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="netcal.AbstractCalibration.epsilon">
-<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#netcal.AbstractCalibration.epsilon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#netcal.AbstractCalibration.epsilon" title="Link to this definition">¶</a></dt>
 <dd><p>Lowest possible digit that can be computed. Needed for several operations like divisions or log to guarantee
 values inequal to 0 or 1.</p>
 <dl class="field-list simple">
@@ -244,41 +110,55 @@ values inequal to 0 or 1.</p>
 </section>
 
 
-                </div>
-              </div>
-            </div>
           </div>
+          
         </div>
-        
-        
-      </div><!-- /row -->
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.binning.html">netcal.binning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.scaling.html">netcal.scaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.regularization.html">netcal.regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.metrics.html">netcal.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.presentation.html">netcal.presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/netcal.regression.html">netcal.regression</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">netcal.AbstractCalibration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#netcal.AbstractCalibration"><code class="docutils literal notranslate"><span class="pre">AbstractCalibration</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#netcal.AbstractCalibration.epsilon"><code class="docutils literal notranslate"><span class="pre">AbstractCalibration.epsilon</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-      <!-- row -->
-      <div class="row footer-relbar">
-<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
-  <div class="navbar-inner">
-    <ul class="nav navbar-nav ">
-        <li><a href="../index.html">net:cal API Reference</a></li>
-    </ul>
-<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
-      
-        <li><a href="../_autosummary/_autosummary_regression_gp/_autosummary_regression_gp_submodules/_autosummary_regression_gp_likelihood/netcal.regression.gp.likelihood.CauchyLikelihood.html" title="netcal.regression.gp.likelihood.CauchyLikelihood" >previous</a></li>
-        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="../genindex.html" title="General Index" >index</a></li>
-        <li><a href="#">top</a></li> 
-      
-    </ul>
-  </div>
-</div>
-      </div><!-- /row -->
-
-      <!-- footer -->
-      <footer role="contentinfo">
-      </footer>
-      <!-- /footer -->
-
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
     </div>
-    <!-- /container -->
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      <a href="../_sources/_autosummary_abstract_calibration/netcal.AbstractCalibration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
 
+    
+
+    
   </body>
 </html>

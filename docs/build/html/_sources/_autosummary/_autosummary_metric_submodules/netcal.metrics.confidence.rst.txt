@@ -4,20 +4,3 @@ netcal.metrics.confidence
 .. automodule:: netcal.metrics.confidence
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

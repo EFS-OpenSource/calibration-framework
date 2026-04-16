@@ -1,8 +1,8 @@
-# net:cal - Uncertainty Calibration
+# netcal - Uncertainty Calibration
 
 <div style="text-align: justify">
 
-The **net:cal** calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network. 
+The **netcal** calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network. 
 For full API reference documentation, visit
 <https://efs-opensource.github.io/calibration-framework>.
 
@@ -15,11 +15,7 @@ one at <https://www.apache.org/licenses/LICENSE-2.0.txt>.
 
 --------------------------------------------------------------------------------
 
-<a href="https://github.com/EFS-OpenSource/Thetis">![Thetis Logo](img/thetis-banner.png)</a>
-
---------------------------------------------------------------------------------
-
-**Important: updated references!** If you use the net:cal framework
+**Important: updated references!** If you use the netcal framework
 (*classification or detection*) or parts of it for your research, please
 cite it by:
 
@@ -111,6 +107,15 @@ For example: given 100 predictions with a confidence of 80% of each
 prediction, the observed accuracy should also match 80% (neither more
 nor less). This behaviour is achievable with several calibration
 methods.
+
+### Update on version 1.4
+
+After a long time, I'm happy to announce to bring some updates to netcal again!
+
+Overall, this update consists of fundamental basics to make netcal usable again:
+
+- Dropping tikzplotlib support (since it is not supported anymore)
+- Updating dependencies to more modern variants of 3rd party dependencies
 
 ### Update on version 1.3
 
@@ -268,21 +273,19 @@ compatibility.
 ### Requirements
 According to *requierments.txt*:
 
--   numpy\>=1.18
--   scipy\>=1.4
--   matplotlib\>=3.3
--   scikit-learn\>=0.24
--   torch\>=1.9
--   torchvision\>=0.10.0
--   tqdm\>=4.40
--   pyro-ppl\>=1.8
--   tikzplotlib\>=0.9.8
--   tensorboard\>=2.2
--   gpytorch\>=1.5.1
+- numpy>=2.0
+- scipy>=1.11
+- matplotlib>=3.8
+- scikit-learn>=1.3
+- torch>=2.3
+- tqdm>=4.40
+- pyro-ppl>=1.8.5
+- tensorboard>=2.12
+- gpytorch>=1.11
 
 ## Calibration Metrics
 
-We further distinguish between *onfidence calibration* which aims to
+We further distinguish between *confidence calibration* which aims to
 recalibrate confidence estimates in the [0, 1] interval, and
 *regression uncertainty calibration* which addresses the problem of
 calibration in probabilistic regression settings.

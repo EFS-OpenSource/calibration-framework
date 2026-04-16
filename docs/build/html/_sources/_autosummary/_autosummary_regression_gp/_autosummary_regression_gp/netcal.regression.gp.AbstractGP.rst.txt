@@ -1,4 +1,4 @@
-﻿netcal.regression.gp.AbstractGP
+netcal.regression.gp.AbstractGP
 ===============================
 
 .. currentmodule:: netcal.regression.gp
@@ -20,6 +20,7 @@
       ~AbstractGP.buffers
       ~AbstractGP.children
       ~AbstractGP.clear
+      ~AbstractGP.compile
       ~AbstractGP.constraint_for_parameter_name
       ~AbstractGP.constraints
       ~AbstractGP.cpu
@@ -50,6 +51,7 @@
       ~AbstractGP.local_load_samples
       ~AbstractGP.model
       ~AbstractGP.modules
+      ~AbstractGP.mtia
       ~AbstractGP.named_added_loss_terms
       ~AbstractGP.named_buffers
       ~AbstractGP.named_children
@@ -72,10 +74,14 @@
       ~AbstractGP.register_forward_hook
       ~AbstractGP.register_forward_pre_hook
       ~AbstractGP.register_full_backward_hook
+      ~AbstractGP.register_full_backward_pre_hook
       ~AbstractGP.register_load_state_dict_post_hook
+      ~AbstractGP.register_load_state_dict_pre_hook
       ~AbstractGP.register_module
       ~AbstractGP.register_parameter
       ~AbstractGP.register_prior
+      ~AbstractGP.register_state_dict_post_hook
+      ~AbstractGP.register_state_dict_pre_hook
       ~AbstractGP.requires_grad_
       ~AbstractGP.sample_from_prior
       ~AbstractGP.save_model
@@ -83,11 +89,13 @@
       ~AbstractGP.set_fit_request
       ~AbstractGP.set_output
       ~AbstractGP.set_params
+      ~AbstractGP.set_submodule
       ~AbstractGP.share_memory
       ~AbstractGP.state_dict
       ~AbstractGP.to
       ~AbstractGP.to_empty
       ~AbstractGP.to_pyro_random_module
+      ~AbstractGP.to_random_module
       ~AbstractGP.train
       ~AbstractGP.transform
       ~AbstractGP.type

@@ -310,10 +310,10 @@ class BetaCalibrationDependent(AbstractLogisticRegression):
             epsilon = self.epsilon(weights.dtype)
 
             # clip values to range (0, inf]
-            alpha_pos = torch.clamp(weights[:index_1], epsilon, np.infty)
-            alpha_neg = torch.clamp(weights[index_1:index_2], epsilon, np.infty)
-            beta_pos = torch.clamp(weights[index_2:index_3], epsilon, np.infty)
-            beta_neg = torch.clamp(weights[index_3:], epsilon, np.infty)
+            alpha_pos = torch.clamp(weights[:index_1], epsilon, np.inf)
+            alpha_neg = torch.clamp(weights[index_1:index_2], epsilon, np.inf)
+            beta_pos = torch.clamp(weights[index_2:index_3], epsilon, np.inf)
+            beta_neg = torch.clamp(weights[index_3:], epsilon, np.inf)
 
             # lambdas are ratio between all betas and beta_0
             lambda_pos = beta_pos[1:] / beta_pos[0]

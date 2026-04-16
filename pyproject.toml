@@ -11,14 +11,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "netcal"
-description = "The net:cal calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network."
-requires-python = ">=3.6"
+description = "The netcal calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network."
+requires-python = ">=3.10"
 authors = [
-  {email = "fabian.kueppers@efs-techhub.com"},
+  {email = "github@fa-kueppers.de"},
   {name = "Fabian Küppers"}
 ]
 maintainers = [
-  {email = "fabian.kueppers@efs-techhub.com"},
+  {email = "github@fa-kueppers.de"},
   {name = "Fabian Küppers"}
 ]
 
