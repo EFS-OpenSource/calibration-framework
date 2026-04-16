@@ -1,8 +1,8 @@
-# net:cal - Uncertainty Calibration
+# netcal - Uncertainty Calibration
 
 <div style="text-align: justify">
 
-The **net:cal** calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network. 
+The **netcal** calibration framework is a Python 3 library for measuring and mitigating miscalibration of uncertainty estimates, e.g., by a neural network. 
 For full API reference documentation, visit
 <https://efs-opensource.github.io/calibration-framework>.
 
@@ -15,11 +15,7 @@ one at <https://www.apache.org/licenses/LICENSE-2.0.txt>.
 
 --------------------------------------------------------------------------------
 
-<a href="https://github.com/EFS-OpenSource/Thetis">![Thetis Logo](img/thetis-banner.png)</a>
-
---------------------------------------------------------------------------------
-
-**Important: updated references!** If you use the net:cal framework
+**Important: updated references!** If you use the netcal framework
 (*classification or detection*) or parts of it for your research, please
 cite it by:
 
