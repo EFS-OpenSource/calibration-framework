@@ -565,17 +565,32 @@ class AbstractLogisticRegression(AbstractCalibration):
         # compute NLL loss - fix weights given of the model for the current iteration step
         def MLE(w, x, y):
 
-            data = {}
+            conditioned_values = {}
+            parameters = []
             start = 0
             for name, site in self._sites.items():
                 num_weights = len(site['init']['mean'])
-                data[name] = torch.from_numpy(w[start:start+num_weights]).to(
+                parameter = torch.tensor(
+                    w[start:start+num_weights],
                     dtype=dtype,
                     device=self._device,
+                    requires_grad=True,
                 )
+                conditioned_values[name] = parameter
+                parameters.append(parameter)
                 start += num_weights
 
-            return loss_op(torch.squeeze(pyro.condition(self.model, data=data)(x)), y).item()
+            loss = loss_op(
+                torch.squeeze(pyro.condition(self.model, data=conditioned_values)(x)),
+                y,
+            )
+            loss.backward()
+
+            gradient = np.concatenate([
+                parameter.grad.detach().cpu().numpy().astype(np.float64)
+                for parameter in parameters
+            ])
+            return loss.item(), gradient
 
         initial_weights = np.concatenate(
             [site['init']['mean'].cpu().numpy() for site in self._sites.values()]
@@ -600,7 +615,7 @@ class AbstractLogisticRegression(AbstractCalibration):
         optim_bounds = self._get_scipy_constraints()
 
         # invoke SciPy's optimization function as this is very light-weight and fast
-        result = minimize(fun=MLE, x0=initial_weights, args=(data, y), bounds=optim_bounds)
+        result = minimize(fun=MLE, x0=initial_weights, args=(data, y), bounds=optim_bounds, jac=True)
 
         # assign weights to according sites
         start = 0
@@ -618,7 +633,7 @@ class AbstractLogisticRegression(AbstractCalibration):
             if bounds:
                 # rerun minimization routine
                 initial_weights[masked_weights] = 0.0
-                result = minimize(fun=MLE, x0=initial_weights, args=(data, y), bounds=bounds)
+                result = minimize(fun=MLE, x0=initial_weights, args=(data, y), bounds=bounds, jac=True)
 
         # get intercept and weights after optimization
         start = 0
