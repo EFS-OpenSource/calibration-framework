@@ -261,7 +261,9 @@ class ENIR(AbstractCalibration):
             model_list.append(iso)
 
         # first element is perfect fit to training data - discard due to overfitting
-        model_list.pop(0)
+        # if it is the only model (e.g. the classes are perfectly separated and mPAVA has nothing to merge), keep it
+        if len(model_list) > 2:
+            model_list.pop(0)
 
         # last element is always None - indicator of mPAVA termination
         model_list.pop()
