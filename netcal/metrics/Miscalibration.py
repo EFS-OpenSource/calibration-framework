@@ -210,6 +210,16 @@ class _Miscalibration(object):
 
         return X, matched, sample_uncertainty, bin_bounds, num_features
 
+    def kept_samples(self, num_samples_hist: np.ndarray) -> np.ndarray:
+        """
+        Number of samples in each bin with the bins below 'sample_threshold' set to 0.
+
+        :meth:`binning` blanks out the values of these bins, so they must not count as weight in a metric either:
+        they are left out of the metric, not counted as perfectly calibrated bins.
+        """
+
+        return np.where(num_samples_hist < self.sample_threshold, 0., num_samples_hist)
+
     def binning(self, bin_bounds: List, samples: np.ndarray, *values: Iterable, nan: float = 0.0) -> Tuple:
         """
         Perform binning on value (and all additional values passed) based on samples.
@@ -296,7 +306,10 @@ class _Miscalibration(object):
         # in order to determine miscalibration w.r.t. additional features (excluding confidence dimension),
         # reduce the first (confidence) dimension and determine the amount of samples in the remaining bins
         samples_map = np.sum(num_samples_hist, axis=0)
-        total_samples = np.sum(samples_map)
+
+        # bins below sample_threshold have been blanked out by binning(): leave them out of every weight and count
+        num_samples_hist = self.kept_samples(num_samples_hist)
+        total_samples = np.sum(num_samples_hist)
 
         # first, get deviation map
         deviation_map = np.abs(acc_hist - conf_hist)
@@ -322,12 +335,13 @@ class _Miscalibration(object):
                 where=non_empty_bins != 0
             )
 
-            miscalibration = np.sum(bin_map / np.count_nonzero(np.sum(num_samples_hist, axis=0)))
+            kept_bins = np.count_nonzero(np.sum(num_samples_hist, axis=0))
+            miscalibration = np.sum(bin_map) / kept_bins if kept_bins > 0 else 0.
 
         elif metric == 'ece':
 
             # relative number of samples in each bin (including confidence dimension)
-            rel_samples_hist = num_samples_hist / total_samples
+            rel_samples_hist = num_samples_hist / total_samples if total_samples > 0 else np.zeros_like(num_samples_hist)
             miscalibration = np.sum(deviation_map * rel_samples_hist)
 
             # sum weighted deviation along confidence dimension

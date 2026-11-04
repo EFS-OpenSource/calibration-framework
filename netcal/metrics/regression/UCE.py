@@ -144,7 +144,10 @@ class UCE(_Miscalibration):
                 var[:, dim],
                 error[:, dim]
             )
-            n_samples_hist = n_samples_hist / n_samples
+            # bins below sample_threshold are left out of the weights as well as the values
+            n_samples_hist = self.kept_samples(n_samples_hist)
+            n_kept = np.sum(n_samples_hist)
+            n_samples_hist = n_samples_hist / n_kept if n_kept > 0 else np.zeros_like(n_samples_hist)
 
             # UCE for current dim is weighted sum over all bins
             uce.append(
