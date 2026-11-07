@@ -57,7 +57,7 @@ content-type = "text/markdown"
 text = "Apache-2.0"
 
 [tool.setuptools.packages.find]
-exclude = ["img"]
+exclude = ["img", "tests", "tests.*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "netcal.__version__"}
