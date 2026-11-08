@@ -111,12 +111,19 @@ class QuantileLoss(object):
 
         # make y at least 2d and weight the signed quantile residual
         y = np.expand_dims(y, axis=1) if y.ndim == 1 else y  # (n, d)
-        error = y[None, ...] - qbounds  # (q, n, d)
+        if np.issubdtype(y.dtype, np.integer) and np.issubdtype(qbounds.dtype, np.integer):
+            # Subtract integer CDF values exactly before converting to floating
+            # point. Fixed-width subtraction can overflow, while casting first
+            # loses small residuals between large, adjacent integers.
+            error = y[None, ...].astype(object) - qbounds.astype(object)
+            error = error.astype(np.result_type(y.dtype, qbounds.dtype, (q - 1.).dtype))
+        else:
+            error = y[None, ...] - qbounds  # (q, n, d)
         q = q[:, None, None]
         weights = np.where(error >= 0., q, q - 1.)
         # At q=0 or q=1 an unbounded distribution has an infinite residual
         # with zero weight. Preserve this zero loss without hiding NaN inputs.
-        loss = np.zeros_like(error)
+        loss = np.zeros_like(error, dtype=np.result_type(error.dtype, weights.dtype))
         np.multiply(weights, error, out=loss, where=(weights != 0.) | np.isnan(error))
 
         # no reduction is applied
