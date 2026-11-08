@@ -8,7 +8,8 @@
 from typing import Iterable, Tuple
 from typing import Union
 import numpy as np
-from netcal import accepts, squeeze_generic, is_in_quantile
+from scipy.stats import norm, cauchy
+from netcal import squeeze_generic, meanvar
 
 
 class QuantileLoss(object):
@@ -51,15 +52,16 @@ class QuantileLoss(object):
             Target scores for each prediction estimate in X.
         q : np.ndarray of shape (q,)
             Quantile scores in [0, 1] of size q to compute the x-valued quantile boundaries for.
-        kind : str, either "meanstd" or "cumulative"
+        kind : str, either "meanstd", "cauchy" or "cumulative"
             Specify the kind of the input data. Might be one of:
             - meanstd: if X is tuple of two NumPy arrays with shape (n, [d]) for each array, this method asserts the
                        first array as mean and the second one as the according stddev predictions for d dimensions.
                        If X is single NumPy array of shape (r, n), this methods asserts predictions obtained by a stochastic
                        inference model (e.g. network using MC dropout) with n samples and r stochastic forward passes. In this
-                       case, the mean and stddev is computed automatically.
+                       case, empirical quantiles are computed over the stochastic forward passes.
+            - cauchy: assert X as a tuple of location and scale arrays of shape (n, [d]).
             - cumulative: assert X as tuple of two NumPy arrays of shape (t, n, [d]) with t points on the cumulative
-                          for sample n (and optionally d dimensions).
+                          for sample n (and optionally d dimensions). Quantiles use the nearest CDF value.
         reduction : str, one of 'none', 'mean' or 'sum' default: 'mean'
             Specifies the reduction to apply to the output:
             - none : no reduction is performed. Return quantile loss for each sample, each
@@ -69,33 +71,60 @@ class QuantileLoss(object):
 
         Returns
         -------
-        np.ndarray of shape (q, d)
-            Quantile loss for quantile q in dimension d over all samples in input X.
+        np.ndarray of shape (q, n, d) or float
+            Quantile loss for each quantile, sample and dimension, or its reduction.
             See parameter "reduction" for a detailed description of the return type.
         """
 
-        # get quantile boundaries
-        in_quantile, qbounds, _, _, _ = is_in_quantile(X, y, q, kind)  # (q, n, [d]), (q, n, d)
+        assert kind in ['meanstd', 'cauchy', 'cumulative'], "Unknown input kind: '%s'" % kind
+        q = squeeze_generic(np.array(q), axes_to_keep=0).reshape((-1,))
 
-        # qbounds is None if input is given with covariance matrices
-        if qbounds is None:
-            raise RuntimeError("QuantileLoss is currently not defined for multivariate data with correlation.")
+        # Pinball loss uses the one-sided quantile F^{-1}(q), not a boundary
+        # of the central prediction interval used by PICP and QCE.
+        if kind == 'cumulative':
+            t, cdf = X
+            t = np.expand_dims(t, axis=2) if t.ndim == 2 else t
+            cdf = np.expand_dims(cdf, axis=2) if cdf.ndim == 2 else cdf
+            nearest = np.argmin(np.abs(cdf[None, ...] - q[:, None, None, None]), axis=1)
+            qbounds = np.take_along_axis(t, nearest, axis=0)
 
-        # make y at least 2d
+        elif kind == 'cauchy':
+            location, scale = X
+            if scale.ndim > location.ndim:
+                raise RuntimeError("Multivariate Cauchy with correlations is currently not supported.")
+            location = location.reshape((-1, 1)) if location.ndim == 1 else location
+            scale = scale.reshape((-1, 1)) if scale.ndim == 1 else scale
+            qbounds = cauchy.ppf(q[:, None, None], loc=location, scale=scale)
+
+        elif isinstance(X, np.ndarray):
+            assert X.ndim >= 2, "Sample distributions must have shape (r, n, [d])."
+            X = np.expand_dims(X, axis=2) if X.ndim == 2 else X
+            qbounds = np.quantile(X, q, axis=0)
+
+        else:
+            mean, var, cov = meanvar(X)
+            if cov:
+                raise RuntimeError("QuantileLoss is currently not defined for multivariate data with correlation.")
+            mean = mean.reshape((-1, 1)) if mean.ndim == 1 else mean
+            var = var.reshape((-1, 1)) if var.ndim == 1 else var
+            qbounds = norm.ppf(q[:, None, None], loc=mean, scale=np.sqrt(var))
+
+        # make y at least 2d and weight the signed quantile residual
         y = np.expand_dims(y, axis=1) if y.ndim == 1 else y  # (n, d)
-
-        # broadcast q array to all dimensions
-        n_samples, n_dims = y.shape
-
-        # standard case: use L1 (absolute) distance between ground-truth and quantile boundary
-        q = np.broadcast_to(q[:, None, None], (q.shape[0], n_samples, n_dims))  # (q, n, d)
-        distance = np.abs(y[None, :] - qbounds)  # (q, n, d)
-
-        # compute weights for pinball loss
-        weights = np.where(in_quantile, 1.-q, q)  # (q, n, [d])
-
-        # finally, compute loss
-        loss = distance * weights  # (q, n, [d])
+        if np.issubdtype(y.dtype, np.integer) and np.issubdtype(qbounds.dtype, np.integer):
+            # Subtract integer CDF values exactly before converting to floating
+            # point. Fixed-width subtraction can overflow, while casting first
+            # loses small residuals between large, adjacent integers.
+            error = y[None, ...].astype(object) - qbounds.astype(object)
+            error = error.astype(np.result_type(y.dtype, qbounds.dtype, (q - 1.).dtype))
+        else:
+            error = y[None, ...] - qbounds  # (q, n, d)
+        q = q[:, None, None]
+        weights = np.where(error >= 0., q, q - 1.)
+        # At q=0 or q=1 an unbounded distribution has an infinite residual
+        # with zero weight. Preserve this zero loss without hiding NaN inputs.
+        loss = np.zeros_like(error, dtype=np.result_type(error.dtype, weights.dtype))
+        np.multiply(weights, error, out=loss, where=(weights != 0.) | np.isnan(error))
 
         # no reduction is applied
         if reduction is None or reduction == 'none':
