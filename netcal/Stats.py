@@ -34,7 +34,7 @@ def hpdi(x, prob=0.90, axis=0):
     x = np.swapaxes(x, axis, 0)
     sorted_x = np.sort(x, axis=0)
     mass = x.shape[0]
-    index_length = int(prob * mass)
+    index_length = min(int(prob * mass), mass - 1)
     intervals_left = sorted_x[:(mass - index_length)]
     intervals_right = sorted_x[index_length:]
     intervals_length = intervals_right - intervals_left
